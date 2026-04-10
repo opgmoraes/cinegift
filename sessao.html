@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sua Sessão Especial | CineGift</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sessao.css" />
+  </head>
+  <body class="cinema-body">
+    <div id="loader" class="loader-overlay">
+      <div class="popcorn-loader">🍿</div>
+      <p>Preparando sua sessão...</p>
+    </div>
+
+    <div class="curtain-container">
+      <div class="curtain left"></div>
+      <div class="curtain right"></div>
+
+      <main class="theater-screen">
+        <div class="video-wrapper">
+          <video id="moviePlayer" playsinline>
+            <source src="" type="video/mp4" />
+          </video>
+          <div id="playButton" class="play-overlay">
+            <button>▶ Iniciar Filme</button>
+          </div>
+        </div>
+
+        <div id="credits" class="credits-roll">
+          <div class="credits-content">
+            <h2 id="msgTema">Para alguém especial</h2>
+            <h1 id="msgEstrela">Nome</h1>
+            <p id="msgFinal">Mensagem aqui...</p>
+            <br /><br />
+            <span>Dirigido por:</span>
+            <h3 id="msgDiretor">Você</h3>
+            <div class="the-end">FIM</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="js/sessao.js"></script>
+  </body>
+</html>
