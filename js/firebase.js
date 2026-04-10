@@ -5,7 +5,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase
 // SUAS CONFIGURAÇÕES DO FIREBASE VÃO AQUI
 // (Você pega isso no painel do Firebase > Configurações do Projeto)
 const firebaseConfig = {
-  apiKey: "AIzaSyCcdwjng9HUWyfk-ZDl8KsVf5vIllVGXyA"
+  apiKey: "AIzaSyCcdwjng9HUWyfk-ZDl8KsVf5vIllVGXyA",
   authDomain: "cinegift-saas.firebaseapp.com",
   projectId: "cinegift-saas",
   storageBucket: "cinegift-saas.firebasestorage.app",
