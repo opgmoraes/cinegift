@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Sessão | CineGift</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/criador.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="creator-body">
+    <header class="navbar navbar-compact">
+      <div class="logo">
+        <a href="index.html" style="color: inherit; text-decoration: none"
+          >CineGift 🍿</a
+        >
+      </div>
+      <div class="step-indicator">
+        Passo <span id="current-step">1</span> de 4
+      </div>
+    </header>
+
+    <main class="creator-container">
+      <section class="wizard-panel">
+        <div id="step-1" class="wizard-step active">
+          <h2>O Elenco e o Gênero</h2>
+          <p>Vamos definir o tom da nossa sessão.</p>
+
+          <div class="input-group">
+            <label>Tema da Sessão</label>
+            <select id="tema" class="input-field">
+              <option value="romance">❤️ Romance</option>
+              <option value="amizade">✌️ Amizade</option>
+              <option value="familia">👨‍👩‍👧‍👦 Família</option>
+              <option value="aniversario">🎂 Aniversário</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Diretor (Seu Nome)</label>
+            <input
+              type="text"
+              id="nomeDiretor"
+              class="input-field"
+              placeholder="Ex: Pedro"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>Estrela Principal (Quem recebe)</label>
+            <input
+              type="text"
+              id="nomeEstrela"
+              class="input-field"
+              placeholder="Ex: Ana"
+            />
+          </div>
+
+          <button class="btn-primary w-100" onclick="nextStep(2)">
+            Próximo Passo →
+          </button>
+        </div>
+
+        <div id="step-2" class="wizard-step">
+          <h2>Em Cartaz (Fotos)</h2>
+          <p>
+            Escolha as fotos que ficarão no corredor do cinema. (Até 5 fotos)
+          </p>
+
+          <div class="upload-area">
+            <input
+              type="file"
+              id="fotosLobby"
+              multiple
+              accept="image/*"
+              class="file-input"
+            />
+            <div class="upload-box">
+              <span>📸 Clique ou arraste as fotos aqui</span>
+            </div>
+          </div>
+          <div id="lista-fotos" class="file-list"></div>
+
+          <div class="button-group">
+            <button class="btn-secondary" onclick="prevStep(1)">
+              ← Voltar
+            </button>
+            <button class="btn-primary" onclick="nextStep(3)">
+              Próximo Passo →
+            </button>
+          </div>
+        </div>
+
+        <div id="step-3" class="wizard-step">
+          <h2>O Rolo de Filme</h2>
+          <p>O grande momento. Suba um vídeo de até 30 segundos.</p>
+
+          <div class="upload-area">
+            <input
+              type="file"
+              id="videoPrincipal"
+              accept="video/mp4,video/quicktime"
+              class="file-input"
+            />
+            <div class="upload-box">
+              <span>🎬 Selecione o vídeo (Máx 30s)</span>
+            </div>
+          </div>
+          <p id="video-error" class="error-msg"></p>
+
+          <div class="button-group">
+            <button class="btn-secondary" onclick="prevStep(2)">
+              ← Voltar
+            </button>
+            <button class="btn-primary" onclick="nextStep(4)">
+              Próximo Passo →
+            </button>
+          </div>
+        </div>
+
+        <div id="step-4" class="wizard-step">
+          <h2>Créditos Finais</h2>
+          <p>A mensagem que vai rolar no final do filme.</p>
+
+          <div class="input-group">
+            <label>Sua Mensagem</label>
+            <textarea
+              id="mensagemFinal"
+              class="input-field textarea"
+              rows="4"
+              maxlength="300"
+              placeholder="Escreva algo especial..."
+            ></textarea>
+            <small class="char-count"><span id="charNum">0</span>/300</small>
+          </div>
+
+          <div class="button-group">
+            <button class="btn-secondary" onclick="prevStep(3)">
+              ← Voltar
+            </button>
+            <button class="btn-success" onclick="finalizarSessao()">
+              🎬 Gerar Sessão
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-panel">
+        <div class="preview-device">
+          <div class="preview-screen">
+            <div class="ticket-preview" id="previewIngresso">
+              <div class="ticket-header">CineGift VIP</div>
+              <div class="ticket-body">
+                <h3 id="prevEstrela">Estrela Principal</h3>
+                <p>Dirigido por: <span id="prevDiretor">Diretor</span></p>
+                <div class="ticket-barcode">||| |||| || ||| ||||</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="preview-hint">Preview em tempo real 📱</p>
+      </section>
+    </main>
+
+    <script type="module" src="js/criador.js"></script>
+  </body>
+</html>

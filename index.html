@@ -1,13 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CineGift — Presente em formato de cinema</title>
-    <link rel="stylesheet" href="/src/styles/global.css" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/app.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineGift | Uma experiência de cinema em forma de presente</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">CineGift 🍿</div>
+        <nav>
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#planos">Planos</a>
+            <a href="criador.html" class="btn-login">Entrar</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Transforme suas memórias em uma <span class="highlight">Sessão de Cinema</span>.</h1>
+                <p>O presente digital perfeito. Escolha o tema, monte os trailers com suas fotos, adicione um vídeo surpresa e envie um ingresso VIP para quem você ama.</p>
+                <div class="hero-actions">
+                    <a href="criador.html" class="btn-primary">Criar minha sessão →</a>
+                    <span class="price-hint">A partir de R$ 17</span>
+                </div>
+            </div>
+            <div class="hero-mockup">
+                <div class="mockup-placeholder">Preview da Experiência</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/firebase.js" type="module"></script>
+</body>
 </html>

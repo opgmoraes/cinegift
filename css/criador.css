@@ -1,0 +1,264 @@
+.creator-body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.navbar-compact {
+  padding: 1rem 5%;
+  border-bottom: 1px solid #333;
+}
+
+.step-indicator {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.creator-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* --- Lado Esquerdo: Wizard --- */
+.wizard-panel {
+  width: 40%;
+  padding: 3rem 5%;
+  overflow-y: auto;
+  background-color: var(--bg-dark);
+}
+
+.wizard-step {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.wizard-step.active {
+  display: block;
+}
+
+.wizard-step h2 {
+  font-family: var(--font-serif);
+  margin-bottom: 0.5rem;
+  color: var(--cinema-red);
+}
+
+.wizard-step p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Inputs */
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+.input-field {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--bg-card);
+  border: 1px solid #333;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--cinema-red);
+}
+
+.textarea {
+  resize: none;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+}
+
+/* Uploads */
+.upload-area {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.upload-box {
+  border: 2px dashed #444;
+  border-radius: 8px;
+  padding: 3rem 1rem;
+  text-align: center;
+  background-color: rgba(26, 26, 26, 0.5);
+  transition:
+    border 0.3s,
+    background 0.3s;
+}
+
+.upload-area:hover .upload-box {
+  border-color: var(--cinema-red);
+  background-color: rgba(229, 9, 20, 0.05);
+}
+
+.error-msg {
+  color: #ff4444;
+  font-size: 0.85rem;
+  margin-top: -0.5rem;
+}
+
+/* Botões */
+.w-100 {
+  width: 100%;
+}
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.button-group button {
+  flex: 1;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #555;
+  padding: 0.8rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-secondary:hover {
+  background-color: #333;
+}
+
+.btn-success {
+  background-color: #00c851;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.btn-success:hover {
+  background-color: #007e33;
+}
+
+/* --- Lado Direito: Preview --- */
+.preview-panel {
+  width: 60%;
+  background-color: #111;
+  border-left: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.preview-device {
+  width: 320px;
+  height: 650px;
+  background-color: #000;
+  border-radius: 40px;
+  border: 8px solid #333;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.preview-screen {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #2a0808 0%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Ingresso Preview Básico */
+.ticket-preview {
+  background: linear-gradient(135deg, var(--cinema-red), #800000);
+  width: 100%;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.ticket-header {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.ticket-body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.ticket-barcode {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.preview-hint {
+  margin-top: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .creator-container {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .wizard-panel {
+    width: 100%;
+    overflow: visible;
+  }
+  .preview-panel {
+    width: 100%;
+    min-height: 800px;
+  }
+}
