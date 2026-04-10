@@ -11,45 +11,56 @@ const totalPassos = 4;
 let arquivosFotos = [];
 let arquivoVideo = null;
 
+// --- FUNÇÃO AUXILIAR DE NAVEGAÇÃO ---
+function irParaPasso(passo) {
+  if (passo < 1 || passo > totalPassos) return;
+  const stepAtual = document.getElementById(`step-${passoAtual}`);
+  if (stepAtual) stepAtual.classList.remove("active");
+  passoAtual = passo;
+  const stepNovo = document.getElementById(`step-${passoAtual}`);
+  if (stepNovo) stepNovo.classList.add("active");
+  const indicador = document.getElementById("current-step");
+  if (indicador) indicador.innerText = passoAtual;
+}
+
 // --- NAVEGAÇÃO EXPOSTA GLOBALMENTE ---
 window.nextStep = function (passo) {
-  if (passo > totalPassos) return;
-  document.getElementById(`step-${passoAtual}`).classList.remove("active");
-  passoAtual = passo;
-  document.getElementById(`step-${passoAtual}`).classList.add("active");
-  document.getElementById("current-step").innerText = passoAtual;
+  irParaPasso(passo);
 };
 
 window.prevStep = function (passo) {
-  if (passo < 1) return;
-  document.getElementById(`step-${passoAtual}`).classList.remove("active");
-  passoAtual = passo;
-  document.getElementById(`step-${passoAtual}`).classList.add("active");
-  document.getElementById("current-step").innerText = passoAtual;
+  irParaPasso(passo);
 };
 
 // --- PREVIEW TEXTOS ---
 document.getElementById("nomeEstrela").addEventListener("input", (e) => {
   document.getElementById("prevEstrela").innerText =
-    e.target.value || "Estrela Principal";
+    e.target.value.trim() || "Estrela Principal";
 });
 
 document.getElementById("nomeDiretor").addEventListener("input", (e) => {
   document.getElementById("prevDiretor").innerText =
-    e.target.value || "Diretor";
+    e.target.value.trim() || "Diretor";
 });
 
-// --- PREVIEW TEMA ---
+// --- PREVIEW TEMA (CORES) ---
+const cores = {
+  romance: "linear-gradient(135deg, #E50914, #800000)",
+  amizade: "linear-gradient(135deg, #FF9900, #B36B00)",
+  familia: "linear-gradient(135deg, #007BFF, #004085)",
+  aniversario: "linear-gradient(135deg, #9C27B0, #4A148C)",
+};
+
 document.getElementById("tema").addEventListener("change", (e) => {
-  const tema = e.target.value;
   const ticket = document.getElementById("previewIngresso");
-  const cores = {
-    romance: "linear-gradient(135deg, #E50914, #800000)",
-    amizade: "linear-gradient(135deg, #FF9900, #B36B00)",
-    familia: "linear-gradient(135deg, #007BFF, #004085)",
-    aniversario: "linear-gradient(135deg, #9C27B0, #4A148C)",
-  };
-  ticket.style.background = cores[tema] || cores.romance;
+  ticket.style.background = cores[e.target.value] || cores.romance;
+});
+
+// Aplica a cor inicial ao carregar
+window.addEventListener("DOMContentLoaded", () => {
+  const temaInicial = document.getElementById("tema").value;
+  const ticket = document.getElementById("previewIngresso");
+  if (ticket) ticket.style.background = cores[temaInicial] || cores.romance;
 });
 
 // --- PREVIEW FOTOS ---
@@ -58,6 +69,7 @@ document.getElementById("fotosLobby").addEventListener("change", (e) => {
   if (files.length > 5) {
     alert("Máximo de 5 fotos permitido.");
     e.target.value = "";
+    arquivosFotos = [];
     return;
   }
   arquivosFotos = files;
@@ -66,11 +78,8 @@ document.getElementById("fotosLobby").addEventListener("change", (e) => {
   files.forEach((file) => {
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
-    img.style.width = "60px";
-    img.style.height = "60px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "8px";
-    img.style.margin = "5px";
+    img.style.cssText =
+      "width:60px;height:60px;object-fit:cover;border-radius:8px;margin:5px;";
     lista.appendChild(img);
   });
 });
@@ -78,24 +87,31 @@ document.getElementById("fotosLobby").addEventListener("change", (e) => {
 // --- VALIDAÇÃO VÍDEO ---
 document.getElementById("videoPrincipal").addEventListener("change", (e) => {
   const file = e.target.files[0];
+  const errorEl = document.getElementById("video-error");
   if (!file) return;
+
   const videoObj = document.createElement("video");
   videoObj.preload = "metadata";
   videoObj.onloadedmetadata = function () {
     URL.revokeObjectURL(videoObj.src);
     if (videoObj.duration > 31) {
-      document.getElementById("video-error").innerText =
-        "Vídeo muito longo! Máximo 30s.";
-      document.getElementById("video-error").style.color = "#ff4444";
+      errorEl.innerText = "Vídeo muito longo! Máximo 30s.";
+      errorEl.style.color = "#ff4444";
       e.target.value = "";
       arquivoVideo = null;
     } else {
-      document.getElementById("video-error").innerText = "Vídeo aprovado! ✅";
-      document.getElementById("video-error").style.color = "#00C851";
+      errorEl.innerText = "Vídeo aprovado! ✅";
+      errorEl.style.color = "#00C851";
       arquivoVideo = file;
     }
   };
   videoObj.src = URL.createObjectURL(file);
+});
+
+// --- CONTADOR DE CARACTERES ---
+document.getElementById("mensagemFinal").addEventListener("input", (e) => {
+  const charNum = document.getElementById("charNum");
+  if (charNum) charNum.innerText = e.target.value.length;
 });
 
 // --- UPLOAD R2 ---
@@ -112,7 +128,7 @@ async function uploadToR2(file, prefixo) {
     body: file,
   });
 
-  if (!response.ok) throw new Error("Erro no upload");
+  if (!response.ok) throw new Error("Erro no upload: " + response.status);
 
   const r2PublicUrl = `https://pub-dec3c851da9b4e5ba79db54b6ac4b17c.r2.dev`;
   return `${r2PublicUrl}/${nomeUnico}`;
@@ -123,12 +139,12 @@ window.finalizarSessao = async function () {
   const btn = document.querySelector(".btn-success");
   const originalText = btn.innerText;
 
-  const nomeDiretor = document.getElementById("nomeDiretor").value;
-  const nomeEstrela = document.getElementById("nomeEstrela").value;
+  const nomeDiretor = document.getElementById("nomeDiretor").value.trim();
+  const nomeEstrela = document.getElementById("nomeEstrela").value.trim();
 
   if (!nomeDiretor || !nomeEstrela) {
     alert("Por favor, preencha os nomes no Passo 1 antes de finalizar.");
-    window.nextStep(1);
+    irParaPasso(1);
     return;
   }
 
@@ -160,7 +176,7 @@ window.finalizarSessao = async function () {
     btn.innerText = "✅ Concluído!";
   } catch (error) {
     console.error(error);
-    alert("Erro ao salvar. Verifique o console.");
+    alert("Erro ao salvar: " + error.message);
     btn.disabled = false;
     btn.innerText = originalText;
   }
