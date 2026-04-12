@@ -16,7 +16,7 @@
     <header class="navbar navbar-compact">
       <div class="logo">
         <a href="index.html" class="logo">
-          <img src="assets/logos/logo01.png" alt="" class="logo-icon" />
+          <img src="assets/logos/icon_01_escuro.png" alt="" class="logo-icon" />
           <span class="logo-wordmark-text">
             <span class="cine">Cine</span><span class="gift">Gift</span>
           </span>
@@ -176,7 +176,7 @@
       <!-- ── Preview Panel ──────────────────────────────────── -->
       <section class="preview-panel">
         <div class="preview-device">
-          <div class="preview-screen">
+          <div class="preview-screen" id="previewScreen">
             <div
               class="ticket-preview"
               id="previewIngresso"
@@ -218,5 +218,53 @@
     </main>
 
     <script type="module" src="js/criador.js"></script>
+    <script>
+      // Atualiza tema do ticket em tempo real
+      document.getElementById("tema")?.addEventListener("change", function () {
+        const ticket = document.getElementById("previewIngresso");
+        if (ticket) ticket.setAttribute("data-tema", this.value);
+      });
+
+      // Atualiza nome da estrela em tempo real
+      document
+        .getElementById("nomeEstrela")
+        ?.addEventListener("input", function () {
+          const el = document.getElementById("prevEstrela");
+          if (el) el.textContent = this.value || "—";
+        });
+
+      // Atualiza nome do diretor em tempo real
+      document
+        .getElementById("nomeDiretor")
+        ?.addEventListener("input", function () {
+          const el = document.getElementById("prevDiretor");
+          if (el) el.textContent = this.value || "—";
+        });
+
+      // Contador de caracteres
+      document
+        .getElementById("mensagemFinal")
+        ?.addEventListener("input", function () {
+          document.getElementById("charNum").textContent = this.value.length;
+        });
+
+      // Navegação entre passos
+      function nextStep(n) {
+        document
+          .querySelectorAll(".wizard-step")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById("step-" + n)?.classList.add("active");
+        document.getElementById("current-step").textContent = n;
+        // Atualiza progress dots
+        document.querySelectorAll(".wizard-progress-dot").forEach((dot, i) => {
+          dot.classList.toggle("done", i + 1 < n);
+          dot.classList.toggle("active", i + 1 === n);
+        });
+      }
+
+      function prevStep(n) {
+        nextStep(n);
+      }
+    </script>
   </body>
 </html>
