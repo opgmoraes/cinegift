@@ -6,36 +6,66 @@
     <title>Sua Sessão Especial | CineGift</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/sessao.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="cinema-body">
+  <body class="cinema-body" data-tema="romance">
+    <!-- ── Loader ──────────────────────────────────────────── -->
     <div id="loader" class="loader-overlay">
+      <img
+        src="assets/logos/icon01.jpeg"
+        alt="CineGift"
+        style="height: 56px; width: auto; opacity: 0.7; margin-bottom: 1rem"
+      />
       <div class="popcorn-loader">🍿</div>
       <p>Preparando sua sessão...</p>
+      <div class="loader-bar">
+        <div class="loader-bar-fill"></div>
+      </div>
     </div>
 
+    <!-- ── Confetes (Aniversário) ──────────────────────────── -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- ── Cortinas + Tela ────────────────────────────────── -->
     <div class="curtain-container">
-      <div class="curtain left"></div>
-      <div class="curtain right"></div>
+      <div class="curtain-valance"></div>
+      <div class="curtain left" id="curtainLeft"></div>
+      <div class="curtain right" id="curtainRight"></div>
 
       <main class="theater-screen">
+        <!-- Galeria de fotos do lobby -->
+        <div class="lobby-gallery" id="lobbyGallery"></div>
+
+        <!-- Player de vídeo -->
         <div class="video-wrapper">
-          <video id="moviePlayer" playsinline>
+          <video id="moviePlayer" playsinline preload="auto">
             <source src="" type="video/mp4" />
           </video>
           <div id="playButton" class="play-overlay">
-            <button>▶ Iniciar Filme</button>
+            <button>▶ Iniciar Sessão</button>
           </div>
         </div>
 
+        <!-- Créditos finais -->
         <div id="credits" class="credits-roll">
           <div class="credits-content">
-            <h2 id="msgTema">Para alguém especial</h2>
+            <p class="credits-tema" id="msgTema">SESSÃO ESPECIAL · PARA VOCÊ</p>
+
             <h1 id="msgEstrela">Nome</h1>
-            <p id="msgFinal">Mensagem aqui...</p>
-            <br /><br />
-            <span>Dirigido por:</span>
-            <h3 id="msgDiretor">Você</h3>
+
+            <p class="credits-mensagem" id="msgFinal">Mensagem aqui...</p>
+
+            <div class="credits-divider"></div>
+
+            <span class="credits-director-label">Dirigido por</span>
+            <span class="credits-director-name" id="msgDiretor">Você</span>
+
             <div class="the-end">FIM</div>
+
+            <p class="credits-logo">CineGift</p>
           </div>
         </div>
       </main>

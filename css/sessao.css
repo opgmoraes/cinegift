@@ -1,91 +1,361 @@
+/* ============================================================
+   CineGift — sessao.css
+   Tela de exibição da sessão · Brand Guide v1.0 · 2026
+   ============================================================ */
+
+/* ── Base da tela de cinema ───────────────────────────────── */
 .cinema-body {
-  background: #000;
+  background: var(--noite);
   margin: 0;
   overflow: hidden;
-  color: white;
+  color: var(--creme);
+  font-family: var(--font-body);
 }
 
-/* Cortinas */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TEMAS VISUAIS — cada tema aplica um --theme-* set
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 01 · Romance */
+.cinema-body[data-tema="romance"] {
+  --theme-bg: #0d0610;
+  --theme-accent: #c4405a;
+  --theme-accent2: #8b6070;
+  --theme-text: #f4efe6;
+  --theme-curtain: #2a0818;
+  --theme-curtain2: #1a0410;
+  --theme-glow: rgba(196, 64, 90, 0.18);
+}
+
+/* 02 · Amizade */
+.cinema-body[data-tema="amizade"] {
+  --theme-bg: #0e1a2a;
+  --theme-accent: #4a8ec4;
+  --theme-accent2: #1a3a5c;
+  --theme-text: #f4efe6;
+  --theme-curtain: #1a3a5c;
+  --theme-curtain2: #0e2040;
+  --theme-glow: rgba(74, 142, 196, 0.18);
+}
+
+/* 03 · Família */
+.cinema-body[data-tema="familia"] {
+  --theme-bg: #160a04;
+  --theme-accent: #d4782a;
+  --theme-accent2: #3a1a08;
+  --theme-text: #f4ead8;
+  --theme-curtain: #3a1a08;
+  --theme-curtain2: #1a0c04;
+  --theme-glow: rgba(212, 120, 42, 0.18);
+}
+
+/* 04 · Aniversário */
+.cinema-body[data-tema="aniversario"] {
+  --theme-bg: #12080e;
+  --theme-accent: #d4407a;
+  --theme-accent2: #4a8ec4;
+  --theme-text: #f4efe6;
+  --theme-curtain: #2a0a1e;
+  --theme-curtain2: #12080e;
+  --theme-glow: rgba(212, 64, 122, 0.22);
+}
+
+/* Fallback (sem tema definido) */
+.cinema-body {
+  --theme-bg: var(--noite);
+  --theme-accent: var(--borgonha);
+  --theme-accent2: var(--vinho);
+  --theme-text: var(--creme);
+  --theme-curtain: var(--vinho-fundo);
+  --theme-curtain2: var(--veludo);
+  --theme-glow: rgba(139, 26, 46, 0.18);
+}
+
+/* ── Container das cortinas ───────────────────────────────── */
 .curtain-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
+  background-color: var(--theme-bg);
+  transition: background-color 0.6s var(--ease-cinema);
 }
 
+/* ── Cortinas ─────────────────────────────────────────────── */
 .curtain {
   position: absolute;
   top: 0;
   width: 50%;
   height: 100%;
-  background: #8b0000;
-  background-image: repeating-linear-gradient(
-    to right,
-    #8b0000,
-    #8b0000 20px,
-    #a50000 40px
-  );
   z-index: 10;
-  transition: transform 2s ease-in-out;
+  transition: transform 2.2s cubic-bezier(0.76, 0, 0.24, 1);
+  overflow: hidden;
+}
+
+.curtain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0px,
+    transparent 18px,
+    rgba(0, 0, 0, 0.15) 18px,
+    rgba(0, 0, 0, 0.15) 22px
+  );
+}
+
+/* Brilho central na cortina */
+.curtain::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.04), transparent);
 }
 
 .curtain.left {
   left: 0;
-  border-right: 2px solid #500;
-}
-.curtain.right {
-  right: 0;
-  border-left: 2px solid #500;
+  background: linear-gradient(
+    to right,
+    var(--theme-curtain2),
+    var(--theme-curtain)
+  );
+  border-right: 2px solid rgba(255, 255, 255, 0.04);
+  transform-origin: left center;
 }
 
+.curtain.left::after {
+  right: 0;
+  left: auto;
+}
+
+.curtain.right {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--theme-curtain2),
+    var(--theme-curtain)
+  );
+  border-left: 2px solid rgba(255, 255, 255, 0.04);
+  transform-origin: right center;
+}
+
+/* Estado aberto das cortinas */
 .curtain.open-left {
   transform: translateX(-100%);
 }
+
 .curtain.open-right {
   transform: translateX(100%);
 }
 
-/* Tela do Cinema */
+/* Moldura dourada superior da tela (pelmet) */
+.curtain-valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    var(--theme-curtain2),
+    var(--theme-accent) 30%,
+    rgba(244, 239, 230, 0.1) 50%,
+    var(--theme-accent) 70%,
+    var(--theme-curtain2)
+  );
+  z-index: 11;
+  opacity: 0.6;
+}
+
+/* ── Tela do cinema ───────────────────────────────────────── */
 .theater-screen {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle, #222 0%, #000 100%);
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 50%,
+    #1a1218 0%,
+    var(--theme-bg) 100%
+  );
+  position: relative;
+  overflow: hidden;
 }
 
+/* Brilho de tela de cinema */
+.theater-screen::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30vh;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+  pointer-events: none;
+}
+
+/* ── Wrapper do vídeo ─────────────────────────────────────── */
 .video-wrapper {
   width: 90%;
-  max-width: 800px;
-  box-shadow: 0 0 50px rgba(229, 9, 20, 0.2);
+  max-width: 860px;
   position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 0 80px var(--theme-glow),
+    0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* Bordas cinematográficas */
+.video-wrapper::before,
+.video-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--theme-accent),
+    transparent
+  );
+  opacity: 0.6;
+}
+
+.video-wrapper::before {
+  top: 0;
+}
+.video-wrapper::after {
+  bottom: 0;
 }
 
 video {
   width: 100%;
+  display: block;
   border-radius: 4px;
 }
 
+/* ── Overlay de play ──────────────────────────────────────── */
 .play-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   cursor: pointer;
+  transition: background 0.3s var(--ease-cinema);
 }
 
-/* Créditos */
+.play-overlay:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.play-overlay button {
+  background: var(--theme-accent);
+  color: var(--theme-text);
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition:
+    background 0.25s var(--ease-cinema),
+    transform 0.2s var(--ease-spring),
+    box-shadow 0.25s;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.play-overlay button:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 24px var(--theme-glow);
+}
+
+/* ── Galeria de fotos lobby ───────────────────────────────── */
+.lobby-gallery {
+  display: flex;
+  gap: 12px;
+  padding: 1rem 0;
+  width: 90%;
+  max-width: 860px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 1rem;
+}
+
+.lobby-gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.lobby-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+  transition:
+    border-color 0.3s,
+    transform 0.3s var(--ease-spring);
+  opacity: 0.75;
+}
+
+.lobby-photo:hover {
+  opacity: 1;
+  border-color: var(--theme-accent);
+  transform: scale(1.05) rotate(-1deg);
+}
+
+/* Variação Amizade: estilo polaroid */
+[data-tema="amizade"] .lobby-photo {
+  border: 4px solid #f0e8d0;
+  border-bottom-width: 20px;
+  background: #f0e8d0;
+  transform: rotate(var(--rot, -2deg));
+}
+
+[data-tema="amizade"] .lobby-photo:nth-child(even) {
+  --rot: 2deg;
+}
+
+/* ── Créditos finais ──────────────────────────────────────── */
 .credits-roll {
   display: none;
   position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--theme-bg);
+  z-index: 5;
+}
+
+.credits-roll.active {
+  display: flex;
+  justify-content: center;
+}
+
+.credits-content {
   width: 100%;
+  max-width: 560px;
   text-align: center;
-  animation: rollUp 15s linear forwards;
+  padding: 2rem;
+  animation: rollUp 16s linear forwards;
+  /* Começa abaixo da tela */
+  will-change: transform;
 }
 
 @keyframes rollUp {
@@ -93,6 +363,231 @@ video {
     transform: translateY(100vh);
   }
   to {
-    transform: translateY(-110%);
+    transform: translateY(-120%);
+  }
+}
+
+/* Label do tema */
+.credits-tema {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--theme-accent);
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
+}
+
+/* Nome da estrela */
+.credits-content h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--theme-text);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+/* Mensagem principal */
+.credits-mensagem {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--theme-text);
+  opacity: 0.85;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 3rem;
+}
+
+/* Linha divisora dos créditos */
+.credits-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--theme-accent);
+  margin: 2.5rem auto;
+  opacity: 0.5;
+}
+
+/* Diretor */
+.credits-director-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.credits-director-name {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 3rem;
+}
+
+/* THE END */
+.the-end {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--theme-accent);
+  letter-spacing: -0.02em;
+  margin-top: 2rem;
+  text-shadow: 0 0 40px var(--theme-glow);
+}
+
+/* Logo no fim dos créditos */
+.credits-logo {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: rgba(244, 239, 230, 0.2);
+  margin-top: 4rem;
+  letter-spacing: -0.01em;
+}
+
+/* ── Confetes — tema Aniversário ──────────────────────────── */
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  display: none;
+}
+
+[data-tema="aniversario"] .confetti-container.active {
+  display: block;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confettiFall linear infinite;
+  will-change: transform;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0.3;
+  }
+}
+
+/* ── Loader overlay ───────────────────────────────────────── */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--noite);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition:
+    opacity 0.8s var(--ease-cinema),
+    visibility 0.8s;
+}
+
+.loader-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.popcorn-loader {
+  font-size: 3.5rem;
+  animation: popLoader 1.2s ease-in-out infinite;
+}
+
+@keyframes popLoader {
+  0%,
+  100% {
+    transform: scale(1) rotate(-4deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(4deg);
+  }
+}
+
+.loader-overlay p {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--borgonha);
+  margin-top: 1.75rem;
+  animation: pulseLoader 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseLoader {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Barra de progresso do loader */
+.loader-bar {
+  width: 160px;
+  height: 2px;
+  background: var(--vinho-fundo);
+  border-radius: 2px;
+  margin-top: 1.5rem;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  background: var(--borgonha);
+  border-radius: 2px;
+  animation: loaderProgress 2s var(--ease-cinema) forwards;
+}
+
+@keyframes loaderProgress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 85%;
+  }
+}
+
+/* ── Responsividade ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .video-wrapper {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .play-overlay button {
+    padding: 0.875rem 2rem;
+    font-size: 0.9rem;
+  }
+
+  .lobby-gallery {
+    width: 100%;
+  }
+
+  .lobby-photo {
+    width: 80px;
+    height: 80px;
   }
 }

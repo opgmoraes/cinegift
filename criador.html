@@ -7,30 +7,54 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/criador.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body class="creator-body">
+    <!-- ── Navbar compacta ──────────────────────────────────── -->
     <header class="navbar navbar-compact">
       <div class="logo">
-        <a href="index.html" style="color: inherit; text-decoration: none"
-          >CineGift 🍿</a
+        <a
+          href="index.html"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+          "
         >
+          <img
+            src="assets/logos/logo01.png"
+            alt="CineGift"
+            style="height: 28px; width: auto"
+          />
+        </a>
       </div>
-      <div class="step-indicator">
+      <span class="step-indicator">
         Passo <span id="current-step">1</span> de 4
-      </div>
+      </span>
     </header>
 
     <main class="creator-container">
+      <!-- ── Wizard Panel ──────────────────────────────────── -->
       <section class="wizard-panel">
+        <!-- Barra de progresso -->
+        <div class="wizard-progress" id="wizard-progress">
+          <div class="wizard-progress-dot active" data-step="1"></div>
+          <div class="wizard-progress-dot" data-step="2"></div>
+          <div class="wizard-progress-dot" data-step="3"></div>
+          <div class="wizard-progress-dot" data-step="4"></div>
+        </div>
+
+        <!-- Passo 1 — Elenco e Gênero -->
         <div id="step-1" class="wizard-step active">
+          <span class="step-number">01 / 04</span>
           <h2>O Elenco e o Gênero</h2>
           <p>Vamos definir o tom da nossa sessão.</p>
 
           <div class="input-group">
-            <label>Tema da Sessão</label>
+            <label for="tema">Tema da Sessão</label>
             <select id="tema" class="input-field">
               <option value="romance">❤️ Romance</option>
               <option value="amizade">✌️ Amizade</option>
@@ -40,22 +64,24 @@
           </div>
 
           <div class="input-group">
-            <label>Diretor (Seu Nome)</label>
+            <label for="nomeDiretor">Diretor (Seu Nome)</label>
             <input
               type="text"
               id="nomeDiretor"
               class="input-field"
               placeholder="Ex: Pedro"
+              autocomplete="off"
             />
           </div>
 
           <div class="input-group">
-            <label>Estrela Principal (Quem recebe)</label>
+            <label for="nomeEstrela">Estrela Principal (Quem recebe)</label>
             <input
               type="text"
               id="nomeEstrela"
               class="input-field"
               placeholder="Ex: Ana"
+              autocomplete="off"
             />
           </div>
 
@@ -64,13 +90,15 @@
           </button>
         </div>
 
+        <!-- Passo 2 — Fotos -->
         <div id="step-2" class="wizard-step">
-          <h2>Em Cartaz (Fotos)</h2>
+          <span class="step-number">02 / 04</span>
+          <h2>Em Cartaz</h2>
           <p>
-            Escolha as fotos que ficarão no corredor do cinema. (Até 5 fotos)
+            Escolha as fotos que ficarão no corredor do cinema. Até 5 fotos.
           </p>
 
-          <div class="upload-area">
+          <div class="upload-area" id="upload-fotos">
             <input
               type="file"
               id="fotosLobby"
@@ -80,6 +108,7 @@
             />
             <div class="upload-box">
               <span>📸 Clique ou arraste as fotos aqui</span>
+              <small>JPG, PNG, WEBP · Máx. 5 arquivos</small>
             </div>
           </div>
           <div id="lista-fotos" class="file-list"></div>
@@ -94,11 +123,13 @@
           </div>
         </div>
 
+        <!-- Passo 3 — Vídeo -->
         <div id="step-3" class="wizard-step">
+          <span class="step-number">03 / 04</span>
           <h2>O Rolo de Filme</h2>
           <p>O grande momento. Suba um vídeo de até 30 segundos.</p>
 
-          <div class="upload-area">
+          <div class="upload-area" id="upload-video">
             <input
               type="file"
               id="videoPrincipal"
@@ -106,10 +137,11 @@
               class="file-input"
             />
             <div class="upload-box">
-              <span>🎬 Selecione o vídeo (Máx 30s)</span>
+              <span>🎬 Selecione o vídeo</span>
+              <small>MP4 ou MOV · Máx. 30 segundos</small>
             </div>
           </div>
-          <p id="video-error" class="error-msg"></p>
+          <span id="video-error" class="error-msg"></span>
 
           <div class="button-group">
             <button class="btn-secondary" onclick="prevStep(2)">
@@ -121,20 +153,22 @@
           </div>
         </div>
 
+        <!-- Passo 4 — Mensagem -->
         <div id="step-4" class="wizard-step">
+          <span class="step-number">04 / 04</span>
           <h2>Créditos Finais</h2>
           <p>A mensagem que vai rolar no final do filme.</p>
 
           <div class="input-group">
-            <label>Sua Mensagem</label>
+            <label for="mensagemFinal">Sua Mensagem</label>
             <textarea
               id="mensagemFinal"
               class="input-field textarea"
-              rows="4"
+              rows="5"
               maxlength="300"
-              placeholder="Escreva algo especial..."
+              placeholder="Escreva algo especial para quem vai receber..."
             ></textarea>
-            <small class="char-count"><span id="charNum">0</span>/300</small>
+            <small class="char-count"> <span id="charNum">0</span>/300 </small>
           </div>
 
           <div class="button-group">
@@ -148,15 +182,42 @@
         </div>
       </section>
 
+      <!-- ── Preview Panel ──────────────────────────────────── -->
       <section class="preview-panel">
         <div class="preview-device">
           <div class="preview-screen">
-            <div class="ticket-preview" id="previewIngresso">
-              <div class="ticket-header">CineGift VIP</div>
-              <div class="ticket-body">
-                <h3 id="prevEstrela">Estrela Principal</h3>
-                <p>Dirigido por: <span id="prevDiretor">Diretor</span></p>
+            <div
+              class="ticket-preview"
+              id="previewIngresso"
+              data-tema="romance"
+            >
+              <!-- Corpo do ticket -->
+              <div class="ticket-body-card">
+                <div class="ticket-header">
+                  CineGift
+                  <span class="ticket-header-badge">VIP</span>
+                </div>
+                <div class="ticket-body">
+                  <span class="ticket-label">Estrela Principal</span>
+                  <h3 id="prevEstrela">—</h3>
+                  <div class="ticket-director">
+                    DIRIGIDO POR <span id="prevDiretor">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Linha serrilhada -->
+              <div class="ticket-tear">
+                <div class="ticket-tear-line"></div>
+              </div>
+
+              <!-- Rodapé do ticket -->
+              <div class="ticket-footer">
                 <div class="ticket-barcode">||| |||| || ||| ||||</div>
+                <div class="ticket-seat">
+                  <span>Sessão</span>
+                  <strong>01</strong>
+                </div>
               </div>
             </div>
           </div>
