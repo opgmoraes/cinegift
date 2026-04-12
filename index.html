@@ -11,7 +11,7 @@
     />
   </head>
   <body>
-    <!-- ── Navbar ──────────────────────────────────────────── -->
+    <!-- ── Navbar ──────────────────────────────────────────────── -->
     <header class="navbar">
       <div class="logo">
         <img src="assets/logos/logo01.png" alt="" class="logo-icon" />
@@ -20,40 +20,636 @@
         </span>
       </div>
       <nav>
-        <a href="#como-funciona">Como funciona</a>
+        <a href="#temas">Temas</a>
         <a href="#planos">Planos</a>
         <a href="criador.html" class="btn-login">Entrar</a>
       </nav>
     </header>
 
     <main>
-      <!-- ── Hero ──────────────────────────────────────────── -->
-      <section class="hero">
-        <div class="hero-content">
-          <span class="hero-eyebrow">Sessão especial · Para você</span>
-          <h1>
-            Transforme suas memórias em uma
-            <span class="highlight">Sessão de Cinema</span>.
-          </h1>
-          <p>
-            O presente digital perfeito. Escolha o tema, monte o trailer com
-            suas fotos, adicione um vídeo surpresa e envie um ingresso VIP para
-            quem você ama.
-          </p>
-          <div class="hero-actions">
-            <a href="criador.html" class="btn-primary">Criar minha sessão →</a>
-            <span class="price-hint">A partir de R$ 17</span>
+      <!-- ═══════════════════════════════════════
+         HERO — Tela de Cinema
+    ════════════════════════════════════════ -->
+      <section class="hero" id="hero">
+        <div class="hero-stars" id="heroStars" aria-hidden="true"></div>
+        <div class="hero-grain" aria-hidden="true"></div>
+        <div class="hero-vinheta" aria-hidden="true"></div>
+
+        <!-- Cortinas SVG -->
+        <div class="hero-curtains" aria-hidden="true">
+          <svg
+            class="curtain-svg curtain-left"
+            viewBox="0 0 180 900"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="cL" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#12020A" />
+                <stop offset="55%" stop-color="#5C1A2A" />
+                <stop offset="100%" stop-color="#3A0A14" stop-opacity="0.5" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M0,0 Q22,160 12,320 Q2,480 18,640 Q28,780 8,900 L0,900Z"
+              fill="#12020A"
+            />
+            <path
+              d="M35,0 Q58,200 44,400 Q30,600 50,900 L35,900Z"
+              fill="#3A0A14"
+              opacity=".85"
+            />
+            <path
+              d="M75,0 Q95,190 80,380 Q65,570 85,760 Q92,840 78,900 L75,900Z"
+              fill="#5C1A2A"
+              opacity=".75"
+            />
+            <path
+              d="M118,0 Q135,230 120,460 Q105,690 125,900 L118,900Z"
+              fill="#3A0A14"
+              opacity=".6"
+            />
+            <path
+              d="M158,0 Q168,310 162,620 Q158,780 168,900 L158,900Z"
+              fill="#5C1A2A"
+              opacity=".45"
+            />
+            <!-- brilho -->
+            <rect
+              x="0"
+              y="0"
+              width="180"
+              height="900"
+              fill="url(#cL)"
+              opacity=".18"
+            />
+            <line
+              x1="178"
+              y1="0"
+              x2="178"
+              y2="900"
+              stroke="#6A1222"
+              stroke-width="1.5"
+            />
+          </svg>
+
+          <svg
+            class="curtain-svg curtain-right"
+            viewBox="0 0 180 900"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="cR" x1="100%" y1="0%" x2="0%" y2="0%">
+                <stop offset="0%" stop-color="#12020A" />
+                <stop offset="55%" stop-color="#5C1A2A" />
+                <stop offset="100%" stop-color="#3A0A14" stop-opacity="0.5" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M180,0 Q158,160 168,320 Q178,480 162,640 Q152,780 172,900 L180,900Z"
+              fill="#12020A"
+            />
+            <path
+              d="M145,0 Q122,200 136,400 Q150,600 130,900 L145,900Z"
+              fill="#3A0A14"
+              opacity=".85"
+            />
+            <path
+              d="M105,0 Q85,190 100,380 Q115,570 95,760 Q88,840 102,900 L105,900Z"
+              fill="#5C1A2A"
+              opacity=".75"
+            />
+            <path
+              d="M62,0 Q45,230 60,460 Q75,690 55,900 L62,900Z"
+              fill="#3A0A14"
+              opacity=".6"
+            />
+            <path
+              d="M22,0 Q12,310 18,620 Q22,780 12,900 L22,900Z"
+              fill="#5C1A2A"
+              opacity=".45"
+            />
+            <rect
+              x="0"
+              y="0"
+              width="180"
+              height="900"
+              fill="url(#cR)"
+              opacity=".18"
+            />
+            <line
+              x1="2"
+              y1="0"
+              x2="2"
+              y2="900"
+              stroke="#6A1222"
+              stroke-width="1.5"
+            />
+          </svg>
+        </div>
+
+        <!-- Stage central -->
+        <div class="hero-stage">
+          <div class="hero-content">
+            <span class="hero-eyebrow">Sessão especial · Para você</span>
+            <h1 class="hero-title">
+              Transforme suas memórias<br />em uma
+              <em class="highlight">Sessão de Cinema</em>.
+            </h1>
+            <p class="hero-desc">
+              O presente digital perfeito. Escolha o tema, monte o trailer com
+              suas fotos, adicione um vídeo surpresa e envie um ingresso VIP
+              para quem você ama.
+            </p>
+            <div class="hero-actions">
+              <a href="criador.html" class="btn-primary"
+                >Criar minha sessão →</a
+              >
+              <span class="price-hint">A partir de R$ 17</span>
+            </div>
+          </div>
+
+          <!-- Ticket animado -->
+          <div class="hero-ticket-wrap">
+            <div class="hero-ticket" id="heroTicket" data-tema="romance">
+              <div class="ht-body">
+                <div class="ht-header">
+                  <span class="ht-brand">CineGift</span>
+                  <span class="ht-badge">VIP</span>
+                </div>
+                <span class="ht-label">Estrela Principal</span>
+                <div class="ht-name" id="htName">Ana Clara</div>
+                <div class="ht-dir">DIR. <span id="htDir">Pedro</span></div>
+              </div>
+              <div class="ht-tear"><div class="ht-tear-line"></div></div>
+              <div class="ht-footer">
+                <span class="ht-barcode">||| |||| || ||| ||||</span>
+                <div class="ht-seat">
+                  <span>Sessão</span><strong>01</strong>
+                </div>
+              </div>
+            </div>
+            <div class="hero-ticket-glow" id="heroTicketGlow"></div>
           </div>
         </div>
 
-        <div class="hero-mockup">
-          <div class="mockup-placeholder">
-            <span>Preview da Experiência</span>
+        <a href="#temas" class="scroll-cue" aria-label="Ver temas">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M4 7l6 6 6-6"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+         TEMAS — Carrossel de pôsteres
+    ════════════════════════════════════════ -->
+      <section class="section-temas" id="temas">
+        <div class="section-header">
+          <span class="section-eyebrow">Escolha o gênero</span>
+          <h2>Cada sessão tem seu próprio universo.</h2>
+          <p>Quatro temas, quatro atmosferas. Do cinematográfico ao festivo.</p>
+        </div>
+
+        <div class="temas-track-wrap">
+          <div class="temas-track" id="temasTrack">
+            <article
+              class="tema-card"
+              data-tema="romance"
+              tabindex="0"
+              role="button"
+              aria-label="Tema Romance"
+            >
+              <div class="tema-card-inner">
+                <div class="tema-poster-num">01</div>
+                <div class="tema-emoji">❤️</div>
+                <h3 class="tema-nome">Romance</h3>
+                <p class="tema-subdesc">
+                  Cinematográfico · Luz baixa · Dramático
+                </p>
+                <div class="tema-tags">
+                  <span>Piano melancólico</span>
+                  <span>Vinheta</span>
+                  <span>Grain</span>
+                </div>
+              </div>
+              <div class="tema-accent-bar"></div>
+            </article>
+
+            <article
+              class="tema-card"
+              data-tema="amizade"
+              tabindex="0"
+              role="button"
+              aria-label="Tema Amizade"
+            >
+              <div class="tema-card-inner">
+                <div class="tema-poster-num">02</div>
+                <div class="tema-emoji">✌️</div>
+                <h3 class="tema-nome">Amizade</h3>
+                <p class="tema-subdesc">Nostálgico · Polaroid · Verão</p>
+                <div class="tema-tags">
+                  <span>Lo-fi</span>
+                  <span>Polaroid</span>
+                  <span>Indie</span>
+                </div>
+              </div>
+              <div class="tema-accent-bar"></div>
+            </article>
+
+            <article
+              class="tema-card"
+              data-tema="familia"
+              tabindex="0"
+              role="button"
+              aria-label="Tema Família"
+            >
+              <div class="tema-card-inner">
+                <div class="tema-poster-num">03</div>
+                <div class="tema-emoji">👨‍👩‍👧‍👦</div>
+                <h3 class="tema-nome">Família</h3>
+                <p class="tema-subdesc">Aconchegante · Luz de tarde · Abraço</p>
+                <div class="tema-tags">
+                  <span>Violão</span>
+                  <span>Âmbar</span>
+                  <span>MPB</span>
+                </div>
+              </div>
+              <div class="tema-accent-bar"></div>
+            </article>
+
+            <article
+              class="tema-card"
+              data-tema="aniversario"
+              tabindex="0"
+              role="button"
+              aria-label="Tema Aniversário"
+            >
+              <div class="tema-card-inner">
+                <div class="tema-poster-num">04</div>
+                <div class="tema-emoji">🎂</div>
+                <h3 class="tema-nome">Aniversário</h3>
+                <p class="tema-subdesc">Colorido · Confetes · Alegria</p>
+                <div class="tema-tags">
+                  <span>Pop</span>
+                  <span>Confetes</span>
+                  <span>Balões</span>
+                </div>
+              </div>
+              <div class="tema-accent-bar"></div>
+            </article>
+          </div>
+        </div>
+
+        <div class="temas-nav">
+          <button class="temas-btn" id="temasLeft" aria-label="Anterior">
+            ←
+          </button>
+          <button class="temas-btn" id="temasRight" aria-label="Próximo">
+            →
+          </button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════
+         PLANOS — Tickets sobrepostos
+    ════════════════════════════════════════ -->
+      <section class="section-planos" id="planos">
+        <div class="section-header">
+          <span class="section-eyebrow">Reserve seu ingresso</span>
+          <h2>Escolha o seu plano.</h2>
+          <p>Cada plano é um ingresso para uma experiência inesquecível.</p>
+        </div>
+
+        <div class="planos-stack">
+          <div class="plano-ticket plano-basico">
+            <div class="plano-ticket-body">
+              <div class="plano-ticket-top">
+                <div class="plano-header">
+                  <span class="plano-label">Básico</span>
+                  <span class="plano-badge">ADMIT ONE</span>
+                </div>
+                <div class="plano-price">
+                  <span class="plano-currency">R$</span>
+                  <span class="plano-value">17</span>
+                </div>
+                <ul class="plano-features">
+                  <li>1 sessão completa</li>
+                  <li>Até 3 fotos no lobby</li>
+                  <li>Vídeo de até 30 segundos</li>
+                  <li>1 tema visual</li>
+                </ul>
+              </div>
+              <div class="plano-tear"><div class="plano-tear-line"></div></div>
+              <div class="plano-ticket-bottom">
+                <span class="plano-barcode">|| ||| || | |||</span>
+                <a href="criador.html" class="plano-cta">Escolher</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="plano-ticket plano-plus plano-destaque">
+            <div class="plano-recomendado">Mais popular</div>
+            <div class="plano-ticket-body">
+              <div class="plano-ticket-top">
+                <div class="plano-header">
+                  <span class="plano-label">Plus</span>
+                  <span class="plano-badge">VIP</span>
+                </div>
+                <div class="plano-price">
+                  <span class="plano-currency">R$</span>
+                  <span class="plano-value">34</span>
+                </div>
+                <ul class="plano-features">
+                  <li>3 sessões simultâneas</li>
+                  <li>Até 5 fotos no lobby</li>
+                  <li>Vídeo de até 60 segundos</li>
+                  <li>Todos os temas visuais</li>
+                  <li>Link personalizado</li>
+                </ul>
+              </div>
+              <div class="plano-tear plano-tear-plus">
+                <div class="plano-tear-line"></div>
+              </div>
+              <div class="plano-ticket-bottom">
+                <span class="plano-barcode">|| ||| || | |||</span>
+                <a href="criador.html" class="plano-cta plano-cta-destaque"
+                  >Escolher</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="plano-ticket plano-vip">
+            <div class="plano-ticket-body">
+              <div class="plano-ticket-top">
+                <div class="plano-header">
+                  <span class="plano-label">VIP</span>
+                  <span class="plano-badge">PREMIUM</span>
+                </div>
+                <div class="plano-price">
+                  <span class="plano-currency">R$</span>
+                  <span class="plano-value">67</span>
+                </div>
+                <ul class="plano-features">
+                  <li>Sessões ilimitadas</li>
+                  <li>Fotos ilimitadas</li>
+                  <li>Vídeo de até 3 minutos</li>
+                  <li>Todos os temas + exclusivos</li>
+                  <li>Domínio personalizado</li>
+                  <li>Analytics de visualizações</li>
+                </ul>
+              </div>
+              <div class="plano-tear"><div class="plano-tear-line"></div></div>
+              <div class="plano-ticket-bottom">
+                <span class="plano-barcode">|| ||| || | |||</span>
+                <a href="criador.html" class="plano-cta">Escolher</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
+    <!-- ═══════════════════════════════════════
+       FOOTER — Fita de filme
+  ════════════════════════════════════════ -->
+    <footer class="site-footer">
+      <div class="footer-filmstrip" aria-hidden="true">
+        <svg
+          class="filmstrip-svg"
+          viewBox="0 0 1440 36"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect width="1440" height="36" fill="#1E0E18" />
+          <g fill="#0E0A0D">
+            <!-- 40 perforações espaçadas a cada 36px -->
+            <rect x="4" y="5" width="16" height="10" rx="2" />
+            <rect x="40" y="5" width="16" height="10" rx="2" />
+            <rect x="76" y="5" width="16" height="10" rx="2" />
+            <rect x="112" y="5" width="16" height="10" rx="2" />
+            <rect x="148" y="5" width="16" height="10" rx="2" />
+            <rect x="184" y="5" width="16" height="10" rx="2" />
+            <rect x="220" y="5" width="16" height="10" rx="2" />
+            <rect x="256" y="5" width="16" height="10" rx="2" />
+            <rect x="292" y="5" width="16" height="10" rx="2" />
+            <rect x="328" y="5" width="16" height="10" rx="2" />
+            <rect x="364" y="5" width="16" height="10" rx="2" />
+            <rect x="400" y="5" width="16" height="10" rx="2" />
+            <rect x="436" y="5" width="16" height="10" rx="2" />
+            <rect x="472" y="5" width="16" height="10" rx="2" />
+            <rect x="508" y="5" width="16" height="10" rx="2" />
+            <rect x="544" y="5" width="16" height="10" rx="2" />
+            <rect x="580" y="5" width="16" height="10" rx="2" />
+            <rect x="616" y="5" width="16" height="10" rx="2" />
+            <rect x="652" y="5" width="16" height="10" rx="2" />
+            <rect x="688" y="5" width="16" height="10" rx="2" />
+            <rect x="724" y="5" width="16" height="10" rx="2" />
+            <rect x="760" y="5" width="16" height="10" rx="2" />
+            <rect x="796" y="5" width="16" height="10" rx="2" />
+            <rect x="832" y="5" width="16" height="10" rx="2" />
+            <rect x="868" y="5" width="16" height="10" rx="2" />
+            <rect x="904" y="5" width="16" height="10" rx="2" />
+            <rect x="940" y="5" width="16" height="10" rx="2" />
+            <rect x="976" y="5" width="16" height="10" rx="2" />
+            <rect x="1012" y="5" width="16" height="10" rx="2" />
+            <rect x="1048" y="5" width="16" height="10" rx="2" />
+            <rect x="1084" y="5" width="16" height="10" rx="2" />
+            <rect x="1120" y="5" width="16" height="10" rx="2" />
+            <rect x="1156" y="5" width="16" height="10" rx="2" />
+            <rect x="1192" y="5" width="16" height="10" rx="2" />
+            <rect x="1228" y="5" width="16" height="10" rx="2" />
+            <rect x="1264" y="5" width="16" height="10" rx="2" />
+            <rect x="1300" y="5" width="16" height="10" rx="2" />
+            <rect x="1336" y="5" width="16" height="10" rx="2" />
+            <rect x="1372" y="5" width="16" height="10" rx="2" />
+            <rect x="1408" y="5" width="16" height="10" rx="2" />
+          </g>
+          <line
+            x1="0"
+            y1="35"
+            x2="1440"
+            y2="35"
+            stroke="#3A0A14"
+            stroke-width="1"
+          />
+        </svg>
+      </div>
+
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo" style="font-size: 1.25rem">
+            <img
+              src="assets/logos/logo01.png"
+              alt=""
+              class="logo-icon"
+              style="height: 34px; width: 34px"
+            />
+            <span class="logo-wordmark-text">
+              <span class="cine">Cine</span><span class="gift">Gift</span>
+            </span>
+          </div>
+          <p class="footer-tagline"><em>presente em formato de cinema</em></p>
+        </div>
+
+        <nav class="footer-nav">
+          <div class="footer-nav-col">
+            <span class="footer-nav-title">Produto</span>
+            <a href="#temas">Temas</a>
+            <a href="#planos">Planos</a>
+            <a href="criador.html">Criar sessão</a>
+          </div>
+          <div class="footer-nav-col">
+            <span class="footer-nav-title">Empresa</span>
+            <a href="#">Sobre</a>
+            <a href="#">Blog</a>
+            <a href="#">Contato</a>
+          </div>
+          <div class="footer-nav-col">
+            <span class="footer-nav-title">Legal</span>
+            <a href="#">Termos</a>
+            <a href="#">Privacidade</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 CineGift</span>
+        <span class="footer-sep">·</span>
+        <span>Feito com amor para quem você ama</span>
+      </div>
+    </footer>
+
     <script src="js/firebase.js" type="module"></script>
+    <script>
+      /* ── Estrelinhas + parallax ── */
+      (function () {
+        const c = document.getElementById("heroStars");
+        if (!c) return;
+        for (let i = 0; i < 85; i++) {
+          const s = document.createElement("span");
+          s.className = "hero-star";
+          const big = Math.random() < 0.25;
+          s.style.cssText =
+            `left:${(Math.random() * 100).toFixed(1)}%;` +
+            `top:${(Math.random() * 100).toFixed(1)}%;` +
+            `width:${big ? 2 : 1}px;height:${big ? 2 : 1}px;` +
+            `opacity:${(Math.random() * 0.55 + 0.08).toFixed(2)};` +
+            `animation-delay:${(Math.random() * 5).toFixed(2)}s;` +
+            `animation-duration:${(Math.random() * 3 + 2).toFixed(2)}s;`;
+          c.appendChild(s);
+        }
+        document.getElementById("hero")?.addEventListener("mousemove", (e) => {
+          const rx = (e.clientX / innerWidth - 0.5) * 20;
+          const ry = (e.clientY / innerHeight - 0.5) * 14;
+          c.style.transform = `translate(${rx}px,${ry}px)`;
+        });
+      })();
+
+      /* ── Ticket rotativo ── */
+      (function () {
+        const temas = [
+          { tema: "romance", nome: "Ana Clara", dir: "Pedro" },
+          { tema: "amizade", nome: "Carlos", dir: "João" },
+          { tema: "familia", nome: "Vovó Maria", dir: "Família" },
+          { tema: "aniversario", nome: "Luís", dir: "Bia" },
+        ];
+        let idx = 0;
+        const tk = document.getElementById("heroTicket");
+        const name = document.getElementById("htName");
+        const dir = document.getElementById("htDir");
+        const glow = document.getElementById("heroTicketGlow");
+        if (!tk) return;
+
+        const accentMap = {
+          romance: "rgba(196,64,90,0.45)",
+          amizade: "rgba(74,142,196,0.45)",
+          familia: "rgba(212,120,42,0.45)",
+          aniversario: "rgba(212,64,122,0.45)",
+        };
+
+        function rotate() {
+          idx = (idx + 1) % temas.length;
+          const t = temas[idx];
+          tk.style.opacity = "0";
+          tk.style.transform = "rotate(-8deg) scale(0.96)";
+          setTimeout(() => {
+            tk.setAttribute("data-tema", t.tema);
+            name.textContent = t.nome;
+            dir.textContent = t.dir;
+            if (glow)
+              glow.style.background = `radial-gradient(ellipse 60% 40% at 50% 100%, ${accentMap[t.tema]}, transparent)`;
+            tk.style.opacity = "1";
+            tk.style.transform = "rotate(-8deg) scale(1)";
+          }, 340);
+        }
+        setInterval(rotate, 3400);
+      })();
+
+      /* ── Carrossel drag-to-scroll ── */
+      (function () {
+        const track = document.getElementById("temasTrack");
+        const btnL = document.getElementById("temasLeft");
+        const btnR = document.getElementById("temasRight");
+        if (!track) return;
+
+        const cardW = () =>
+          (track.querySelector(".tema-card")?.offsetWidth || 300) + 24;
+        btnL.addEventListener("click", () =>
+          track.scrollBy({ left: -cardW(), behavior: "smooth" }),
+        );
+        btnR.addEventListener("click", () =>
+          track.scrollBy({ left: cardW(), behavior: "smooth" }),
+        );
+
+        let isDown = false,
+          sx = 0,
+          sl = 0;
+        track.addEventListener("mousedown", (e) => {
+          isDown = true;
+          track.classList.add("drag");
+          sx = e.pageX - track.offsetLeft;
+          sl = track.scrollLeft;
+        });
+        track.addEventListener("mouseleave", () => {
+          isDown = false;
+          track.classList.remove("drag");
+        });
+        track.addEventListener("mouseup", () => {
+          isDown = false;
+          track.classList.remove("drag");
+        });
+        track.addEventListener("mousemove", (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          track.scrollLeft = sl - (e.pageX - track.offsetLeft - sx) * 1.3;
+        });
+
+        let tx = 0,
+          tsl = 0;
+        track.addEventListener(
+          "touchstart",
+          (e) => {
+            tx = e.touches[0].pageX;
+            tsl = track.scrollLeft;
+          },
+          { passive: true },
+        );
+        track.addEventListener(
+          "touchmove",
+          (e) => {
+            track.scrollLeft = tsl + (tx - e.touches[0].pageX);
+          },
+          { passive: true },
+        );
+      })();
+    </script>
   </body>
 </html>
