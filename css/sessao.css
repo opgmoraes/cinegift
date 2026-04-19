@@ -252,6 +252,7 @@ video {
   backdrop-filter: blur(2px);
   cursor: pointer;
   transition: background 0.3s var(--ease-cinema);
+  z-index: 15;
 }
 
 .play-overlay:hover {

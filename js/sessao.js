@@ -9,7 +9,7 @@ async function carregarSessao() {
   const id = params.get("id");
 
   if (!id) {
-    alert("Link inválido!");
+    alert("Link de sessão inválido!");
     return;
   }
 
@@ -19,34 +19,59 @@ async function carregarSessao() {
     if (docSnap.exists()) {
       const dados = docSnap.data();
 
-      // Preenche os dados
+      // 1. Aplica o tema dinâmico ao corpo da página
+      document.body.setAttribute("data-tema", dados.tema || "romance");
+
+      // 2. Preenche os textos da sessão
       document.getElementById("msgEstrela").innerText = dados.estrela;
       document.getElementById("msgDiretor").innerText = dados.diretor;
       document.getElementById("msgFinal").innerText = dados.mensagem;
-      document.getElementById("moviePlayer").src = dados.video;
 
-      // Esconde o loader
-      document.getElementById("loader").style.display = "none";
+      // 3. Configura a fonte do vídeo
+      const videoPlayer = document.getElementById("moviePlayer");
+      videoPlayer.src = dados.video;
 
-      // Lógica do botão play
+      // 4. Esconde o loader após o carregamento dos dados
+      const loader = document.getElementById("loader");
+      if (loader) {
+        loader.classList.add("hidden");
+        // Remove do DOM após a transição de fade-out do CSS
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 500);
+      }
+
+      // 5. Lógica de abertura das cortinas e início do filme
       document.getElementById("playButton").onclick = () => {
+        // Usa os IDs específicos do teu HTML
         document.getElementById("curtainLeft").classList.add("open-left");
         document.getElementById("curtainRight").classList.add("open-right");
-        document.getElementById("playButton").style.display = "none";
-        document.getElementById("moviePlayer").play();
+
+        // Esconde o botão de play
+        document.getElementById("playButton").style.opacity = "0";
+        setTimeout(() => {
+          document.getElementById("playButton").style.display = "none";
+        }, 500);
+
+        // Inicia o vídeo
+        videoPlayer.play();
       };
 
-      // Quando o vídeo acabar, sobem os créditos
-      document.getElementById("moviePlayer").onended = () => {
-        document.getElementById("credits").style.display = "block";
+      // 6. Exibe os créditos quando o vídeo terminar
+      videoPlayer.onended = () => {
+        const credits = document.getElementById("credits");
+        credits.style.display = "block";
+        credits.classList.add("active");
       };
     } else {
-      alert("Essa sessão não existe mais.");
+      alert("Sessão não encontrada no nosso arquivo.");
+      window.location.href = "index.html";
     }
-  } catch (e) {
-    console.error(e);
-    alert("Erro ao carregar o presente.");
+  } catch (error) {
+    console.error("Erro ao carregar sessão:", error);
+    alert("Erro técnico ao projetar a sessão.");
   }
 }
 
+// Inicializa a função ao carregar a página
 carregarSessao();
