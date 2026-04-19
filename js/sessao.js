@@ -30,8 +30,8 @@ async function carregarSessao() {
 
       // Lógica do botão play
       document.getElementById("playButton").onclick = () => {
-        document.querySelector(".curtain.left").classList.add("open-left");
-        document.querySelector(".curtain.right").classList.add("open-right");
+        document.getElementById("curtainLeft").classList.add("open-left");
+        document.getElementById("curtainRight").classList.add("open-right");
         document.getElementById("playButton").style.display = "none";
         document.getElementById("moviePlayer").play();
       };
