@@ -14,7 +14,7 @@
   <body class="cinema-body" data-tema="romance">
     <div id="loader" class="loader-overlay">
       <div class="popcorn-loader">🍿</div>
-      <p>Preparando sua sessão...</p>
+      <p>A preparar a sua sessão...</p>
     </div>
 
     <main id="jornada-container">
@@ -52,7 +52,7 @@
 
       <section id="fase-poltrona" class="fase">
         <div class="fase-content interativo-box">
-          <h2 class="fase-titulo">Escolha seu lugar</h2>
+          <h2 class="fase-titulo">Escolha o seu lugar</h2>
           <div class="seat-grid" id="grid-sessao"></div>
           <h3 class="fase-subtitulo">O que vai acompanhar?</h3>
           <div class="snacks-container">
@@ -96,16 +96,16 @@
 
       <section id="fase-filme" class="fase">
         <div class="curtain-container">
-          <div class="curtain-valance"></div>
+          <div id="playOverlay" class="play-overlay">
+            <button id="btnPlayFilme" class="btn-acao">▶ Iniciar Sessão</button>
+          </div>
+
           <div class="curtain left" id="curtainLeft"></div>
           <div class="curtain right" id="curtainRight"></div>
 
           <div class="theater-screen">
             <div class="video-wrapper">
               <video id="moviePlayer" playsinline preload="auto"></video>
-              <div id="playButton" class="play-overlay">
-                <button>▶ Iniciar Sessão</button>
-              </div>
             </div>
 
             <div id="credits" class="credits-roll">
