@@ -8,7 +8,6 @@ import { db } from "./firebase.js";
 // --- ESTADO GLOBAL ---
 let passoAtual = 1;
 const totalPassos = 4;
-let arquivosFotos = [];
 let arquivoVideo = null;
 
 // --- FUNÇÃO AUXILIAR DE NAVEGAÇÃO ---
@@ -23,69 +22,26 @@ function irParaPasso(passo) {
   if (indicador) indicador.innerText = passoAtual;
 }
 
-// --- NAVEGAÇÃO EXPOSTA GLOBALMENTE ---
 window.nextStep = function (passo) {
   irParaPasso(passo);
 };
-
 window.prevStep = function (passo) {
   irParaPasso(passo);
 };
 
 // --- PREVIEW TEXTOS ---
-document.getElementById("nomeEstrela").addEventListener("input", (e) => {
-  document.getElementById("prevEstrela").innerText =
-    e.target.value.trim() || "Estrela Principal";
+document.getElementById("nomeEstrela")?.addEventListener("input", (e) => {
+  const el = document.getElementById("prevEstrela");
+  if (el) el.innerText = e.target.value.trim() || "Estrela Principal";
 });
 
-document.getElementById("nomeDiretor").addEventListener("input", (e) => {
-  document.getElementById("prevDiretor").innerText =
-    e.target.value.trim() || "Diretor";
-});
-
-// --- PREVIEW TEMA (CORES) ---
-const cores = {
-  romance: "linear-gradient(135deg, #E50914, #800000)",
-  amizade: "linear-gradient(135deg, #FF9900, #B36B00)",
-  familia: "linear-gradient(135deg, #007BFF, #004085)",
-  aniversario: "linear-gradient(135deg, #9C27B0, #4A148C)",
-};
-
-document.getElementById("tema").addEventListener("change", (e) => {
-  const ticket = document.getElementById("previewIngresso");
-  ticket.style.background = cores[e.target.value] || cores.romance;
-});
-
-// Aplica a cor inicial ao carregar
-window.addEventListener("DOMContentLoaded", () => {
-  const temaInicial = document.getElementById("tema").value;
-  const ticket = document.getElementById("previewIngresso");
-  if (ticket) ticket.style.background = cores[temaInicial] || cores.romance;
-});
-
-// --- PREVIEW FOTOS ---
-document.getElementById("fotosLobby").addEventListener("change", (e) => {
-  const files = Array.from(e.target.files);
-  if (files.length > 5) {
-    alert("Máximo de 5 fotos permitido.");
-    e.target.value = "";
-    arquivosFotos = [];
-    return;
-  }
-  arquivosFotos = files;
-  const lista = document.getElementById("lista-fotos");
-  lista.innerHTML = "";
-  files.forEach((file) => {
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.style.cssText =
-      "width:60px;height:60px;object-fit:cover;border-radius:8px;margin:5px;";
-    lista.appendChild(img);
-  });
+document.getElementById("nomeDiretor")?.addEventListener("input", (e) => {
+  const el = document.getElementById("prevDiretor");
+  if (el) el.innerText = e.target.value.trim() || "Diretor";
 });
 
 // --- VALIDAÇÃO VÍDEO ---
-document.getElementById("videoPrincipal").addEventListener("change", (e) => {
+document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
   const errorEl = document.getElementById("video-error");
   if (!file) return;
@@ -109,7 +65,7 @@ document.getElementById("videoPrincipal").addEventListener("change", (e) => {
 });
 
 // --- CONTADOR DE CARACTERES ---
-document.getElementById("mensagemFinal").addEventListener("input", (e) => {
+document.getElementById("mensagemFinal")?.addEventListener("input", (e) => {
   const charNum = document.getElementById("charNum");
   if (charNum) charNum.innerText = e.target.value.length;
 });
@@ -134,7 +90,7 @@ async function uploadToR2(file, prefixo) {
   return `${r2PublicUrl}/${nomeUnico}`;
 }
 
-// --- FUNÇÃO FINAL EXPOSTA GLOBALMENTE ---
+// --- FUNÇÃO FINAL ---
 window.finalizarSessao = async function () {
   const btn = document.querySelector(".btn-success");
   const originalText = btn.innerText;
@@ -162,7 +118,12 @@ window.finalizarSessao = async function () {
       criadoEm: serverTimestamp(),
     };
 
-    for (let foto of arquivosFotos) {
+    // CORREÇÃO: Pega as fotos diretamente da variável global do seu HTML
+    const fotosReais = window.fotosArmazenadas
+      ? window.fotosArmazenadas.map((f) => f.file)
+      : [];
+
+    for (let foto of fotosReais) {
       const url = await uploadToR2(foto, "foto");
       dados.fotos.push(url);
     }

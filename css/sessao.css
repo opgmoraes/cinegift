@@ -18,7 +18,7 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TEMAS (Aplica cor ao ticket, botões e CORTINAS)
+   TEMAS (Cores dinâmicas)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .cinema-body[data-tema="romance"] {
   --theme-bg: #0d0610;
@@ -30,7 +30,7 @@
   --tk-label: rgba(244, 239, 230, 0.45);
   --tk-tear-bg: #2a0818;
   --tk-accent2: #8b6070;
-  --cor-cortina: #800000;
+  --cor-cortina: #660011;
 }
 .cinema-body[data-tema="amizade"] {
   --theme-bg: #0e1a2a;
@@ -42,7 +42,7 @@
   --tk-label: rgba(168, 208, 232, 0.5);
   --tk-tear-bg: #1a3a5c;
   --tk-accent2: #a8d0e8;
-  --cor-cortina: #1a3a5c;
+  --cor-cortina: #0c2038;
 }
 .cinema-body[data-tema="familia"] {
   --theme-bg: #160a04;
@@ -54,7 +54,7 @@
   --tk-label: rgba(232, 168, 96, 0.5);
   --tk-tear-bg: #3a1a08;
   --tk-accent2: #e8a860;
-  --cor-cortina: #5c2a10;
+  --cor-cortina: #3a1705;
 }
 .cinema-body[data-tema="aniversario"] {
   --theme-bg: #12080e;
@@ -66,11 +66,11 @@
   --tk-label: rgba(212, 64, 122, 0.55);
   --tk-tear-bg: #2a0a1e;
   --tk-accent2: #4a8ec4;
-  --cor-cortina: #4a1040;
+  --cor-cortina: #2e0827;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FASES (Gerencia as telas)
+   FASES DA JORNADA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .fase {
   display: none;
@@ -86,11 +86,9 @@
     var(--theme-bg) 100%
   );
 }
-
 .fase.active {
   display: flex;
 }
-
 .fase-content {
   display: flex;
   flex-direction: column;
@@ -98,7 +96,6 @@
   text-align: center;
   width: 100%;
 }
-
 .fase-titulo {
   font-family: var(--font-display);
   font-size: 2.5rem;
@@ -121,7 +118,7 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   O INGRESSO (Visual do Criador)
+   INGRESSO, POLTRONAS, PÔSTERES (Mantidos e alinhados)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ticket-preview {
   width: 320px;
@@ -233,9 +230,6 @@
   color: var(--theme-accent);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   POLTRONAS & SNACKS & BOTÕES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .seat-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -298,9 +292,6 @@
   filter: brightness(1.1);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   GALERIA DE PÔSTERES (Em Cartaz)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .lobby-gallery {
   display: flex;
   gap: 20px;
@@ -310,7 +301,7 @@
   max-width: 90vw;
   scrollbar-width: none;
   margin-bottom: 2rem;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .poster-frame {
   flex: 0 0 200px;
@@ -331,7 +322,7 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   AS CORTINAS ANIMADAS & PLAYER
+   CORTINAS 3D REALISTAS & PLAYER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .curtain-container {
   position: relative;
@@ -340,7 +331,7 @@
   overflow: hidden;
 }
 
-/* Overlay de Play fica ACIMA de tudo */
+/* Overlay de Play acima das cortinas */
 .play-overlay {
   position: absolute;
   inset: 0;
@@ -350,42 +341,50 @@
   background: rgba(0, 0, 0, 0.6);
   z-index: 30;
   transition: opacity 0.5s ease;
+  backdrop-filter: blur(2px);
 }
 
+/* Textura e Dobras da Cortina */
 .curtain {
   position: absolute;
   top: 0;
   width: 50.5%;
   height: 100%;
   z-index: 10;
-  transition: transform 2.5s cubic-bezier(0.65, 0, 0.35, 1);
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
   background-color: var(--cor-cortina);
-  background-image: repeating-linear-gradient(
+  background-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0) 0px,
-    rgba(0, 0, 0, 0) 20px,
-    rgba(0, 0, 0, 0.2) 40px,
-    rgba(0, 0, 0, 0) 60px
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0.4) 100%
   );
+  background-size: 60px 100%;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+  transition: transform 3.5s cubic-bezier(0.65, 0, 0.15, 1);
 }
+
 .curtain.left {
   left: 0;
-  border-right: 3px solid rgba(0, 0, 0, 0.3);
-  transform-origin: left;
+  transform-origin: left top;
+  border-right: 4px solid rgba(0, 0, 0, 0.4);
 }
 .curtain.right {
   right: 0;
-  border-left: 3px solid rgba(0, 0, 0, 0.3);
-  transform-origin: right;
-}
-.curtain.open-left {
-  transform: translateX(-100%);
-}
-.curtain.open-right {
-  transform: translateX(100%);
+  transform-origin: right top;
+  border-left: 4px solid rgba(0, 0, 0, 0.4);
 }
 
+/* O Efeito de Encolher (Dobra Realista) */
+.curtain.open-left {
+  transform: scaleX(0.06);
+}
+.curtain.open-right {
+  transform: scaleX(0.06);
+}
+
+/* A Tela no Fundo */
 .theater-screen {
   position: absolute;
   inset: 0;
@@ -399,7 +398,7 @@
   width: 90%;
   max-width: 860px;
   border-radius: 4px;
-  box-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.6);
 }
 video {
   width: 100%;
@@ -422,7 +421,7 @@ video {
   display: flex;
 }
 .credits-content {
-  animation: rollUp 16s linear forwards;
+  animation: rollUp 18s linear forwards;
   padding: 2rem;
   width: 100%;
 }
@@ -480,7 +479,7 @@ video {
   }
 }
 
-/* Loaders */
+/* Loader */
 .loader-overlay {
   position: fixed;
   inset: 0;
