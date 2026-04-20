@@ -21,11 +21,12 @@ async function carregarSessao() {
       document.getElementById("msgDiretor").innerText = dados.diretor;
       document.getElementById("msgFinal").innerText = dados.mensagem;
 
-      // Configura Player e Pôsteres
+      // Configura Player
       const videoPlayer = document.getElementById("moviePlayer");
       videoPlayer.src = dados.video;
       videoPlayer.load();
 
+      // Galeria de pôsteres (Fotos do R2)
       const gallery = document.getElementById("lobbyGallery");
       dados.fotos.forEach((url) => {
         const div = document.createElement("div");
@@ -57,7 +58,6 @@ function gerarPoltronas() {
   }
 }
 
-// Expõe para o HTML (resolve o erro de "not defined")
 window.proximaFase = function (idFase) {
   document
     .querySelectorAll(".fase")
