@@ -19,19 +19,36 @@
 
     <main id="jornada-container">
       <section id="fase-ticket" class="fase active">
-        <div class="ticket-wrapper">
-          <div class="ticket-card">
-            <div class="ticket-header">CineGift VIP · PASS</div>
-            <div class="ticket-content">
-              <p class="ticket-label">ADMIT ONE</p>
-              <h2 id="ticket-estrela">Convidado</h2>
-              <div class="barcode">||||||||||||||||||||||||||</div>
+        <div class="preview-device">
+          <div class="preview-screen">
+            <div class="ticket-preview" id="ticketReal">
+              <div class="ticket-body-card">
+                <div class="ticket-header">
+                  CineGift <span class="ticket-header-badge">VIP</span>
+                </div>
+                <div class="ticket-body">
+                  <span class="ticket-label">Estrela Principal</span>
+                  <h2 id="ticket-estrela">Convidado</h2>
+                  <div class="ticket-director">
+                    DIRIGIDO POR <span id="ticket-diretor-nome">—</span>
+                  </div>
+                </div>
+              </div>
+              <div class="ticket-tear">
+                <div class="ticket-tear-line"></div>
+              </div>
+              <div class="ticket-footer">
+                <div class="ticket-barcode">||| |||| || ||| ||||</div>
+                <div class="ticket-seat">
+                  <span>Sessão</span><strong>01</strong>
+                </div>
+              </div>
             </div>
           </div>
-          <button class="btn-acao" onclick="proximaFase('fase-poltrona')">
-            🎟️ Escanear Ingresso
-          </button>
         </div>
+        <button class="btn-acao" onclick="proximaFase('fase-poltrona')">
+          🎟️ Escanear Ingresso
+        </button>
       </section>
 
       <section id="fase-poltrona" class="fase">
@@ -46,9 +63,6 @@
             <div class="snack-item" onclick="this.classList.toggle('active')">
               🥤 Soda
             </div>
-            <div class="snack-item" onclick="this.classList.toggle('active')">
-              🍫 Chocolate
-            </div>
           </div>
           <button class="btn-acao" onclick="proximaFase('fase-corredor')">
             Ir para a Sala 🎬
@@ -57,26 +71,20 @@
       </section>
 
       <section id="fase-corredor" class="fase">
-        <div class="lobby-content">
-          <div class="frase-dinamica" id="frase-corredor">
-            "A nossa melhor história começa agora..."
-          </div>
-          <div class="lobby-gallery" id="lobbyGallery"></div>
-          <button class="btn-acao" onclick="proximaFase('fase-filme')">
-            Entrar na Sala 🚪
-          </button>
-        </div>
+        <h2 class="titulo-fase">Em Cartaz</h2>
+        <div class="lobby-gallery" id="lobbyGallery"></div>
+        <button class="btn-acao" onclick="proximaFase('fase-filme')">
+          Assistir Filme 🚪
+        </button>
       </section>
 
       <section id="fase-filme" class="fase">
         <div class="curtain-container">
-          <div class="curtain-valance"></div>
           <div class="curtain left" id="curtainLeft"></div>
           <div class="curtain right" id="curtainRight"></div>
-
           <div class="theater-screen">
             <div class="video-wrapper">
-              <video id="moviePlayer" playsinline preload="auto"></video>
+              <video id="moviePlayer" playsinline></video>
               <div id="playButton" class="play-overlay">
                 <button>▶ Iniciar Sessão</button>
               </div>
@@ -84,10 +92,10 @@
             <div id="credits" class="credits-roll">
               <div class="credits-content">
                 <h1 id="msgEstrela">Nome</h1>
-                <p id="msgFinal">Mensagem...</p>
+                <p id="msgFinal" class="credits-mensagem">Mensagem...</p>
                 <div class="credits-divider"></div>
-                <span class="credits-label">Dirigido por</span>
-                <h3 id="msgDiretor">Criador</h3>
+                <span class="credits-director-label">Dirigido por</span>
+                <h3 id="msgDiretor" class="credits-director-name">Criador</h3>
                 <div class="the-end">FIM</div>
               </div>
             </div>

@@ -14,19 +14,21 @@ async function carregarSessao() {
     if (docSnap.exists()) {
       const dados = docSnap.data();
 
-      // Sincroniza Tema e Nomes
+      // Configura o tema e preenche nomes em todos os lugares
       document.body.setAttribute("data-tema", dados.tema);
       document.getElementById("ticket-estrela").innerText = dados.estrela;
+      document.getElementById("ticket-diretor-nome").innerText = dados.diretor;
+
       document.getElementById("msgEstrela").innerText = dados.estrela;
       document.getElementById("msgDiretor").innerText = dados.diretor;
       document.getElementById("msgFinal").innerText = dados.mensagem;
 
-      // Configura Player
+      // Prepara Vídeo
       const videoPlayer = document.getElementById("moviePlayer");
       videoPlayer.src = dados.video;
       videoPlayer.load();
 
-      // Galeria de pôsteres (Fotos do R2)
+      // Gera Galeria de Pôsteres (Fotos do R2) antes do vídeo
       const gallery = document.getElementById("lobbyGallery");
       dados.fotos.forEach((url) => {
         const div = document.createElement("div");
@@ -36,7 +38,7 @@ async function carregarSessao() {
       });
 
       gerarPoltronas();
-      document.getElementById("loader").style.display = "none";
+      document.getElementById("loader").classList.add("hidden");
     }
   } catch (e) {
     console.error(e);
@@ -45,7 +47,8 @@ async function carregarSessao() {
 
 function gerarPoltronas() {
   const grid = document.getElementById("grid-sessao");
-  for (let i = 0; i < 24; i++) {
+  if (!grid) return;
+  for (let i = 0; i < 18; i++) {
     const seat = document.createElement("div");
     seat.className = "seat";
     seat.onclick = () => {
@@ -58,6 +61,7 @@ function gerarPoltronas() {
   }
 }
 
+// Exposto globalmente para o HTML
 window.proximaFase = function (idFase) {
   document
     .querySelectorAll(".fase")
