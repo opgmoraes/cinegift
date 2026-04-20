@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/sessao.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;700&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body class="cinema-body" data-tema="romance">
     <div id="loader" class="loader-overlay">
       <div class="popcorn-loader">🍿</div>
-      <p>Preparando sua sessão...</p>
+      <p>A preparar a sua sessão...</p>
     </div>
 
     <main id="jornada-container">
@@ -23,9 +23,9 @@
           <div class="ticket-card">
             <div class="ticket-header">CineGift VIP</div>
             <div class="ticket-content">
-              <p>Admit One</p>
+              <p class="ticket-label">ADMIT ONE</p>
               <h2 id="ticket-estrela">Convidado</h2>
-              <div class="barcode">||||||||||||||||||||</div>
+              <div class="barcode">||||||||||||||||||||||||||</div>
             </div>
           </div>
           <button class="btn-acao" onclick="proximaFase('fase-poltrona')">
@@ -36,19 +36,19 @@
 
       <section id="fase-poltrona" class="fase">
         <div class="interativo-box">
-          <h2>Escolha seu lugar</h2>
-          <div class="seat-grid">
-            <div class="seat"></div>
-            <div class="seat"></div>
-            <div class="seat"></div>
-            <div class="seat selected"></div>
-            <div class="seat"></div>
-            <div class="seat"></div>
-          </div>
+          <h2>Escolha o seu lugar</h2>
+          <div class="seat-grid" id="grid-sessao"></div>
           <h3>O que vai acompanhar?</h3>
-          <div class="snacks">
-            <span>🍿 Pipoca</span> <span>🥤 Soda</span>
-            <span>🍫 Chocolate</span>
+          <div class="snacks-container">
+            <div class="snack-item" onclick="this.classList.toggle('active')">
+              🍿 Pipoca
+            </div>
+            <div class="snack-item" onclick="this.classList.toggle('active')">
+              🥤 Soda
+            </div>
+            <div class="snack-item" onclick="this.classList.toggle('active')">
+              🍫 Chocolate
+            </div>
           </div>
           <button class="btn-acao" onclick="proximaFase('fase-corredor')">
             Ir para a Sala 🎬
@@ -62,7 +62,7 @@
             "A nossa melhor história começa agora..."
           </div>
           <div class="lobby-gallery" id="lobbyGallery"></div>
-          <button class="btn-acao" id="btn-entrar-sala">
+          <button class="btn-acao" onclick="proximaFase('fase-filme')">
             Entrar na Sala 🚪
           </button>
         </div>
@@ -86,8 +86,9 @@
               <div class="credits-content">
                 <h1 id="msgEstrela">Nome</h1>
                 <p id="msgFinal">Mensagem...</p>
+                <div class="credits-divider"></div>
                 <span class="credits-label">Dirigido por</span>
-                <h3 id="msgDiretor">Você</h3>
+                <h3 id="msgDiretor">Criador</h3>
                 <div class="the-end">FIM</div>
               </div>
             </div>

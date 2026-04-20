@@ -658,3 +658,79 @@ video {
     opacity: 1;
   }
 }
+/* Ticket Estilizado */
+.ticket-card {
+  background: var(--theme-bg);
+  border: 2px dashed var(--theme-accent);
+  padding: 2.5rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 25px var(--theme-glow);
+  max-width: 350px;
+}
+.ticket-header {
+  color: var(--theme-accent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+.ticket-label {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  opacity: 0.6;
+}
+.barcode {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  letter-spacing: -2px;
+  color: var(--theme-accent);
+}
+
+/* Poltronas */
+.seat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin: 2rem 0;
+}
+.seat {
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.seat.selected {
+  background: var(--theme-accent) !important;
+  box-shadow: 0 0 15px var(--theme-accent);
+}
+
+/* Snacks */
+.snacks-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+.snack-item {
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.snack-item.active {
+  background: var(--theme-accent);
+  border-color: var(--theme-accent);
+}
+
+.btn-acao {
+  background: var(--theme-accent);
+  color: white;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
