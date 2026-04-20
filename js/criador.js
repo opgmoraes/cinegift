@@ -5,10 +5,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
 
+// --- ESTADO GLOBAL ---
 let passoAtual = 1;
 const totalPassos = 4;
 let arquivoVideo = null;
 
+// --- FUNÇÃO AUXILIAR DE NAVEGAÇÃO ---
 function irParaPasso(passo) {
   if (passo < 1 || passo > totalPassos) return;
   document
@@ -27,6 +29,7 @@ window.prevStep = function (passo) {
   irParaPasso(passo);
 };
 
+// --- PREVIEW TEXTOS ---
 document.getElementById("nomeEstrela")?.addEventListener("input", (e) => {
   const el = document.getElementById("prevEstrela");
   if (el) el.innerText = e.target.value.trim() || "Estrela Principal";
@@ -37,6 +40,7 @@ document.getElementById("nomeDiretor")?.addEventListener("input", (e) => {
   if (el) el.innerText = e.target.value.trim() || "Diretor";
 });
 
+// --- VALIDAÇÃO VÍDEO ---
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
   const errorEl = document.getElementById("video-error");
@@ -60,30 +64,43 @@ document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   videoObj.src = URL.createObjectURL(file);
 });
 
+// --- UPLOAD R2 (COM AS SUAS URLS REAIS) ---
 async function uploadToR2(file, prefixo) {
-  const nomeUnico = `${prefixo}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
+  // Limpa caracteres estranhos para evitar erros no Cloudflare
+  const safeName = file.name
+    ? file.name.replace(/[^a-zA-Z0-9.]/g, "")
+    : "arquivo.bin";
+  const nomeUnico = `${prefixo}-${Date.now()}-${safeName}`;
+
+  // A sua URL real do Worker recuperada do código antigo
   const workerUrl = `https://cinegift-upload.usecinegift.workers.dev/${nomeUnico}`;
 
   const response = await fetch(workerUrl, {
     method: "PUT",
     headers: {
       "X-Cinegift-Auth": "cinegift-token-123",
-      "Content-Type": file.type,
+      "Content-Type": file.type || "application/octet-stream",
     },
     body: file,
   });
 
-  if (!response.ok) throw new Error("Erro no upload: " + response.status);
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Erro no upload (${response.status}): ${errText}`);
+  }
+
+  // A sua URL real do Bucket R2 recuperada do código antigo
   const r2PublicUrl = `https://pub-dec3c851da9b4e5ba79db54b6ac4b17c.r2.dev`;
   return `${r2PublicUrl}/${nomeUnico}`;
 }
 
+// --- FUNÇÃO FINAL EXPOSTA GLOBALMENTE ---
 window.finalizarSessao = async function () {
   const btn = document.querySelector(".btn-success");
   const originalText = btn.innerText;
 
-  const nomeDiretor = document.getElementById("nomeDiretor").value.trim();
-  const nomeEstrela = document.getElementById("nomeEstrela").value.trim();
+  const nomeDiretor = document.getElementById("nomeDiretor")?.value.trim();
+  const nomeEstrela = document.getElementById("nomeEstrela")?.value.trim();
 
   if (!nomeDiretor || !nomeEstrela) {
     alert("Por favor, preencha os nomes no Passo 1 antes de finalizar.");
@@ -96,16 +113,16 @@ window.finalizarSessao = async function () {
 
   try {
     const dados = {
-      tema: document.getElementById("tema").value,
+      tema: document.getElementById("tema")?.value || "romance",
       diretor: nomeDiretor,
       estrela: nomeEstrela,
-      mensagem: document.getElementById("mensagemFinal").value,
+      mensagem: document.getElementById("mensagemFinal")?.value || "",
       fotos: [],
       video: "",
       criadoEm: serverTimestamp(),
     };
 
-    // A MÁGICA AQUI: Pega as fotos da variável global do HTML
+    // Pega as fotos selecionadas na interface do HTML (Correção das fotos vazias)
     const fotosReais = window.fotosArmazenadas
       ? window.fotosArmazenadas.map((f) => f.file)
       : [];
