@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sua Sessão Especial | CineGift</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/sessao.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;700&family=DM+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sessao.css" />
   </head>
   <body class="cinema-body" data-tema="romance">
     <div id="loader" class="loader-overlay">
@@ -19,45 +19,61 @@
 
     <main id="jornada-container">
       <section id="fase-ticket" class="fase active">
-        <div class="ticket-preview-wrapper">
-          <div class="ticket-preview" id="ticketReal">
+        <div class="fase-content">
+          <div class="ticket-preview" id="previewIngresso">
             <div class="ticket-body-card">
               <div class="ticket-header">
                 CineGift <span class="ticket-header-badge">VIP</span>
               </div>
               <div class="ticket-body">
                 <span class="ticket-label">Estrela Principal</span>
-                <h2 id="ticket-estrela">Convidado</h2>
+                <h3 id="ticket-estrela">—</h3>
                 <div class="ticket-director">
                   DIRIGIDO POR <span id="ticket-diretor-nome">—</span>
                 </div>
               </div>
             </div>
-            <div class="ticket-tear"><div class="ticket-tear-line"></div></div>
+            <div class="ticket-tear">
+              <div class="ticket-tear-line"></div>
+            </div>
             <div class="ticket-footer">
               <div class="ticket-barcode">||| |||| || ||| ||||</div>
               <div class="ticket-seat">
-                <span>Sessão</span><strong>01</strong>
+                <span>Sessão</span>
+                <strong>01</strong>
               </div>
             </div>
           </div>
+          <button class="btn-acao" onclick="proximaFase('fase-poltrona')">
+            🎟️ Escanear Ingresso
+          </button>
         </div>
-        <button class="btn-acao" onclick="proximaFase('fase-poltrona')">
-          🎟️ Escanear Ingresso
-        </button>
       </section>
 
       <section id="fase-poltrona" class="fase">
-        <div class="interativo-box">
-          <h2>Escolha seu lugar</h2>
+        <div class="fase-content interativo-box">
+          <h2 class="fase-titulo">Escolha seu lugar</h2>
           <div class="seat-grid" id="grid-sessao"></div>
+          <h3 class="fase-subtitulo">O que vai acompanhar?</h3>
           <div class="snacks-container">
-            <div class="snack-item" onclick="this.classList.toggle('active')">
+            <button
+              class="snack-item"
+              onclick="this.classList.toggle('active')"
+            >
               🍿 Pipoca
-            </div>
-            <div class="snack-item" onclick="this.classList.toggle('active')">
+            </button>
+            <button
+              class="snack-item"
+              onclick="this.classList.toggle('active')"
+            >
               🥤 Soda
-            </div>
+            </button>
+            <button
+              class="snack-item"
+              onclick="this.classList.toggle('active')"
+            >
+              🍫 Chocolate
+            </button>
           </div>
           <button class="btn-acao" onclick="proximaFase('fase-corredor')">
             Ir para a Sala 🎬
@@ -66,31 +82,39 @@
       </section>
 
       <section id="fase-corredor" class="fase">
-        <h2 class="titulo-fase">Em Cartaz</h2>
-        <div class="lobby-gallery" id="lobbyGallery"></div>
-        <button class="btn-acao" onclick="proximaFase('fase-filme')">
-          Entrar na Sala 🚪
-        </button>
+        <div class="fase-content">
+          <h2 class="fase-titulo">Em Cartaz</h2>
+          <div class="frase-dinamica" id="frase-corredor">
+            "A nossa melhor história começa agora..."
+          </div>
+          <div class="lobby-gallery" id="lobbyGallery"></div>
+          <button class="btn-acao" onclick="proximaFase('fase-filme')">
+            Entrar na Sala 🚪
+          </button>
+        </div>
       </section>
 
       <section id="fase-filme" class="fase">
         <div class="curtain-container">
+          <div class="curtain-valance"></div>
           <div class="curtain left" id="curtainLeft"></div>
           <div class="curtain right" id="curtainRight"></div>
+
           <div class="theater-screen">
             <div class="video-wrapper">
-              <video id="moviePlayer" playsinline></video>
+              <video id="moviePlayer" playsinline preload="auto"></video>
               <div id="playButton" class="play-overlay">
                 <button>▶ Iniciar Sessão</button>
               </div>
             </div>
+
             <div id="credits" class="credits-roll">
               <div class="credits-content">
                 <h1 id="msgEstrela">Nome</h1>
                 <p id="msgFinal" class="credits-mensagem">Mensagem...</p>
                 <div class="credits-divider"></div>
                 <span class="credits-director-label">Dirigido por</span>
-                <h3 id="msgDiretor" class="credits-director-name">Criador</h3>
+                <h3 id="msgDiretor" class="credits-director-name">Você</h3>
                 <div class="the-end">FIM</div>
               </div>
             </div>
