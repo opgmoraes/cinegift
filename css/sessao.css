@@ -18,7 +18,7 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TEMAS (Cores dinâmicas)
+   TEMAS (Cores dinâmicas para Ticket, Botões e Cortinas)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .cinema-body[data-tema="romance"] {
   --theme-bg: #0d0610;
@@ -70,7 +70,7 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FASES DA JORNADA
+   FASES DA JORNADA (Esconde as inativas e mostra a atual)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .fase {
   display: none;
@@ -115,10 +115,12 @@
   font-style: italic;
   color: var(--theme-accent);
   margin-bottom: 2rem;
+  max-width: 600px;
+  padding: 0 20px;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   INGRESSO, POLTRONAS, PÔSTERES (Mantidos e alinhados)
+   INGRESSO, POLTRONAS, SNACKS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ticket-preview {
   width: 320px;
@@ -292,6 +294,9 @@
   filter: brightness(1.1);
 }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GALERIA DE PÔSTERES (Em Cartaz)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .lobby-gallery {
   display: flex;
   gap: 20px;
@@ -329,22 +334,32 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background: #000;
 }
 
-/* Overlay de Play acima das cortinas */
-.play-overlay {
+.master-play-overlay {
   position: absolute;
   inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 30;
-  transition: opacity 0.5s ease;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  transition: opacity 0.6s ease;
   backdrop-filter: blur(2px);
 }
 
-/* Textura e Dobras da Cortina */
+.curtain-valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: var(--tk-bg1);
+  z-index: 20;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+}
+
 .curtain {
   position: absolute;
   top: 0;
@@ -376,7 +391,6 @@
   border-left: 4px solid rgba(0, 0, 0, 0.4);
 }
 
-/* O Efeito de Encolher (Dobra Realista) */
 .curtain.open-left {
   transform: scaleX(0.06);
 }
@@ -384,7 +398,6 @@
   transform: scaleX(0.06);
 }
 
-/* A Tela no Fundo */
 .theater-screen {
   position: absolute;
   inset: 0;
@@ -406,7 +419,9 @@ video {
   border-radius: 4px;
 }
 
-/* Créditos */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CRÉDITOS FINAIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .credits-roll {
   display: none;
   position: absolute;
@@ -479,7 +494,9 @@ video {
   }
 }
 
-/* Loader */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LOADER DA PIPOCA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .loader-overlay {
   position: fixed;
   inset: 0;

@@ -5,19 +5,17 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
 
-// --- ESTADO GLOBAL ---
 let passoAtual = 1;
 const totalPassos = 4;
 let arquivoVideo = null;
 
-// --- FUNÇÃO AUXILIAR DE NAVEGAÇÃO ---
 function irParaPasso(passo) {
   if (passo < 1 || passo > totalPassos) return;
-  const stepAtual = document.getElementById(`step-${passoAtual}`);
-  if (stepAtual) stepAtual.classList.remove("active");
+  document
+    .querySelectorAll(".wizard-step")
+    .forEach((s) => s.classList.remove("active"));
   passoAtual = passo;
-  const stepNovo = document.getElementById(`step-${passoAtual}`);
-  if (stepNovo) stepNovo.classList.add("active");
+  document.getElementById(`step-${passoAtual}`)?.classList.add("active");
   const indicador = document.getElementById("current-step");
   if (indicador) indicador.innerText = passoAtual;
 }
@@ -29,7 +27,6 @@ window.prevStep = function (passo) {
   irParaPasso(passo);
 };
 
-// --- PREVIEW TEXTOS ---
 document.getElementById("nomeEstrela")?.addEventListener("input", (e) => {
   const el = document.getElementById("prevEstrela");
   if (el) el.innerText = e.target.value.trim() || "Estrela Principal";
@@ -40,7 +37,6 @@ document.getElementById("nomeDiretor")?.addEventListener("input", (e) => {
   if (el) el.innerText = e.target.value.trim() || "Diretor";
 });
 
-// --- VALIDAÇÃO VÍDEO ---
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
   const errorEl = document.getElementById("video-error");
@@ -64,13 +60,6 @@ document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   videoObj.src = URL.createObjectURL(file);
 });
 
-// --- CONTADOR DE CARACTERES ---
-document.getElementById("mensagemFinal")?.addEventListener("input", (e) => {
-  const charNum = document.getElementById("charNum");
-  if (charNum) charNum.innerText = e.target.value.length;
-});
-
-// --- UPLOAD R2 ---
 async function uploadToR2(file, prefixo) {
   const nomeUnico = `${prefixo}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, "")}`;
   const workerUrl = `https://cinegift-upload.usecinegift.workers.dev/${nomeUnico}`;
@@ -85,12 +74,10 @@ async function uploadToR2(file, prefixo) {
   });
 
   if (!response.ok) throw new Error("Erro no upload: " + response.status);
-
   const r2PublicUrl = `https://pub-dec3c851da9b4e5ba79db54b6ac4b17c.r2.dev`;
   return `${r2PublicUrl}/${nomeUnico}`;
 }
 
-// --- FUNÇÃO FINAL ---
 window.finalizarSessao = async function () {
   const btn = document.querySelector(".btn-success");
   const originalText = btn.innerText;
@@ -118,7 +105,7 @@ window.finalizarSessao = async function () {
       criadoEm: serverTimestamp(),
     };
 
-    // CORREÇÃO: Pega as fotos diretamente da variável global do seu HTML
+    // A MÁGICA AQUI: Pega as fotos da variável global do HTML
     const fotosReais = window.fotosArmazenadas
       ? window.fotosArmazenadas.map((f) => f.file)
       : [];

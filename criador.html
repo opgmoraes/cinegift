@@ -12,7 +12,6 @@
     />
   </head>
   <body class="creator-body">
-    <!-- ── Navbar compacta ──────────────────────────────────── -->
     <header class="navbar navbar-compact">
       <div class="logo">
         <a href="index.html" class="logo">
@@ -28,9 +27,7 @@
     </header>
 
     <main class="creator-container">
-      <!-- ── Wizard Panel ──────────────────────────────────── -->
       <section class="wizard-panel">
-        <!-- Barra de progresso -->
         <div class="wizard-progress" id="wizard-progress">
           <div class="wizard-progress-dot active" data-step="1"></div>
           <div class="wizard-progress-dot" data-step="2"></div>
@@ -38,7 +35,6 @@
           <div class="wizard-progress-dot" data-step="4"></div>
         </div>
 
-        <!-- Passo 1 — Elenco e Gênero -->
         <div id="step-1" class="wizard-step active">
           <span class="step-number">01 / 04</span>
           <h2>O Elenco e o Gênero</h2>
@@ -173,7 +169,6 @@
           </button>
         </div>
 
-        <!-- Passo 2 — Fotos -->
         <div id="step-2" class="wizard-step">
           <span class="step-number">02 / 04</span>
           <h2>Em Cartaz</h2>
@@ -195,7 +190,6 @@
             </div>
           </div>
 
-          <!-- Grid de thumbnails reais -->
           <div class="thumbs-grid" id="thumbsGrid"></div>
 
           <div class="button-group">
@@ -208,7 +202,6 @@
           </div>
         </div>
 
-        <!-- Passo 3 — Vídeo -->
         <div id="step-3" class="wizard-step">
           <span class="step-number">03 / 04</span>
           <h2>O Rolo de Filme</h2>
@@ -238,7 +231,6 @@
           </div>
         </div>
 
-        <!-- Passo 4 — Mensagem -->
         <div id="step-4" class="wizard-step">
           <span class="step-number">04 / 04</span>
           <h2>Créditos Finais</h2>
@@ -254,7 +246,6 @@
               placeholder="Escreva algo especial para quem vai receber..."
             ></textarea>
             <small class="char-count"> <span id="charNum">0</span>/300 </small>
-            <!-- Ticker de inspiração -->
             <div class="inspiracao-wrap" id="inspiracaoWrap">
               <span class="inspiracao-label">Inspiração</span>
               <button
@@ -279,7 +270,6 @@
         </div>
       </section>
 
-      <!-- ── Preview Panel ──────────────────────────────────── -->
       <section class="preview-panel">
         <div class="preview-device">
           <div class="preview-screen" id="previewScreen">
@@ -288,7 +278,6 @@
               id="previewIngresso"
               data-tema="romance"
             >
-              <!-- Corpo do ticket -->
               <div class="ticket-body-card">
                 <div class="ticket-header">
                   CineGift
@@ -303,12 +292,10 @@
                 </div>
               </div>
 
-              <!-- Linha serrilhada -->
               <div class="ticket-tear">
                 <div class="ticket-tear-line"></div>
               </div>
 
-              <!-- Rodapé do ticket -->
               <div class="ticket-footer">
                 <div class="ticket-barcode">||| |||| || ||| ||||</div>
                 <div class="ticket-seat">
@@ -382,19 +369,21 @@
        THUMBNAILS REAIS — FileReader API
     ═══════════════════════════════════════════════════════════ */
       const MAX_FOTOS = 5;
-      let fotosArmazenadas = []; /* {file, url} */
+
+      /* AGORA É GLOBAL E VISÍVEL PARA O criador.js */
+      window.fotosArmazenadas = [];
 
       document
         .getElementById("fotosLobby")
         .addEventListener("change", function () {
           const novos = Array.from(this.files);
-          const disponiveis = MAX_FOTOS - fotosArmazenadas.length;
+          const disponiveis = MAX_FOTOS - window.fotosArmazenadas.length;
           const aAdicionar = novos.slice(0, disponiveis);
 
           aAdicionar.forEach((file) => {
             const reader = new FileReader();
             reader.onload = (e) => {
-              fotosArmazenadas.push({ file, url: e.target.result });
+              window.fotosArmazenadas.push({ file, url: e.target.result });
               renderThumbs();
             };
             reader.readAsDataURL(file);
@@ -413,7 +402,7 @@
 
         const acc = temaAccents[temaAtual]?.acc || "#8B1A2E";
 
-        fotosArmazenadas.forEach((foto, idx) => {
+        window.fotosArmazenadas.forEach((foto, idx) => {
           const item = document.createElement("div");
           item.className = "thumb-item";
           item.style.borderColor = acc;
@@ -429,7 +418,7 @@
           overlay.setAttribute("aria-label", "Remover foto");
           overlay.innerHTML = "×";
           overlay.addEventListener("click", () => {
-            fotosArmazenadas.splice(idx, 1);
+            window.fotosArmazenadas.splice(idx, 1);
             renderThumbs();
           });
 
@@ -439,7 +428,7 @@
         });
 
         /* Slot de adicionar mais (se < MAX) */
-        if (fotosArmazenadas.length < MAX_FOTOS) {
+        if (window.fotosArmazenadas.length < MAX_FOTOS) {
           const add = document.createElement("label");
           add.className = "thumb-add";
           add.htmlFor = "fotosLobby";
@@ -451,7 +440,8 @@
 
         /* Esconde a upload-box principal quando já tem fotos */
         if (box)
-          box.style.display = fotosArmazenadas.length > 0 ? "none" : "flex";
+          box.style.display =
+            window.fotosArmazenadas.length > 0 ? "none" : "flex";
       }
 
       /* ═══════════════════════════════════════════════════════════
