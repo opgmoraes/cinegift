@@ -19,29 +19,25 @@
 
     <main id="jornada-container">
       <section id="fase-ticket" class="fase active">
-        <div class="preview-device">
-          <div class="preview-screen">
-            <div class="ticket-preview" id="ticketReal">
-              <div class="ticket-body-card">
-                <div class="ticket-header">
-                  CineGift <span class="ticket-header-badge">VIP</span>
-                </div>
-                <div class="ticket-body">
-                  <span class="ticket-label">Estrela Principal</span>
-                  <h2 id="ticket-estrela">Convidado</h2>
-                  <div class="ticket-director">
-                    DIRIGIDO POR <span id="ticket-diretor-nome">—</span>
-                  </div>
+        <div class="ticket-preview-wrapper">
+          <div class="ticket-preview" id="ticketReal">
+            <div class="ticket-body-card">
+              <div class="ticket-header">
+                CineGift <span class="ticket-header-badge">VIP</span>
+              </div>
+              <div class="ticket-body">
+                <span class="ticket-label">Estrela Principal</span>
+                <h2 id="ticket-estrela">Convidado</h2>
+                <div class="ticket-director">
+                  DIRIGIDO POR <span id="ticket-diretor-nome">—</span>
                 </div>
               </div>
-              <div class="ticket-tear">
-                <div class="ticket-tear-line"></div>
-              </div>
-              <div class="ticket-footer">
-                <div class="ticket-barcode">||| |||| || ||| ||||</div>
-                <div class="ticket-seat">
-                  <span>Sessão</span><strong>01</strong>
-                </div>
+            </div>
+            <div class="ticket-tear"><div class="ticket-tear-line"></div></div>
+            <div class="ticket-footer">
+              <div class="ticket-barcode">||| |||| || ||| ||||</div>
+              <div class="ticket-seat">
+                <span>Sessão</span><strong>01</strong>
               </div>
             </div>
           </div>
@@ -55,7 +51,6 @@
         <div class="interativo-box">
           <h2>Escolha seu lugar</h2>
           <div class="seat-grid" id="grid-sessao"></div>
-          <h3>O que vai acompanhar?</h3>
           <div class="snacks-container">
             <div class="snack-item" onclick="this.classList.toggle('active')">
               🍿 Pipoca
@@ -74,7 +69,7 @@
         <h2 class="titulo-fase">Em Cartaz</h2>
         <div class="lobby-gallery" id="lobbyGallery"></div>
         <button class="btn-acao" onclick="proximaFase('fase-filme')">
-          Assistir Filme 🚪
+          Entrar na Sala 🚪
         </button>
       </section>
 

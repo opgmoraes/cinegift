@@ -14,7 +14,7 @@ async function carregarSessao() {
     if (docSnap.exists()) {
       const dados = docSnap.data();
 
-      // Configura o tema e preenche nomes em todos os lugares
+      // 1. Aplica o Tema e Preenche Nomes no Ticket e Créditos
       document.body.setAttribute("data-tema", dados.tema);
       document.getElementById("ticket-estrela").innerText = dados.estrela;
       document.getElementById("ticket-diretor-nome").innerText = dados.diretor;
@@ -23,32 +23,33 @@ async function carregarSessao() {
       document.getElementById("msgDiretor").innerText = dados.diretor;
       document.getElementById("msgFinal").innerText = dados.mensagem;
 
-      // Prepara Vídeo
+      // 2. Galeria de Pôsteres (Aparece na Fase 3)
+      const gallery = document.getElementById("lobbyGallery");
+      if (dados.fotos && dados.fotos.length > 0) {
+        dados.fotos.forEach((url) => {
+          const div = document.createElement("div");
+          div.className = "poster-frame";
+          div.innerHTML = `<img src="${url}">`;
+          gallery.appendChild(div);
+        });
+      }
+
+      // 3. Prepara o Vídeo
       const videoPlayer = document.getElementById("moviePlayer");
       videoPlayer.src = dados.video;
       videoPlayer.load();
 
-      // Gera Galeria de Pôsteres (Fotos do R2) antes do vídeo
-      const gallery = document.getElementById("lobbyGallery");
-      dados.fotos.forEach((url) => {
-        const div = document.createElement("div");
-        div.className = "poster-frame";
-        div.innerHTML = `<img src="${url}">`;
-        gallery.appendChild(div);
-      });
-
       gerarPoltronas();
-      document.getElementById("loader").classList.add("hidden");
+      document.getElementById("loader").style.display = "none";
     }
   } catch (e) {
-    console.error(e);
+    console.error("Erro ao carregar:", e);
   }
 }
 
 function gerarPoltronas() {
   const grid = document.getElementById("grid-sessao");
-  if (!grid) return;
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 24; i++) {
     const seat = document.createElement("div");
     seat.className = "seat";
     seat.onclick = () => {
@@ -61,7 +62,7 @@ function gerarPoltronas() {
   }
 }
 
-// Exposto globalmente para o HTML
+// Global para os botões do HTML
 window.proximaFase = function (idFase) {
   document
     .querySelectorAll(".fase")
@@ -69,6 +70,7 @@ window.proximaFase = function (idFase) {
   document.getElementById(idFase).classList.add("active");
 };
 
+// Controle do Player de Cinema
 document.getElementById("playButton").onclick = () => {
   document.getElementById("curtainLeft").classList.add("open-left");
   document.getElementById("curtainRight").classList.add("open-right");
