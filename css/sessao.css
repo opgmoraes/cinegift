@@ -17,7 +17,6 @@
   font-family: var(--font-body);
 }
 
-/* Temas Visuais */
 .cinema-body[data-tema="romance"] {
   --theme-bg: #0d0610;
   --theme-accent: #c4405a;
@@ -71,7 +70,6 @@
   --theme-glow: rgba(212, 64, 122, 0.3);
 }
 
-/* Fases */
 .fase {
   display: none;
   width: 100vw;
@@ -120,7 +118,6 @@
   padding: 0 20px;
 }
 
-/* Estética Glassmorphism Premium */
 .interativo-box {
   background: rgba(20, 15, 18, 0.45);
   backdrop-filter: blur(16px);
@@ -131,8 +128,6 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   max-width: 90vw;
 }
-
-/* Atmosfera Poeira de Projetor */
 .dust-overlay {
   position: fixed;
   inset: 0;
@@ -147,7 +142,6 @@
   opacity: 1;
 }
 
-/* O Ingresso */
 .ticket-preview {
   width: 320px;
   margin-bottom: 2.5rem;
@@ -258,7 +252,6 @@
   color: var(--theme-accent);
 }
 
-/* Animação Ingresso Rasgado (Scaneado) */
 .ticket-preview.tearing {
   animation: ticketTearDown 0.8s forwards ease-in;
 }
@@ -275,7 +268,6 @@
   }
 }
 
-/* Poltronas com Efeito de "Pulo" */
 .seat-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -293,7 +285,7 @@
 }
 .seat:active {
   transform: scale(0.85);
-} /* Física de apertar o banco */
+}
 .seat.selected {
   background: var(--theme-accent);
   box-shadow: 0 0 15px var(--theme-accent);
@@ -312,7 +304,6 @@
   }
 }
 
-/* Snacks & Botões */
 .snacks-container {
   display: flex;
   gap: 15px;
@@ -357,7 +348,6 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* Galeria com Legendas de Título (Pôster de Cinema) */
 .lobby-gallery {
   display: flex;
   gap: 20px;
@@ -394,7 +384,6 @@
   object-fit: cover;
 }
 
-/* A Legenda com Fade-up Elegante */
 .poster-caption {
   position: absolute;
   bottom: 0;
@@ -409,16 +398,13 @@
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
   transform: translateY(15px);
   opacity: 0;
-  transition: 0.3s var(--ease-cinema);
+  transition: 0.3s ease;
 }
 .poster-frame:hover .poster-caption {
   transform: translateY(0);
   opacity: 1;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   O TELÃO IMAX & CORTINAS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .curtain-container {
   position: relative;
   width: 100vw;
@@ -483,7 +469,6 @@
   transform: scaleX(0.06);
 }
 
-/* Telão IMAX Iluminado */
 .theater-screen {
   position: absolute;
   inset: 0;
@@ -504,7 +489,6 @@
     0 50px 100px rgba(0, 0, 0, 0.9);
   position: relative;
 }
-/* Reflexo do telão no chão da sala escura */
 .video-wrapper::after {
   content: "";
   position: absolute;
@@ -524,7 +508,6 @@ video {
   border-radius: 4px;
 }
 
-/* Créditos Finais */
 .credits-roll {
   display: none;
   position: absolute;
@@ -598,7 +581,6 @@ video {
   }
 }
 
-/* Loader */
 .loader-overlay {
   position: fixed;
   inset: 0;

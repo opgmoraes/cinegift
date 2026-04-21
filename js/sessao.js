@@ -28,7 +28,6 @@ let audioTrilha = document.getElementById("audioTrilha");
 let audioEfeito = document.getElementById("audioEfeito");
 let playerYT = null;
 
-// Ferramenta de Controle Suave de Volume
 function fadeAudio(audioElement, targetVolume, duration, callback) {
   const startVolume = audioElement.volume || 0;
   const diff = targetVolume - startVolume;
@@ -46,16 +45,12 @@ function fadeAudio(audioElement, targetVolume, duration, callback) {
   }, interval);
 }
 
-// Efeitos Sonoros Físicos
 window.tocarEfeito = function (nome) {
   audioEfeito.src = `assets/audio/efeitos/${nome}.mp3`;
   audioEfeito.volume = 0.8;
-  audioEfeito
-    .play()
-    .catch((e) => console.log("Áudio bloqueado pelo navegador"));
+  audioEfeito.play().catch((e) => console.log("Áudio efeito bloqueado"));
 };
 
-// Extrair ID do YouTube
 function obterVideoIdYouTube(url) {
   const regex =
     /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
@@ -63,16 +58,28 @@ function obterVideoIdYouTube(url) {
   return match ? match[1] : null;
 }
 
-// Inicia API do YouTube se houver música Custom
 function prepararYouTube(youtubeUrl) {
   const videoId = obterVideoIdYouTube(youtubeUrl);
   if (!videoId) return;
+
+  // Carrega a API do Youtube dinamicamente
+  const tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  const firstScriptTag = document.getElementsByTagName("script")[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
   window.onYouTubeIframeAPIReady = function () {
     playerYT = new YT.Player("youtubePlayer", {
-      height: "0",
-      width: "0",
+      height: "1",
+      width: "1",
       videoId: videoId,
-      playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: videoId },
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        loop: 1,
+        playlist: videoId,
+        playsinline: 1,
+      },
       events: {
         onReady: (event) => {
           event.target.setVolume(0);
@@ -112,7 +119,6 @@ async function carregarSessao() {
       document.getElementById("frase-corredor").innerText =
         `"${arrayFrases[Math.floor(Math.random() * arrayFrases.length)]}"`;
 
-      // Renderiza as fotos COM SEUS TÍTULOS COMO PÔSTER
       const gallery = document.getElementById("lobbyGallery");
       if (gallery) {
         gallery.innerHTML = "";
@@ -127,7 +133,7 @@ async function carregarSessao() {
             const legendHTML = caption
               ? `<div class="poster-caption">${caption}</div>`
               : "";
-            div.innerHTML = `<img src="${url}" alt="Lembrança em Cartaz">${legendHTML}`;
+            div.innerHTML = `<img src="${url}" alt="Cartaz">${legendHTML}`;
             gallery.appendChild(div);
           });
         } else {
@@ -135,7 +141,6 @@ async function carregarSessao() {
         }
       }
 
-      // Prepara o Player de Música do YouTube se for o caso
       if (
         dadosSessaoGlobal.musica === "custom" &&
         dadosSessaoGlobal.youtubeLink
@@ -164,8 +169,8 @@ function gerarPoltronas() {
     const seat = document.createElement("div");
     seat.className = "seat";
     seat.onclick = () => {
-      tocarEfeito("seat"); // Feedback Físico
-      if (navigator.vibrate) navigator.vibrate(50); // Vibração Celular
+      tocarEfeito("seat");
+      if (navigator.vibrate) navigator.vibrate(50);
       document
         .querySelectorAll(".seat")
         .forEach((s) => s.classList.remove("selected"));
@@ -175,10 +180,8 @@ function gerarPoltronas() {
   }
 }
 
-// ORQUESTRAÇÃO DE FASES E ÁUDIO
 window.proximaFase = function (idFase) {
   if (idFase === "fase-poltrona") {
-    // Rasga o ingresso com som e animação
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
 
@@ -188,7 +191,6 @@ window.proximaFase = function (idFase) {
         .forEach((f) => f.classList.remove("active"));
       document.getElementById(idFase)?.classList.add("active");
 
-      // Inicia a música Baixinho (Fade-in)
       if (
         dadosSessaoGlobal.musica === "custom" &&
         playerYT &&
@@ -203,19 +205,14 @@ window.proximaFase = function (idFase) {
         }, 200);
       } else {
         const trackStr = dadosSessaoGlobal.musica || "1";
-        // Suporta tanto os números antigos (1,2,3) quanto o novo formato tema_numero
-        const cleanTrack = trackStr.includes("_")
-          ? trackStr.split("_")[1]
-          : trackStr;
-
-        audioTrilha.src = `assets/audio/musicas/${dadosSessaoGlobal.tema}/${cleanTrack}.mp3`;
+        audioTrilha.src = `assets/audio/musicas/${dadosSessaoGlobal.tema}/${trackStr}.mp3`;
         audioTrilha.volume = 0;
         audioTrilha
           .play()
           .then(() => fadeAudio(audioTrilha, 0.3, 3000))
           .catch((e) => console.log(e));
       }
-    }, 800); // Espera a animação do rasgo terminar
+    }, 800);
   } else {
     document
       .querySelectorAll(".fase")
@@ -224,7 +221,6 @@ window.proximaFase = function (idFase) {
   }
 };
 
-// BOTÃO PLAY NO FILME
 const playMasterBtn = document.getElementById("playMasterBtn");
 if (playMasterBtn) {
   playMasterBtn.onclick = () => {
@@ -237,13 +233,10 @@ if (playMasterBtn) {
     document.getElementById("curtainLeft").classList.add("open-left");
     document.getElementById("curtainRight").classList.add("open-right");
 
-    // Pausa Inteligente da Música se vídeo original tiver áudio
     if (dadosSessaoGlobal.videoTemSom) {
-      if (dadosSessaoGlobal.musica === "custom" && playerYT) {
+      if (dadosSessaoGlobal.musica === "custom" && playerYT)
         playerYT.pauseVideo();
-      } else {
-        fadeAudio(audioTrilha, 0, 1500, () => audioTrilha.pause());
-      }
+      else fadeAudio(audioTrilha, 0, 1500, () => audioTrilha.pause());
     }
 
     const videoPlayer = document.getElementById("moviePlayer");
@@ -252,7 +245,6 @@ if (playMasterBtn) {
     }, 1500);
 
     videoPlayer.onended = () => {
-      // Retorna a música
       if (dadosSessaoGlobal.videoTemSom) {
         if (dadosSessaoGlobal.musica === "custom" && playerYT)
           playerYT.playVideo();
@@ -261,10 +253,8 @@ if (playMasterBtn) {
           fadeAudio(audioTrilha, 0.3, 2000);
         }
       }
-
       document.getElementById("credits").classList.add("active");
 
-      // Encerra a trilha com Fade Out Lento
       setTimeout(() => {
         if (dadosSessaoGlobal.musica === "custom" && playerYT) {
           let v = 30;

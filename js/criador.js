@@ -97,7 +97,6 @@ window.finalizarSessao = async function () {
       diretor: nomeDiretor,
       estrela: nomeEstrela,
       mensagem: document.getElementById("mensagemFinal")?.value || "",
-      // Configurações de áudio
       musica: document.getElementById("musicaSelecao").value,
       youtubeLink: document.getElementById("youtubeLink").value,
       videoTemSom: document.getElementById("videoTemSom").checked,
@@ -108,7 +107,6 @@ window.finalizarSessao = async function () {
 
     const fotosReais = window.fotosArmazenadas || [];
 
-    // Salva URL da imagem + Título como Objeto
     for (let fotoObj of fotosReais) {
       const url = await uploadToR2(fotoObj.file, "foto");
       dados.fotos.push({
@@ -122,7 +120,15 @@ window.finalizarSessao = async function () {
     }
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
-    alert("Sucesso! ID da Sessão: " + docRef.id);
+
+    // GERA O LINK E O QR CODE NO MODAL!
+    const linkFinal = `${window.location.origin}/sessao.html?id=${docRef.id}`;
+    document.getElementById("linkGerado").value = linkFinal;
+    document.getElementById("qrCodeImg").src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(linkFinal)}`;
+
+    // Mostra o Modal
+    document.getElementById("modalSucesso").style.display = "flex";
     btn.innerText = "✅ Concluído!";
   } catch (error) {
     console.error(error);
