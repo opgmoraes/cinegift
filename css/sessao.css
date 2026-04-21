@@ -1,5 +1,5 @@
 /* ============================================================
-   CineGift — sessao.css
+   CineGift — sessao.css (Pro IMAX Edition)
    ============================================================ */
 :root {
   --noite: #0a0407;
@@ -17,9 +17,7 @@
   font-family: var(--font-body);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TEMAS (Cores dinâmicas para Ticket, Botões e Cortinas)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Temas Visuais */
 .cinema-body[data-tema="romance"] {
   --theme-bg: #0d0610;
   --theme-accent: #c4405a;
@@ -31,6 +29,7 @@
   --tk-tear-bg: #2a0818;
   --tk-accent2: #8b6070;
   --cor-cortina: #660011;
+  --theme-glow: rgba(196, 64, 90, 0.3);
 }
 .cinema-body[data-tema="amizade"] {
   --theme-bg: #0e1a2a;
@@ -43,6 +42,7 @@
   --tk-tear-bg: #1a3a5c;
   --tk-accent2: #a8d0e8;
   --cor-cortina: #0c2038;
+  --theme-glow: rgba(74, 142, 196, 0.3);
 }
 .cinema-body[data-tema="familia"] {
   --theme-bg: #160a04;
@@ -55,6 +55,7 @@
   --tk-tear-bg: #3a1a08;
   --tk-accent2: #e8a860;
   --cor-cortina: #3a1705;
+  --theme-glow: rgba(212, 120, 42, 0.3);
 }
 .cinema-body[data-tema="aniversario"] {
   --theme-bg: #12080e;
@@ -67,11 +68,10 @@
   --tk-tear-bg: #2a0a1e;
   --tk-accent2: #4a8ec4;
   --cor-cortina: #2e0827;
+  --theme-glow: rgba(212, 64, 122, 0.3);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FASES DA JORNADA (Esconde as inativas e mostra a atual)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Fases */
 .fase {
   display: none;
   width: 100vw;
@@ -95,6 +95,7 @@
   align-items: center;
   text-align: center;
   width: 100%;
+  z-index: 2;
 }
 .fase-titulo {
   font-family: var(--font-display);
@@ -119,9 +120,34 @@
   padding: 0 20px;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   INGRESSO, POLTRONAS, SNACKS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Estética Glassmorphism Premium */
+.interativo-box {
+  background: rgba(20, 15, 18, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+}
+
+/* Atmosfera Poeira de Projetor */
+.dust-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+#fase-filme.active ~ .dust-overlay,
+#fase-filme.active .dust-overlay {
+  opacity: 1;
+}
+
+/* O Ingresso */
 .ticket-preview {
   width: 320px;
   margin-bottom: 2.5rem;
@@ -232,6 +258,24 @@
   color: var(--theme-accent);
 }
 
+/* Animação Ingresso Rasgado (Scaneado) */
+.ticket-preview.tearing {
+  animation: ticketTearDown 0.8s forwards ease-in;
+}
+@keyframes ticketTearDown {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(-15deg);
+    opacity: 0;
+  }
+}
+
+/* Poltronas com Efeito de "Pulo" */
 .seat-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -247,16 +291,33 @@
   cursor: pointer;
   transition: 0.3s;
 }
+.seat:active {
+  transform: scale(0.85);
+} /* Física de apertar o banco */
 .seat.selected {
   background: var(--theme-accent);
   box-shadow: 0 0 15px var(--theme-accent);
   border-bottom-color: var(--tk-bg1);
+  animation: seatPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes seatPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
+/* Snacks & Botões */
 .snacks-container {
   display: flex;
   gap: 15px;
   margin-bottom: 2.5rem;
+  justify-content: center;
 }
 .snack-item {
   background: transparent;
@@ -272,6 +333,7 @@
   background: var(--theme-accent);
   border-color: var(--theme-accent);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
 }
 
 .btn-acao {
@@ -292,11 +354,10 @@
 .btn-acao:hover {
   transform: translateY(-3px);
   filter: brightness(1.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   GALERIA DE PÔSTERES (Em Cartaz)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Galeria com Legendas de Título (Pôster de Cinema) */
 .lobby-gallery {
   display: flex;
   gap: 20px;
@@ -309,16 +370,23 @@
   justify-content: center;
 }
 .poster-frame {
+  position: relative;
   flex: 0 0 200px;
   height: 300px;
   background: #111;
   border: 4px solid #fff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   transform: rotate(-2deg);
-  transition: 0.3s;
+  transition: 0.4s var(--ease-cinema);
+  overflow: hidden;
 }
 .poster-frame:nth-child(even) {
   transform: rotate(2deg);
+}
+.poster-frame:hover {
+  transform: scale(1.05) rotate(0deg);
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
 }
 .poster-frame img {
   width: 100%;
@@ -326,8 +394,30 @@
   object-fit: cover;
 }
 
+/* A Legenda com Fade-up Elegante */
+.poster-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, transparent 100%);
+  color: #fff;
+  padding: 30px 10px 12px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+  transform: translateY(15px);
+  opacity: 0;
+  transition: 0.3s var(--ease-cinema);
+}
+.poster-frame:hover .poster-caption {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CORTINAS 3D REALISTAS & PLAYER
+   O TELÃO IMAX & CORTINAS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .curtain-container {
   position: relative;
@@ -336,7 +426,6 @@
   overflow: hidden;
   background: #000;
 }
-
 .master-play-overlay {
   position: absolute;
   inset: 0;
@@ -348,7 +437,6 @@
   transition: opacity 0.6s ease;
   backdrop-filter: blur(2px);
 }
-
 .curtain-valance {
   position: absolute;
   top: 0;
@@ -359,7 +447,6 @@
   z-index: 20;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
 }
-
 .curtain {
   position: absolute;
   top: 0;
@@ -379,7 +466,6 @@
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
   transition: transform 3.5s cubic-bezier(0.65, 0, 0.15, 1);
 }
-
 .curtain.left {
   left: 0;
   transform-origin: left top;
@@ -390,7 +476,6 @@
   transform-origin: right top;
   border-left: 4px solid rgba(0, 0, 0, 0.4);
 }
-
 .curtain.open-left {
   transform: scaleX(0.06);
 }
@@ -398,6 +483,7 @@
   transform: scaleX(0.06);
 }
 
+/* Telão IMAX Iluminado */
 .theater-screen {
   position: absolute;
   inset: 0;
@@ -405,13 +491,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000;
+  background: radial-gradient(circle at center 30%, #111 0%, #000 100%);
 }
 .video-wrapper {
   width: 90%;
-  max-width: 860px;
-  border-radius: 4px;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.6);
+  max-width: 960px;
+  border-radius: 6px;
+  background: #000;
+  box-shadow:
+    0 0 0 10px #050505,
+    0 0 120px var(--theme-glow),
+    0 50px 100px rgba(0, 0, 0, 0.9);
+  position: relative;
+}
+/* Reflexo do telão no chão da sala escura */
+.video-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: 5%;
+  width: 90%;
+  height: 60px;
+  background: var(--theme-glow);
+  filter: blur(60px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
 }
 video {
   width: 100%;
@@ -419,9 +524,7 @@ video {
   border-radius: 4px;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CRÉDITOS FINAIS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Créditos Finais */
 .credits-roll {
   display: none;
   position: absolute;
@@ -434,6 +537,7 @@ video {
 }
 .credits-roll.active {
   display: flex;
+  animation: fadeIn 2s ease forwards;
 }
 .credits-content {
   animation: rollUp 18s linear forwards;
@@ -494,9 +598,7 @@ video {
   }
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LOADER DA PIPOCA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Loader */
 .loader-overlay {
   position: fixed;
   inset: 0;

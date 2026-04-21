@@ -50,9 +50,9 @@
                 aria-pressed="true"
               >
                 <div class="tcb-inner">
-                  <span class="tcb-emoji">❤️</span>
-                  <span class="tcb-nome">Romance</span>
-                  <span class="tcb-sub">Cinematográfico · Dramático</span>
+                  <span class="tcb-emoji">❤️</span
+                  ><span class="tcb-nome">Romance</span
+                  ><span class="tcb-sub">Cinematográfico · Dramático</span>
                 </div>
                 <div class="tcb-check">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -66,7 +66,6 @@
                   </svg>
                 </div>
               </button>
-
               <button
                 class="tema-card-btn"
                 data-tema="amizade"
@@ -74,9 +73,9 @@
                 aria-pressed="false"
               >
                 <div class="tcb-inner">
-                  <span class="tcb-emoji">✌️</span>
-                  <span class="tcb-nome">Amizade</span>
-                  <span class="tcb-sub">Nostálgico · Polaroid</span>
+                  <span class="tcb-emoji">✌️</span
+                  ><span class="tcb-nome">Amizade</span
+                  ><span class="tcb-sub">Nostálgico · Polaroid</span>
                 </div>
                 <div class="tcb-check">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -90,7 +89,6 @@
                   </svg>
                 </div>
               </button>
-
               <button
                 class="tema-card-btn"
                 data-tema="familia"
@@ -98,9 +96,9 @@
                 aria-pressed="false"
               >
                 <div class="tcb-inner">
-                  <span class="tcb-emoji">👨‍👩‍👧‍👦</span>
-                  <span class="tcb-nome">Família</span>
-                  <span class="tcb-sub">Aconchegante · Âmbar</span>
+                  <span class="tcb-emoji">👨‍👩‍👧‍👦</span
+                  ><span class="tcb-nome">Família</span
+                  ><span class="tcb-sub">Aconchegante · Âmbar</span>
                 </div>
                 <div class="tcb-check">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -114,7 +112,6 @@
                   </svg>
                 </div>
               </button>
-
               <button
                 class="tema-card-btn"
                 data-tema="aniversario"
@@ -122,9 +119,9 @@
                 aria-pressed="false"
               >
                 <div class="tcb-inner">
-                  <span class="tcb-emoji">🎂</span>
-                  <span class="tcb-nome">Aniversário</span>
-                  <span class="tcb-sub">Colorido · Confetes</span>
+                  <span class="tcb-emoji">🎂</span
+                  ><span class="tcb-nome">Aniversário</span
+                  ><span class="tcb-sub">Colorido · Confetes</span>
                 </div>
                 <div class="tcb-check">
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -152,7 +149,6 @@
               autocomplete="off"
             />
           </div>
-
           <div class="input-group">
             <label for="nomeEstrela">Estrela Principal (Quem recebe)</label>
             <input
@@ -163,7 +159,6 @@
               autocomplete="off"
             />
           </div>
-
           <button class="btn-primary w-100" onclick="nextStep(2)">
             Próximo Passo →
           </button>
@@ -173,7 +168,7 @@
           <span class="step-number">02 / 04</span>
           <h2>Em Cartaz</h2>
           <p>
-            Escolha as fotos que ficarão no corredor do cinema. Até 5 fotos.
+            Escolha as fotos e adicione títulos para os pôsteres. Até 5 fotos.
           </p>
 
           <div class="upload-area" id="upload-fotos">
@@ -189,8 +184,11 @@
               <small>JPG, PNG, WEBP · Máx. 5 arquivos</small>
             </div>
           </div>
-
-          <div class="thumbs-grid" id="thumbsGrid"></div>
+          <div
+            class="thumbs-grid"
+            id="thumbsGrid"
+            style="align-items: flex-start"
+          ></div>
 
           <div class="button-group">
             <button class="btn-secondary" onclick="prevStep(1)">
@@ -204,8 +202,8 @@
 
         <div id="step-3" class="wizard-step">
           <span class="step-number">03 / 04</span>
-          <h2>O Rolo de Filme</h2>
-          <p>O grande momento. Suba um vídeo de até 30 segundos.</p>
+          <h2>A Produção</h2>
+          <p>Suba seu vídeo e escolha a trilha sonora.</p>
 
           <div class="upload-area" id="upload-video">
             <input
@@ -220,6 +218,71 @@
             </div>
           </div>
           <span id="video-error" class="error-msg"></span>
+
+          <div
+            class="input-group"
+            style="
+              margin-top: 2rem;
+              border-top: 1px solid rgba(255, 255, 255, 0.1);
+              padding-top: 1.5rem;
+            "
+          >
+            <label class="input-label">Trilha Sonora de Fundo</label>
+            <select
+              id="musicaSelecao"
+              class="input-field"
+              onchange="
+                document.getElementById('youtubeLink').style.display =
+                  this.value === 'custom' ? 'block' : 'none'
+              "
+            >
+              <option value="1">Trilha 01 (Recomendada do Tema)</option>
+              <option value="2">Trilha 02 (Alternativa)</option>
+              <option value="3">Trilha 03 (Emocionante)</option>
+              <option value="4">Trilha 04 (Animada)</option>
+              <option value="custom">
+                Música Personalizada (Link do YouTube)
+              </option>
+            </select>
+
+            <input
+              type="text"
+              id="youtubeLink"
+              class="input-field"
+              placeholder="Cole o link do YouTube aqui"
+              style="display: none; margin-top: 10px"
+            />
+
+            <div
+              class="checkbox-group"
+              style="
+                margin-top: 15px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+              "
+            >
+              <input
+                type="checkbox"
+                id="videoTemSom"
+                checked
+                style="width: 18px; height: 18px; cursor: pointer"
+              />
+              <label
+                for="videoTemSom"
+                style="
+                  margin: 0;
+                  font-size: 0.8rem;
+                  color: var(--creme);
+                  text-transform: none;
+                  letter-spacing: normal;
+                  cursor: pointer;
+                "
+              >
+                Meu vídeo tem som (Pausar música de fundo durante o filme)
+              </label>
+            </div>
+          </div>
 
           <div class="button-group">
             <button class="btn-secondary" onclick="prevStep(2)">
@@ -280,8 +343,7 @@
             >
               <div class="ticket-body-card">
                 <div class="ticket-header">
-                  CineGift
-                  <span class="ticket-header-badge">VIP</span>
+                  CineGift <span class="ticket-header-badge">VIP</span>
                 </div>
                 <div class="ticket-body">
                   <span class="ticket-label">Estrela Principal</span>
@@ -291,16 +353,13 @@
                   </div>
                 </div>
               </div>
-
               <div class="ticket-tear">
                 <div class="ticket-tear-line"></div>
               </div>
-
               <div class="ticket-footer">
                 <div class="ticket-barcode">||| |||| || ||| ||||</div>
                 <div class="ticket-seat">
-                  <span>Sessão</span>
-                  <strong>01</strong>
+                  <span>Sessão</span><strong>01</strong>
                 </div>
               </div>
             </div>
@@ -312,11 +371,7 @@
 
     <script type="module" src="js/criador.js"></script>
     <script>
-      /* ═══════════════════════════════════════════════════════════
-       TEMA ATUAL — propaga para ticket e wizard
-    ═══════════════════════════════════════════════════════════ */
       let temaAtual = "romance";
-
       const temaAccents = {
         romance: { acc: "#C4405A", glow: "rgba(196,64,90,0.25)" },
         amizade: { acc: "#4A8EC4", glow: "rgba(74,142,196,0.25)" },
@@ -326,35 +381,24 @@
 
       function aplicarTema(tema) {
         temaAtual = tema;
-        /* hidden input para compatibilidade com criador.js */
         document.getElementById("tema").value = tema;
-        /* ticket preview */
         const ticket = document.getElementById("previewIngresso");
         if (ticket) ticket.setAttribute("data-tema", tema);
-        /* progress bar e dots com cor do tema */
         const acc = temaAccents[tema]?.acc || "#8B1A2E";
         document
           .querySelectorAll(
             ".wizard-progress-dot.active, .wizard-progress-dot.done",
           )
-          .forEach((d) => {
-            d.style.background = acc;
-          });
-        /* thumbs: atualizar borda das fotos existentes */
-        document.querySelectorAll(".thumb-item").forEach((t) => {
-          t.style.borderColor = acc;
-        });
-        /* ticker: atualizar cor e trocar frase */
+          .forEach((d) => (d.style.background = acc));
+        document
+          .querySelectorAll(".thumb-item")
+          .forEach((t) => (t.style.borderColor = acc));
         atualizarTicker(tema);
       }
 
-      /* ═══════════════════════════════════════════════════════════
-       CARDS DE TEMA — grid 2×2
-    ═══════════════════════════════════════════════════════════ */
       document.querySelectorAll(".tema-card-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const tema = btn.dataset.tema;
-          /* remove selected de todos */
           document.querySelectorAll(".tema-card-btn").forEach((b) => {
             b.classList.remove("selected");
             b.setAttribute("aria-pressed", "false");
@@ -365,12 +409,7 @@
         });
       });
 
-      /* ═══════════════════════════════════════════════════════════
-       THUMBNAILS REAIS — FileReader API
-    ═══════════════════════════════════════════════════════════ */
       const MAX_FOTOS = 5;
-
-      /* AGORA É GLOBAL E VISÍVEL PARA O criador.js */
       window.fotosArmazenadas = [];
 
       document
@@ -383,13 +422,15 @@
           aAdicionar.forEach((file) => {
             const reader = new FileReader();
             reader.onload = (e) => {
-              window.fotosArmazenadas.push({ file, url: e.target.result });
+              window.fotosArmazenadas.push({
+                file,
+                url: e.target.result,
+                titulo: "",
+              });
               renderThumbs();
             };
             reader.readAsDataURL(file);
           });
-
-          /* limpa o input para permitir re-seleção */
           this.value = "";
         });
 
@@ -399,13 +440,20 @@
         if (!grid) return;
 
         grid.innerHTML = "";
-
         const acc = temaAccents[temaAtual]?.acc || "#8B1A2E";
 
         window.fotosArmazenadas.forEach((foto, idx) => {
+          const wrapper = document.createElement("div");
+          wrapper.style.display = "flex";
+          wrapper.style.flexDirection = "column";
+          wrapper.style.width = "72px";
+          wrapper.style.gap = "6px";
+
           const item = document.createElement("div");
           item.className = "thumb-item";
           item.style.borderColor = acc;
+          item.style.width = "100%";
+          item.style.height = "72px";
           item.style.animationDelay = `${idx * 0.05}s`;
 
           const img = document.createElement("img");
@@ -415,87 +463,78 @@
           const overlay = document.createElement("button");
           overlay.className = "thumb-remove";
           overlay.type = "button";
-          overlay.setAttribute("aria-label", "Remover foto");
           overlay.innerHTML = "×";
           overlay.addEventListener("click", () => {
             window.fotosArmazenadas.splice(idx, 1);
             renderThumbs();
           });
 
+          const captionInput = document.createElement("input");
+          captionInput.type = "text";
+          captionInput.placeholder = "Título...";
+          captionInput.value = foto.titulo;
+          captionInput.style.cssText =
+            "width: 100%; font-size: 0.65rem; padding: 4px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-family: 'DM Mono', monospace;";
+          captionInput.oninput = (e) => (foto.titulo = e.target.value);
+
           item.appendChild(img);
           item.appendChild(overlay);
-          grid.appendChild(item);
+          wrapper.appendChild(item);
+          wrapper.appendChild(captionInput);
+          grid.appendChild(wrapper);
         });
 
-        /* Slot de adicionar mais (se < MAX) */
         if (window.fotosArmazenadas.length < MAX_FOTOS) {
           const add = document.createElement("label");
           add.className = "thumb-add";
           add.htmlFor = "fotosLobby";
-          add.setAttribute("aria-label", "Adicionar foto");
           add.innerHTML = "<span>+</span>";
           add.style.borderColor = acc;
+          add.style.width = "72px";
+          add.style.height = "72px";
           grid.appendChild(add);
         }
 
-        /* Esconde a upload-box principal quando já tem fotos */
         if (box)
           box.style.display =
             window.fotosArmazenadas.length > 0 ? "none" : "flex";
       }
 
-      /* ═══════════════════════════════════════════════════════════
-       TICKER DE INSPIRAÇÃO
-    ═══════════════════════════════════════════════════════════ */
       const frasesPorTema = {
         romance: [
-          "Você transformou meu mundo em uma cena que quero rever pra sempre.",
-          "Em cada olhar seu há um filme que só eu tenho o privilégio de assistir.",
-          "Você é minha cena favorita em qualquer história.",
-          "Obrigado por tornar cada dia em algo que vale a pena lembrar.",
-          "Com você, até o silêncio tem trilha sonora.",
+          "Você transformou meu mundo...",
+          "Minha cena favorita...",
+          "Obrigado por tornar cada dia especial.",
         ],
         amizade: [
-          "Você é daquelas pessoas que tornam tudo mais leve e mais divertido.",
-          "Obrigado por estar sempre lá, sem precisar de legenda.",
-          "A nossa amizade é o tipo de coisa que não precisa de roteiro.",
-          "Você é o melhor coadjuvante que alguém poderia ter.",
-          "Com você, qualquer cena vira a melhor parte do filme.",
+          "A nossa amizade não precisa de roteiro...",
+          "Melhor coadjuvante...",
+          "Cenas inesquecíveis.",
         ],
         familia: [
-          "Obrigado por tudo que você fez e por tudo que você é.",
-          "Você é a base de cada história que eu tenho para contar.",
-          "Tudo que sou hoje tem a sua assinatura.",
-          "Lar é onde você está. Simples assim.",
-          "Nenhum roteiro seria bom sem você nele.",
+          "Lar é onde você está...",
+          "A base da minha história...",
+          "Nenhum roteiro seria bom sem você.",
         ],
         aniversario: [
-          "Que esse dia seja tão especial quanto você merece.",
-          "Mais um ano, mais memórias incríveis com você.",
-          "Parabéns! O mundo é melhor com você nele.",
-          "Que venham muitos mais capítulos dessa história linda.",
-          "Hoje é o seu dia. E você merece cada segundo.",
+          "Que esse dia seja especial...",
+          "Mais um capítulo lindo...",
+          "O mundo é melhor com você.",
         ],
       };
 
       let tickerTimer = null;
       let tickerIdx = 0;
-      let tickerFading = false;
-
       function atualizarTicker(tema) {
         clearInterval(tickerTimer);
         tickerIdx = 0;
-        const wrap = document.getElementById("inspiracaoWrap");
         const btn = document.getElementById("inspiracaoFrase");
         const txt = document.getElementById("inspiracaoTexto");
-        if (!wrap || !btn || !txt) return;
-
+        if (!btn || !txt) return;
         const acc = temaAccents[tema]?.acc || "#8B1A2E";
         btn.style.color = acc;
         btn.style.borderColor = `${acc}33`;
-
         const frases = frasesPorTema[tema] || frasesPorTema.romance;
-
         function mostrarFrase(idx) {
           txt.style.opacity = "0";
           setTimeout(() => {
@@ -503,56 +542,37 @@
             txt.style.opacity = "1";
           }, 250);
         }
-
         mostrarFrase(0);
         tickerTimer = setInterval(() => {
           tickerIdx = (tickerIdx + 1) % frases.length;
           mostrarFrase(tickerIdx);
         }, 4200);
-
-        /* Clique preenche o textarea */
         btn.onclick = () => {
           const campo = document.getElementById("mensagemFinal");
-          if (!campo) return;
-          const frase = frases[tickerIdx % frases.length];
-          campo.value = frase;
+          campo.value = frases[tickerIdx % frases.length];
           campo.dispatchEvent(new Event("input"));
-          campo.focus();
-          /* feedback visual rápido */
-          btn.style.opacity = "0.5";
-          setTimeout(() => (btn.style.opacity = "1"), 300);
         };
       }
-
-      /* Inicializa ticker com tema padrão */
       atualizarTicker("romance");
 
-      /* ═══════════════════════════════════════════════════════════
-       INPUTS — preview e contador
-    ═══════════════════════════════════════════════════════════ */
       document
         .getElementById("nomeEstrela")
         ?.addEventListener("input", function () {
-          const el = document.getElementById("prevEstrela");
-          if (el) el.textContent = this.value || "—";
+          document.getElementById("prevEstrela").textContent =
+            this.value || "—";
         });
-
       document
         .getElementById("nomeDiretor")
         ?.addEventListener("input", function () {
-          const el = document.getElementById("prevDiretor");
-          if (el) el.textContent = this.value || "—";
+          document.getElementById("prevDiretor").textContent =
+            this.value || "—";
         });
-
       document
         .getElementById("mensagemFinal")
         ?.addEventListener("input", function () {
           document.getElementById("charNum").textContent = this.value.length;
         });
 
-      /* ═══════════════════════════════════════════════════════════
-       NAVEGAÇÃO ENTRE PASSOS
-    ═══════════════════════════════════════════════════════════ */
       function nextStep(n) {
         document
           .querySelectorAll(".wizard-step")
@@ -566,10 +586,7 @@
           if (i + 1 <= n) dot.style.background = acc;
           else dot.style.background = "";
         });
-        /* Re-inicializa ticker ao entrar no passo 4 */
-        if (n === 4) atualizarTicker(temaAtual);
       }
-
       function prevStep(n) {
         nextStep(n);
       }

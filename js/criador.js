@@ -5,12 +5,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
 
-// --- ESTADO GLOBAL ---
 let passoAtual = 1;
 const totalPassos = 4;
 let arquivoVideo = null;
 
-// --- FUNÇÃO AUXILIAR DE NAVEGAÇÃO ---
 function irParaPasso(passo) {
   if (passo < 1 || passo > totalPassos) return;
   document
@@ -29,18 +27,6 @@ window.prevStep = function (passo) {
   irParaPasso(passo);
 };
 
-// --- PREVIEW TEXTOS ---
-document.getElementById("nomeEstrela")?.addEventListener("input", (e) => {
-  const el = document.getElementById("prevEstrela");
-  if (el) el.innerText = e.target.value.trim() || "Estrela Principal";
-});
-
-document.getElementById("nomeDiretor")?.addEventListener("input", (e) => {
-  const el = document.getElementById("prevDiretor");
-  if (el) el.innerText = e.target.value.trim() || "Diretor";
-});
-
-// --- VALIDAÇÃO VÍDEO ---
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
   const errorEl = document.getElementById("video-error");
@@ -64,15 +50,11 @@ document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   videoObj.src = URL.createObjectURL(file);
 });
 
-// --- UPLOAD R2 (COM AS SUAS URLS REAIS) ---
 async function uploadToR2(file, prefixo) {
-  // Limpa caracteres estranhos para evitar erros no Cloudflare
   const safeName = file.name
     ? file.name.replace(/[^a-zA-Z0-9.]/g, "")
     : "arquivo.bin";
   const nomeUnico = `${prefixo}-${Date.now()}-${safeName}`;
-
-  // A sua URL real do Worker recuperada do código antigo
   const workerUrl = `https://cinegift-upload.usecinegift.workers.dev/${nomeUnico}`;
 
   const response = await fetch(workerUrl, {
@@ -89,12 +71,10 @@ async function uploadToR2(file, prefixo) {
     throw new Error(`Erro no upload (${response.status}): ${errText}`);
   }
 
-  // A sua URL real do Bucket R2 recuperada do código antigo
   const r2PublicUrl = `https://pub-dec3c851da9b4e5ba79db54b6ac4b17c.r2.dev`;
   return `${r2PublicUrl}/${nomeUnico}`;
 }
 
-// --- FUNÇÃO FINAL EXPOSTA GLOBALMENTE ---
 window.finalizarSessao = async function () {
   const btn = document.querySelector(".btn-success");
   const originalText = btn.innerText;
@@ -117,19 +97,24 @@ window.finalizarSessao = async function () {
       diretor: nomeDiretor,
       estrela: nomeEstrela,
       mensagem: document.getElementById("mensagemFinal")?.value || "",
+      // Configurações de áudio
+      musica: document.getElementById("musicaSelecao").value,
+      youtubeLink: document.getElementById("youtubeLink").value,
+      videoTemSom: document.getElementById("videoTemSom").checked,
       fotos: [],
       video: "",
       criadoEm: serverTimestamp(),
     };
 
-    // Pega as fotos selecionadas na interface do HTML (Correção das fotos vazias)
-    const fotosReais = window.fotosArmazenadas
-      ? window.fotosArmazenadas.map((f) => f.file)
-      : [];
+    const fotosReais = window.fotosArmazenadas || [];
 
-    for (let foto of fotosReais) {
-      const url = await uploadToR2(foto, "foto");
-      dados.fotos.push(url);
+    // Salva URL da imagem + Título como Objeto
+    for (let fotoObj of fotosReais) {
+      const url = await uploadToR2(fotoObj.file, "foto");
+      dados.fotos.push({
+        url: url,
+        titulo: fotoObj.titulo || "",
+      });
     }
 
     if (arquivoVideo) {

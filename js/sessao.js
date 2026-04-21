@@ -23,6 +23,65 @@ const frasesTemas = {
   ],
 };
 
+let dadosSessaoGlobal = null;
+let audioTrilha = document.getElementById("audioTrilha");
+let audioEfeito = document.getElementById("audioEfeito");
+let playerYT = null;
+
+// Ferramenta de Controle Suave de Volume
+function fadeAudio(audioElement, targetVolume, duration, callback) {
+  const startVolume = audioElement.volume || 0;
+  const diff = targetVolume - startVolume;
+  const steps = 20;
+  const interval = duration / steps;
+  let currentStep = 0;
+  const timer = setInterval(() => {
+    currentStep++;
+    let newVol = startVolume + diff * (currentStep / steps);
+    audioElement.volume = Math.max(0, Math.min(1, newVol));
+    if (currentStep >= steps) {
+      clearInterval(timer);
+      if (callback) callback();
+    }
+  }, interval);
+}
+
+// Efeitos Sonoros Físicos
+window.tocarEfeito = function (nome) {
+  audioEfeito.src = `assets/audio/efeitos/${nome}.mp3`;
+  audioEfeito.volume = 0.8;
+  audioEfeito
+    .play()
+    .catch((e) => console.log("Áudio bloqueado pelo navegador"));
+};
+
+// Extrair ID do YouTube
+function obterVideoIdYouTube(url) {
+  const regex =
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
+// Inicia API do YouTube se houver música Custom
+function prepararYouTube(youtubeUrl) {
+  const videoId = obterVideoIdYouTube(youtubeUrl);
+  if (!videoId) return;
+  window.onYouTubeIframeAPIReady = function () {
+    playerYT = new YT.Player("youtubePlayer", {
+      height: "0",
+      width: "0",
+      videoId: videoId,
+      playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: videoId },
+      events: {
+        onReady: (event) => {
+          event.target.setVolume(0);
+        },
+      },
+    });
+  };
+}
+
 async function carregarSessao() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
@@ -31,61 +90,70 @@ async function carregarSessao() {
   try {
     const docSnap = await getDoc(doc(db, "sessoes", id));
     if (docSnap.exists()) {
-      const dados = docSnap.data();
+      dadosSessaoGlobal = docSnap.data();
 
-      // 1. Configura Tema
-      document.body.setAttribute("data-tema", dados.tema || "romance");
+      document.body.setAttribute(
+        "data-tema",
+        dadosSessaoGlobal.tema || "romance",
+      );
+      document.getElementById("ticket-estrela").innerText =
+        dadosSessaoGlobal.estrela;
+      document.getElementById("ticket-diretor-nome").innerText =
+        dadosSessaoGlobal.diretor;
+      document.getElementById("msgEstrela").innerText =
+        dadosSessaoGlobal.estrela;
+      document.getElementById("msgDiretor").innerText =
+        dadosSessaoGlobal.diretor;
+      document.getElementById("msgFinal").innerText =
+        dadosSessaoGlobal.mensagem;
 
-      // 2. Textos do Ingresso
-      const elEstrela = document.getElementById("ticket-estrela");
-      const elDiretor = document.getElementById("ticket-diretor-nome");
-      if (elEstrela) elEstrela.innerText = dados.estrela;
-      if (elDiretor) elDiretor.innerText = dados.diretor;
+      const arrayFrases =
+        frasesTemas[dadosSessaoGlobal.tema] || frasesTemas.romance;
+      document.getElementById("frase-corredor").innerText =
+        `"${arrayFrases[Math.floor(Math.random() * arrayFrases.length)]}"`;
 
-      // 3. Textos dos Créditos Finais
-      document.getElementById("msgEstrela").innerText = dados.estrela;
-      document.getElementById("msgDiretor").innerText = dados.diretor;
-      document.getElementById("msgFinal").innerText = dados.mensagem;
-
-      // 4. Frase Dinâmica do Corredor
-      const arrayFrases = frasesTemas[dados.tema] || frasesTemas.romance;
-      const elFrase = document.getElementById("frase-corredor");
-      if (elFrase)
-        elFrase.innerText = `"${arrayFrases[Math.floor(Math.random() * arrayFrases.length)]}"`;
-
-      // 5. Renderiza Pôsteres
+      // Renderiza as fotos COM SEUS TÍTULOS COMO PÔSTER
       const gallery = document.getElementById("lobbyGallery");
       if (gallery) {
         gallery.innerHTML = "";
-        if (dados.fotos && dados.fotos.length > 0) {
-          dados.fotos.forEach((url) => {
+        if (dadosSessaoGlobal.fotos && dadosSessaoGlobal.fotos.length > 0) {
+          dadosSessaoGlobal.fotos.forEach((fotoData) => {
+            const url = typeof fotoData === "string" ? fotoData : fotoData.url;
+            const caption =
+              typeof fotoData === "string" ? "" : fotoData.titulo || "";
+
             const div = document.createElement("div");
             div.className = "poster-frame";
-            div.innerHTML = `<img src="${url}" alt="Foto Especial">`;
+            const legendHTML = caption
+              ? `<div class="poster-caption">${caption}</div>`
+              : "";
+            div.innerHTML = `<img src="${url}" alt="Lembrança em Cartaz">${legendHTML}`;
             gallery.appendChild(div);
           });
         } else {
-          gallery.innerHTML = `<p style="opacity:0.5; font-family: monospace;">Nenhuma lembrança em cartaz.</p>`;
+          gallery.innerHTML = `<p style="opacity:0.5;">Nenhuma lembrança em cartaz.</p>`;
         }
       }
 
-      // 6. Configura o Player
+      // Prepara o Player de Música do YouTube se for o caso
+      if (
+        dadosSessaoGlobal.musica === "custom" &&
+        dadosSessaoGlobal.youtubeLink
+      ) {
+        prepararYouTube(dadosSessaoGlobal.youtubeLink);
+      }
+
       const videoPlayer = document.getElementById("moviePlayer");
       if (videoPlayer) {
-        videoPlayer.src = dados.video;
+        videoPlayer.src = dadosSessaoGlobal.video;
         videoPlayer.load();
       }
 
       gerarPoltronas();
-
-      // Libera o Loader
-      const loader = document.getElementById("loader");
-      if (loader) loader.classList.add("hidden");
-    } else {
-      alert("Sessão não encontrada.");
+      document.getElementById("loader").classList.add("hidden");
     }
   } catch (e) {
-    console.error("Erro ao carregar sessão:", e);
+    console.error("Erro:", e);
   }
 }
 
@@ -96,6 +164,8 @@ function gerarPoltronas() {
     const seat = document.createElement("div");
     seat.className = "seat";
     seat.onclick = () => {
+      tocarEfeito("seat"); // Feedback Físico
+      if (navigator.vibrate) navigator.vibrate(50); // Vibração Celular
       document
         .querySelectorAll(".seat")
         .forEach((s) => s.classList.remove("selected"));
@@ -105,42 +175,113 @@ function gerarPoltronas() {
   }
 }
 
-// Navegação de Fases no HTML
+// ORQUESTRAÇÃO DE FASES E ÁUDIO
 window.proximaFase = function (idFase) {
-  document
-    .querySelectorAll(".fase")
-    .forEach((f) => f.classList.remove("active"));
-  document.getElementById(idFase)?.classList.add("active");
+  if (idFase === "fase-poltrona") {
+    // Rasga o ingresso com som e animação
+    tocarEfeito("beep");
+    document.getElementById("previewIngresso").classList.add("tearing");
+
+    setTimeout(() => {
+      document
+        .querySelectorAll(".fase")
+        .forEach((f) => f.classList.remove("active"));
+      document.getElementById(idFase)?.classList.add("active");
+
+      // Inicia a música Baixinho (Fade-in)
+      if (
+        dadosSessaoGlobal.musica === "custom" &&
+        playerYT &&
+        typeof playerYT.playVideo === "function"
+      ) {
+        playerYT.playVideo();
+        let vol = 0;
+        let tYT = setInterval(() => {
+          vol += 5;
+          playerYT.setVolume(vol);
+          if (vol >= 30) clearInterval(tYT);
+        }, 200);
+      } else {
+        const trackStr = dadosSessaoGlobal.musica || "1";
+        // Suporta tanto os números antigos (1,2,3) quanto o novo formato tema_numero
+        const cleanTrack = trackStr.includes("_")
+          ? trackStr.split("_")[1]
+          : trackStr;
+
+        audioTrilha.src = `assets/audio/musicas/${dadosSessaoGlobal.tema}/${cleanTrack}.mp3`;
+        audioTrilha.volume = 0;
+        audioTrilha
+          .play()
+          .then(() => fadeAudio(audioTrilha, 0.3, 3000))
+          .catch((e) => console.log(e));
+      }
+    }, 800); // Espera a animação do rasgo terminar
+  } else {
+    document
+      .querySelectorAll(".fase")
+      .forEach((f) => f.classList.remove("active"));
+    document.getElementById(idFase)?.classList.add("active");
+  }
 };
 
-// Evento do botão de Play Master e Cortinas
+// BOTÃO PLAY NO FILME
 const playMasterBtn = document.getElementById("playMasterBtn");
 if (playMasterBtn) {
   playMasterBtn.onclick = () => {
-    // Esconde o botão suavemente
+    tocarEfeito("curtain");
     playMasterBtn.style.opacity = "0";
     setTimeout(() => {
       playMasterBtn.style.display = "none";
     }, 600);
 
-    // Abre as cortinas
     document.getElementById("curtainLeft").classList.add("open-left");
     document.getElementById("curtainRight").classList.add("open-right");
 
-    const videoPlayer = document.getElementById("moviePlayer");
+    // Pausa Inteligente da Música se vídeo original tiver áudio
+    if (dadosSessaoGlobal.videoTemSom) {
+      if (dadosSessaoGlobal.musica === "custom" && playerYT) {
+        playerYT.pauseVideo();
+      } else {
+        fadeAudio(audioTrilha, 0, 1500, () => audioTrilha.pause());
+      }
+    }
 
-    // Dá play no vídeo após a cortina começar a abrir
+    const videoPlayer = document.getElementById("moviePlayer");
     setTimeout(() => {
       videoPlayer.play();
     }, 1500);
 
-    // Mostra os créditos quando acabar
     videoPlayer.onended = () => {
-      const credits = document.getElementById("credits");
-      if (credits) credits.classList.add("active");
+      // Retorna a música
+      if (dadosSessaoGlobal.videoTemSom) {
+        if (dadosSessaoGlobal.musica === "custom" && playerYT)
+          playerYT.playVideo();
+        else {
+          audioTrilha.play();
+          fadeAudio(audioTrilha, 0.3, 2000);
+        }
+      }
+
+      document.getElementById("credits").classList.add("active");
+
+      // Encerra a trilha com Fade Out Lento
+      setTimeout(() => {
+        if (dadosSessaoGlobal.musica === "custom" && playerYT) {
+          let v = 30;
+          let tm = setInterval(() => {
+            v -= 2;
+            playerYT.setVolume(v);
+            if (v <= 0) {
+              playerYT.stopVideo();
+              clearInterval(tm);
+            }
+          }, 500);
+        } else {
+          fadeAudio(audioTrilha, 0, 8000, () => audioTrilha.pause());
+        }
+      }, 10000);
     };
   };
 }
 
-// Iniciar Motor
 carregarSessao();

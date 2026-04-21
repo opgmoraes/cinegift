@@ -10,8 +10,24 @@
     />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/sessao.css" />
+    <script src="https://www.youtube.com/iframe_api"></script>
   </head>
   <body class="cinema-body" data-tema="romance">
+    <audio id="audioTrilha" loop></audio>
+    <audio id="audioEfeito"></audio>
+    <div
+      id="youtubePlayer"
+      style="
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+      "
+    ></div>
+
+    <div class="dust-overlay"></div>
+
     <div id="loader" class="loader-overlay">
       <div class="popcorn-loader">🍿</div>
       <p>A preparar a sua sessão...</p>
@@ -33,14 +49,11 @@
                 </div>
               </div>
             </div>
-            <div class="ticket-tear">
-              <div class="ticket-tear-line"></div>
-            </div>
+            <div class="ticket-tear"><div class="ticket-tear-line"></div></div>
             <div class="ticket-footer">
               <div class="ticket-barcode">||| |||| || ||| ||||</div>
               <div class="ticket-seat">
-                <span>Sessão</span>
-                <strong>01</strong>
+                <span>Sessão</span><strong>01</strong>
               </div>
             </div>
           </div>
@@ -58,19 +71,28 @@
           <div class="snacks-container">
             <button
               class="snack-item"
-              onclick="this.classList.toggle('active')"
+              onclick="
+                this.classList.toggle('active');
+                tocarEfeito('seat');
+              "
             >
               🍿 Pipoca
             </button>
             <button
               class="snack-item"
-              onclick="this.classList.toggle('active')"
+              onclick="
+                this.classList.toggle('active');
+                tocarEfeito('seat');
+              "
             >
               🥤 Soda
             </button>
             <button
               class="snack-item"
-              onclick="this.classList.toggle('active')"
+              onclick="
+                this.classList.toggle('active');
+                tocarEfeito('seat');
+              "
             >
               🍫 Chocolate
             </button>
@@ -99,7 +121,6 @@
           <div id="playMasterBtn" class="master-play-overlay">
             <button class="btn-acao">▶ Abrir Cortinas e Iniciar</button>
           </div>
-
           <div class="curtain-valance"></div>
           <div class="curtain left" id="curtainLeft"></div>
           <div class="curtain right" id="curtainRight"></div>
@@ -108,7 +129,6 @@
             <div class="video-wrapper">
               <video id="moviePlayer" playsinline preload="auto"></video>
             </div>
-
             <div id="credits" class="credits-roll">
               <div class="credits-content">
                 <h1 id="msgEstrela">Nome</h1>
