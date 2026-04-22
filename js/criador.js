@@ -121,13 +121,13 @@ window.finalizarSessao = async function () {
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
 
-    // GERA O LINK E O QR CODE NO MODAL!
+    // GERA O LINK E O QR CODE ESTILIZADO NO MODAL
     const linkFinal = `${window.location.origin}/sessao.html?id=${docRef.id}`;
     document.getElementById("linkGerado").value = linkFinal;
+    // qrserver API: cor base preta, sem margem feia
     document.getElementById("qrCodeImg").src =
-      `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(linkFinal)}`;
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(linkFinal)}&color=000000&bgcolor=ffffff&margin=0`;
 
-    // Mostra o Modal
     document.getElementById("modalSucesso").style.display = "flex";
     btn.innerText = "✅ Concluído!";
   } catch (error) {
