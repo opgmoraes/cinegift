@@ -5,27 +5,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
 
-let passoAtual = 1;
-const totalPassos = 4;
 let arquivoVideo = null;
-
-function irParaPasso(passo) {
-  if (passo < 1 || passo > totalPassos) return;
-  document
-    .querySelectorAll(".wizard-step")
-    .forEach((s) => s.classList.remove("active"));
-  passoAtual = passo;
-  document.getElementById(`step-${passoAtual}`)?.classList.add("active");
-  const indicador = document.getElementById("current-step");
-  if (indicador) indicador.innerText = passoAtual;
-}
-
-window.nextStep = function (passo) {
-  irParaPasso(passo);
-};
-window.prevStep = function (passo) {
-  irParaPasso(passo);
-};
 
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -66,10 +46,7 @@ async function uploadToR2(file, prefixo) {
     body: file,
   });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Erro no upload (${response.status}): ${errText}`);
-  }
+  if (!response.ok) throw new Error(`Erro no upload (${response.status})`);
 
   const r2PublicUrl = `https://pub-dec3c851da9b4e5ba79db54b6ac4b17c.r2.dev`;
   return `${r2PublicUrl}/${nomeUnico}`;
@@ -84,16 +61,16 @@ window.finalizarSessao = async function () {
 
   if (!nomeDiretor || !nomeEstrela) {
     alert("Por favor, preencha os nomes no Passo 1 antes de finalizar.");
-    irParaPasso(1);
     return;
   }
 
   btn.disabled = true;
-  btn.innerText = "⏳ Criando sua sessão...";
+  btn.innerText = "⏳ Preparando Experiência...";
 
   try {
+    const temaEscolhido = document.getElementById("tema")?.value || "romance";
     const dados = {
-      tema: document.getElementById("tema")?.value || "romance",
+      tema: temaEscolhido,
       diretor: nomeDiretor,
       estrela: nomeEstrela,
       mensagem: document.getElementById("mensagemFinal")?.value || "",
@@ -109,10 +86,7 @@ window.finalizarSessao = async function () {
 
     for (let fotoObj of fotosReais) {
       const url = await uploadToR2(fotoObj.file, "foto");
-      dados.fotos.push({
-        url: url,
-        titulo: fotoObj.titulo || "",
-      });
+      dados.fotos.push({ url: url, titulo: fotoObj.titulo || "" });
     }
 
     if (arquivoVideo) {
@@ -121,13 +95,34 @@ window.finalizarSessao = async function () {
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
 
-    // GERA O LINK E O QR CODE ESTILIZADO NO MODAL
+    // GERA O LINK
     const linkFinal = `${window.location.origin}/sessao.html?id=${docRef.id}`;
     document.getElementById("linkGerado").value = linkFinal;
-    // qrserver API: cor base preta, sem margem feia
-    document.getElementById("qrCodeImg").src =
-      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(linkFinal)}&color=000000&bgcolor=ffffff&margin=0`;
 
+    // GERA O QR CODE LOCALMENTE (Fica com qualidade altíssima para baixar)
+    const qrBox = document.getElementById("qrcodeBox");
+    qrBox.innerHTML = ""; // Limpa antigos
+
+    // Pega a cor principal do tema para pintar o QR Code
+    const temaCores = {
+      romance: "#c4405a",
+      amizade: "#4a8ec4",
+      familia: "#d4782a",
+      aniversario: "#d4407a",
+    };
+    const qrCor = temaCores[temaEscolhido];
+    document.getElementById("qrWrapperBorder").style.borderColor = qrCor;
+
+    new QRCode(qrBox, {
+      text: linkFinal,
+      width: 220,
+      height: 220,
+      colorDark: qrCor, // QR Code na cor do tema!
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
+
+    // Mostra o Modal
     document.getElementById("modalSucesso").style.display = "flex";
     btn.innerText = "✅ Concluído!";
   } catch (error) {
