@@ -62,7 +62,6 @@ function prepararYouTube(youtubeUrl) {
   const videoId = obterVideoIdYouTube(youtubeUrl);
   if (!videoId) return;
 
-  // Carrega a API do Youtube dinamicamente
   const tag = document.createElement("script");
   tag.src = "https://www.youtube.com/iframe_api";
   const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -180,17 +179,50 @@ function gerarPoltronas() {
   }
 }
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ORQUESTRAÇÃO DE FASES COM SPOTLIGHT (Apagar das luzes)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.proximaFase = function (idFase) {
+  const faseAtual = document.querySelector(".fase.active");
+  if (!faseAtual) return;
+
   if (idFase === "fase-poltrona") {
+    // Rasga o ingresso com som e animação
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
 
-    setTimeout(() => {
-      document
-        .querySelectorAll(".fase")
-        .forEach((f) => f.classList.remove("active"));
-      document.getElementById(idFase)?.classList.add("active");
+    // Espera o ingresso cair (800ms) antes de apagar a luz
+    setTimeout(() => iniciarSpotlight(faseAtual, idFase), 800);
+  } else {
+    // Apaga a luz imediatamente para outras fases
+    iniciarSpotlight(faseAtual, idFase);
+  }
+};
 
+function iniciarSpotlight(faseAtual, idFase) {
+  // 1. Apaga a luz (Círculo fecha)
+  faseAtual.classList.add("spotlight-close");
+
+  // 2. Espera a tela ficar toda preta (800ms)
+  setTimeout(() => {
+    // Remove as fases do ecrã e deixa a próxima preparada "no escuro"
+    document.querySelectorAll(".fase").forEach((f) => {
+      f.classList.remove("active");
+      f.classList.add("spotlight-close");
+    });
+
+    const proxFase = document.getElementById(idFase);
+    if (proxFase) {
+      proxFase.classList.add("active");
+
+      // 3. Acende a luz (Círculo abre revelando a nova fase)
+      setTimeout(() => {
+        proxFase.classList.remove("spotlight-close");
+      }, 50);
+    }
+
+    // INICIA A MÚSICA AO ACENDER A LUZ NA FASE DA POLTRONA
+    if (idFase === "fase-poltrona") {
       if (
         dadosSessaoGlobal.musica === "custom" &&
         playerYT &&
@@ -212,14 +244,9 @@ window.proximaFase = function (idFase) {
           .then(() => fadeAudio(audioTrilha, 0.3, 3000))
           .catch((e) => console.log(e));
       }
-    }, 800);
-  } else {
-    document
-      .querySelectorAll(".fase")
-      .forEach((f) => f.classList.remove("active"));
-    document.getElementById(idFase)?.classList.add("active");
-  }
-};
+    }
+  }, 800);
+}
 
 const playMasterBtn = document.getElementById("playMasterBtn");
 if (playMasterBtn) {
