@@ -336,16 +336,13 @@
             <div id="prev-fase-4" class="prev-fase" data-tema="romance">
               <div class="prev-credits">
                 <h1 id="prevMsgEstrela">Nome</h1>
-                <p id="previewMsgFinal">
-                  A sua mensagem final aparecerá aqui...
-                </p>
+                <div class="msg-scroll-container">
+                  <p id="previewMsgFinal">
+                    A sua mensagem final aparecerá aqui...
+                  </p>
+                </div>
                 <span>Dirigido por</span>
-                <h3
-                  id="prevMsgDiretor"
-                  style="font-family: var(--font-display); color: #fff"
-                >
-                  Você
-                </h3>
+                <h3 id="prevMsgDiretor">Você</h3>
               </div>
             </div>
           </div>
@@ -367,14 +364,12 @@
 
       /* 1. MUDAR O PREVIEW CONFORME O PASSO */
       function nextStep(n) {
-        // Altera o painel esquerdo
         document
           .querySelectorAll(".wizard-step")
           .forEach((s) => s.classList.remove("active"));
         document.getElementById("step-" + n)?.classList.add("active");
         document.getElementById("current-step").textContent = n;
 
-        // Altera o painel direito (Celular Preview)
         document
           .querySelectorAll(".prev-fase")
           .forEach((f) => f.classList.remove("active"));
@@ -396,12 +391,10 @@
         temaAtual = tema;
         document.getElementById("tema").value = tema;
 
-        // Aplica o tema em todas as telas de preview
         document
           .querySelectorAll(".prev-fase")
           .forEach((f) => f.setAttribute("data-tema", tema));
 
-        // Ajusta as cores dos botões e bordas usando as variáveis de ticket
         const cfg = temaConfig[tema];
         const root = document.documentElement;
         root.style.setProperty("--tk-bg1", cfg.bg1);
@@ -491,7 +484,6 @@
         const acc = temaConfig[temaAtual].acc;
 
         window.fotosArmazenadas.forEach((foto, idx) => {
-          // No Editor
           const wrapper = document.createElement("div");
           wrapper.style.cssText =
             "display:flex; flex-direction:column; width:72px; gap:6px;";
@@ -527,7 +519,6 @@
           wrapper.appendChild(captionInput);
           grid.appendChild(wrapper);
 
-          // No Celular (Preview)
           if (previewGallery) {
             const pDiv = document.createElement("div");
             pDiv.className = "prev-poster";
@@ -606,7 +597,6 @@
         }
       }
 
-      // Inicia Tema Base
       aplicarTema("romance");
     </script>
   </body>

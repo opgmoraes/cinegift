@@ -5,7 +5,27 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
 
+let passoAtual = 1;
+const totalPassos = 4;
 let arquivoVideo = null;
+
+function irParaPasso(passo) {
+  if (passo < 1 || passo > totalPassos) return;
+  document
+    .querySelectorAll(".wizard-step")
+    .forEach((s) => s.classList.remove("active"));
+  passoAtual = passo;
+  document.getElementById(`step-${passoAtual}`)?.classList.add("active");
+  const indicador = document.getElementById("current-step");
+  if (indicador) indicador.innerText = passoAtual;
+}
+
+window.nextStep = function (passo) {
+  irParaPasso(passo);
+};
+window.prevStep = function (passo) {
+  irParaPasso(passo);
+};
 
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
@@ -65,7 +85,7 @@ window.finalizarSessao = async function () {
   }
 
   btn.disabled = true;
-  btn.innerText = "⏳ Preparando Experiência...";
+  btn.innerText = "⏳ Enviando arquivos...";
 
   try {
     const temaEscolhido = document.getElementById("tema")?.value || "romance";
@@ -84,26 +104,33 @@ window.finalizarSessao = async function () {
 
     const fotosReais = window.fotosArmazenadas || [];
 
-    for (let fotoObj of fotosReais) {
+    const promessasFotos = fotosReais.map(async (fotoObj) => {
       const url = await uploadToR2(fotoObj.file, "foto");
-      dados.fotos.push({ url: url, titulo: fotoObj.titulo || "" });
-    }
+      return { url: url, titulo: fotoObj.titulo || "" };
+    });
 
-    if (arquivoVideo) {
-      dados.video = await uploadToR2(arquivoVideo, "video");
-    }
+    const promessaVideo = arquivoVideo
+      ? uploadToR2(arquivoVideo, "video")
+      : Promise.resolve("");
+
+    const [fotosCompletas, urlVideo] = await Promise.all([
+      Promise.all(promessasFotos),
+      promessaVideo,
+    ]);
+
+    dados.fotos = fotosCompletas;
+    dados.video = urlVideo;
+
+    btn.innerText = "⏳ Gerando Link...";
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
 
-    // GERA O LINK
     const linkFinal = `${window.location.origin}/sessao.html?id=${docRef.id}`;
     document.getElementById("linkGerado").value = linkFinal;
 
-    // GERA O QR CODE LOCALMENTE (Fica com qualidade altíssima para baixar)
     const qrBox = document.getElementById("qrcodeBox");
-    qrBox.innerHTML = ""; // Limpa antigos
+    qrBox.innerHTML = "";
 
-    // Pega a cor principal do tema para pintar o QR Code
     const temaCores = {
       romance: "#c4405a",
       amizade: "#4a8ec4",
@@ -117,12 +144,11 @@ window.finalizarSessao = async function () {
       text: linkFinal,
       width: 220,
       height: 220,
-      colorDark: qrCor, // QR Code na cor do tema!
+      colorDark: qrCor,
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.H,
     });
 
-    // Mostra o Modal
     document.getElementById("modalSucesso").style.display = "flex";
     btn.innerText = "✅ Concluído!";
   } catch (error) {

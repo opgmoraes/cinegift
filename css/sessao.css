@@ -1,5 +1,5 @@
 /* ============================================================
-   CineGift — sessao.css (Pro IMAX Edition)
+   CineGift — sessao.css (Pro IMAX Edition - SCROLL FIX)
    ============================================================ */
 :root {
   --noite: #0a0407;
@@ -508,6 +508,9 @@ video {
   border-radius: 4px;
 }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CRÉDITOS FINAIS COM SCROLL SEGURO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .credits-roll {
   display: none;
   position: absolute;
@@ -522,56 +525,96 @@ video {
   display: flex;
   animation: fadeIn 2s ease forwards;
 }
+
 .credits-content {
-  animation: rollUp 18s linear forwards;
   padding: 2rem;
   width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: creditsReveal 3s ease forwards;
 }
+
 .credits-content h1 {
   font-family: var(--font-display);
-  font-size: 4rem;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+  color: var(--creme);
 }
+
+/* Container seguro que impede a mensagem de rebentar o ecrã */
+.msg-scroll-container {
+  width: 100%;
+  max-height: 45vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  margin: 1.5rem 0;
+  padding: 0 1rem;
+}
+.msg-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Texto com quebra de linha forçada para evitar overflow horizontal */
 .credits-mensagem {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.2rem;
-  opacity: 0.8;
-  max-width: 400px;
+  font-size: 1.3rem;
+  opacity: 0.9;
+  max-width: 500px;
   margin: 0 auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.6;
 }
+
 .credits-divider {
   width: 60px;
   height: 1px;
   background: var(--theme-accent);
-  margin: 2rem auto;
+  margin: 0 auto 1.5rem;
+  flex-shrink: 0;
 }
 .credits-director-label {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   text-transform: uppercase;
   opacity: 0.5;
+  display: block;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
 }
 .credits-director-name {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 2rem;
+  flex-shrink: 0;
+  color: var(--creme);
 }
 .the-end {
   font-family: var(--font-display);
   font-size: 3rem;
   font-style: italic;
   color: var(--theme-accent);
+  flex-shrink: 0;
 }
 
-@keyframes rollUp {
+@keyframes creditsReveal {
   from {
-    transform: translateY(100vh);
+    opacity: 0;
+    transform: translateY(40px);
   }
   to {
-    transform: translateY(-100%);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
+
 @keyframes fadeIn {
   from {
     opacity: 0;
