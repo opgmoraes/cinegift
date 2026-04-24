@@ -2,29 +2,32 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  query,
+  where,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
 
-let passoAtual = 1;
-const totalPassos = 4;
+window.planoEscolhido = "plano1";
+window.LIMITE_FOTOS = 5;
+window.LIMITE_VIDEO = 31; // +1s margem
 let arquivoVideo = null;
 
-function irParaPasso(passo) {
-  if (passo < 1 || passo > totalPassos) return;
+window.selecionarPlano = function (plano, maxFotos, maxVideo) {
   document
-    .querySelectorAll(".wizard-step")
-    .forEach((s) => s.classList.remove("active"));
-  passoAtual = passo;
-  document.getElementById(`step-${passoAtual}`)?.classList.add("active");
-  const indicador = document.getElementById("current-step");
-  if (indicador) indicador.innerText = passoAtual;
-}
+    .querySelectorAll(".plano-card")
+    .forEach((c) => c.classList.remove("selected"));
+  document.getElementById("card-" + plano).classList.add("selected");
+  window.planoEscolhido = plano;
+  window.LIMITE_FOTOS = maxFotos;
+  window.LIMITE_VIDEO = maxVideo + 1;
+  document.getElementById("txt-max-fotos").innerText = maxFotos;
+  document.getElementById("txt-max-video").innerText = maxVideo;
 
-window.nextStep = function (passo) {
-  irParaPasso(passo);
-};
-window.prevStep = function (passo) {
-  irParaPasso(passo);
+  if (window.fotosArmazenadas && window.fotosArmazenadas.length > maxFotos) {
+    window.fotosArmazenadas = window.fotosArmazenadas.slice(0, maxFotos);
+    if (typeof renderThumbs === "function") renderThumbs();
+  }
 };
 
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
@@ -36,8 +39,8 @@ document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   videoObj.preload = "metadata";
   videoObj.onloadedmetadata = function () {
     URL.revokeObjectURL(videoObj.src);
-    if (videoObj.duration > 31) {
-      errorEl.innerText = "Vídeo muito longo! Máximo 30s.";
+    if (videoObj.duration > window.LIMITE_VIDEO) {
+      errorEl.innerText = `Vídeo muito longo! Máximo ${window.LIMITE_VIDEO - 1}s para este plano.`;
       errorEl.style.color = "#ff4444";
       e.target.value = "";
       arquivoVideo = null;
@@ -67,7 +70,6 @@ async function uploadToR2(file, prefixo) {
   });
 
   if (!response.ok) throw new Error(`Erro no upload (${response.status})`);
-
   const r2PublicUrl = `https://pub-dec3c851da9b4e5ba79db54b6ac4b17c.r2.dev`;
   return `${r2PublicUrl}/${nomeUnico}`;
 }
@@ -76,11 +78,14 @@ window.finalizarSessao = async function () {
   const btn = document.querySelector(".btn-success");
   const originalText = btn.innerText;
 
+  const slugDigitado = document.getElementById("slugLink")?.value.trim();
   const nomeDiretor = document.getElementById("nomeDiretor")?.value.trim();
   const nomeEstrela = document.getElementById("nomeEstrela")?.value.trim();
 
-  if (!nomeDiretor || !nomeEstrela) {
-    alert("Por favor, preencha os nomes no Passo 1 antes de finalizar.");
+  if (!slugDigitado || !nomeDiretor || !nomeEstrela) {
+    alert(
+      "Por favor, preencha todos os campos obrigatórios e o Link Personalizado.",
+    );
     return;
   }
 
@@ -88,8 +93,24 @@ window.finalizarSessao = async function () {
   btn.innerText = "⏳ Enviando arquivos...";
 
   try {
+    const q = query(
+      collection(db, "sessoes"),
+      where("slug", "==", slugDigitado),
+    );
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      alert("Este link personalizado já está em uso! Tente outro nome.");
+      btn.disabled = false;
+      btn.innerText = originalText;
+      return;
+    }
+
     const temaEscolhido = document.getElementById("tema")?.value || "romance";
+
     const dados = {
+      plano: window.planoEscolhido,
+      slug: slugDigitado,
+      status: "pendente",
       tema: temaEscolhido,
       diretor: nomeDiretor,
       estrela: nomeEstrela,
@@ -103,7 +124,6 @@ window.finalizarSessao = async function () {
     };
 
     const fotosReais = window.fotosArmazenadas || [];
-
     const promessasFotos = fotosReais.map(async (fotoObj) => {
       const url = await uploadToR2(fotoObj.file, "foto");
       return { url: url, titulo: fotoObj.titulo || "" };
@@ -121,36 +141,17 @@ window.finalizarSessao = async function () {
     dados.fotos = fotosCompletas;
     dados.video = urlVideo;
 
-    btn.innerText = "⏳ Gerando Link...";
+    btn.innerText = "⏳ A gerar check-out...";
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
 
-    const linkFinal = `${window.location.origin}/sessao.html?id=${docRef.id}`;
-    document.getElementById("linkGerado").value = linkFinal;
-
-    const qrBox = document.getElementById("qrcodeBox");
-    qrBox.innerHTML = "";
-
-    const temaCores = {
-      romance: "#c4405a",
-      amizade: "#4a8ec4",
-      familia: "#d4782a",
-      aniversario: "#d4407a",
+    const linksCakto = {
+      plano1: "https://pay.cakto.com.br/373amsz",
+      plano2: "https://pay.cakto.com.br/ayzqg7r_859775",
+      plano3: "https://pay.cakto.com.br/dvqe4ru",
     };
-    const qrCor = temaCores[temaEscolhido];
-    document.getElementById("qrWrapperBorder").style.borderColor = qrCor;
 
-    new QRCode(qrBox, {
-      text: linkFinal,
-      width: 220,
-      height: 220,
-      colorDark: qrCor,
-      colorLight: "#ffffff",
-      correctLevel: QRCode.CorrectLevel.H,
-    });
-
-    document.getElementById("modalSucesso").style.display = "flex";
-    btn.innerText = "✅ Concluído!";
+    window.location.href = `${linksCakto[window.planoEscolhido]}?src=${docRef.id}`;
   } catch (error) {
     console.error(error);
     alert("Erro ao salvar: " + error.message);

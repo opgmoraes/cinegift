@@ -1,4 +1,8 @@
 import {
+  collection,
+  query,
+  where,
+  getDocs,
   doc,
   getDoc,
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -72,13 +76,7 @@ function prepararYouTube(youtubeUrl) {
       height: "1",
       width: "1",
       videoId: videoId,
-      playerVars: {
-        autoplay: 0,
-        controls: 0,
-        loop: 1,
-        playlist: videoId,
-        playsinline: 1,
-      },
+      playerVars: { autoplay: 0, controls: 0, loop: 1, playsinline: 1 },
       events: {
         onReady: (event) => {
           event.target.setVolume(0);
@@ -90,13 +88,45 @@ function prepararYouTube(youtubeUrl) {
 
 async function carregarSessao() {
   const params = new URLSearchParams(window.location.search);
+  const slug = params.get("ref");
   const id = params.get("id");
-  if (!id) return;
+
+  let docSnap = null;
 
   try {
-    const docSnap = await getDoc(doc(db, "sessoes", id));
-    if (docSnap.exists()) {
+    if (slug) {
+      const q = query(collection(db, "sessoes"), where("slug", "==", slug));
+      const snap = await getDocs(q);
+      if (!snap.empty) docSnap = snap.docs[0];
+    } else if (id) {
+      docSnap = await getDoc(doc(db, "sessoes", id));
+    }
+
+    if (docSnap && docSnap.exists()) {
       dadosSessaoGlobal = docSnap.data();
+
+      // 1. BARREIRA DE PAGAMENTO
+      if (dadosSessaoGlobal.status === "pendente") {
+        document.body.innerHTML = `
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; padding: 20px;">
+            <h1 style="font-family:'Playfair Display'; color:#fff; margin-bottom: 10px;">A aguardar luzes, câmara e ação! 🎬</h1>
+            <p style="color: rgba(255,255,255,0.6);">O pagamento desta sessão ainda está a ser processado.</p>
+          </div>`;
+        return;
+      }
+
+      // 2. BARREIRA DE EXPIRAÇÃO
+      if (
+        dadosSessaoGlobal.dataExpiracao &&
+        new Date() > dadosSessaoGlobal.dataExpiracao.toDate()
+      ) {
+        document.body.innerHTML = `
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center;">
+            <h1 style="font-family:'Playfair Display'; color:#fff;">Sessão fora de Cartaz 🍿</h1>
+            <p style="color: rgba(255,255,255,0.6);">O período de exibição desta homenagem já terminou.</p>
+          </div>`;
+        return;
+      }
 
       document.body.setAttribute(
         "data-tema",
@@ -126,7 +156,6 @@ async function carregarSessao() {
             const url = typeof fotoData === "string" ? fotoData : fotoData.url;
             const caption =
               typeof fotoData === "string" ? "" : fotoData.titulo || "";
-
             const div = document.createElement("div");
             div.className = "poster-frame";
             const legendHTML = caption
@@ -135,8 +164,6 @@ async function carregarSessao() {
             div.innerHTML = `<img src="${url}" alt="Cartaz">${legendHTML}`;
             gallery.appendChild(div);
           });
-        } else {
-          gallery.innerHTML = `<p style="opacity:0.5;">Nenhuma lembrança em cartaz.</p>`;
         }
       }
 
@@ -155,6 +182,8 @@ async function carregarSessao() {
 
       gerarPoltronas();
       document.getElementById("loader").classList.add("hidden");
+    } else {
+      document.body.innerHTML = `<h1 style="color:white; text-align:center; margin-top:50px;">Sessão não encontrada.</h1>`;
     }
   } catch (e) {
     console.error("Erro:", e);
@@ -180,48 +209,36 @@ function gerarPoltronas() {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ORQUESTRAÇÃO DE FASES COM SPOTLIGHT (Apagar das luzes)
+// SPOTLIGHT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.proximaFase = function (idFase) {
   const faseAtual = document.querySelector(".fase.active");
   if (!faseAtual) return;
 
   if (idFase === "fase-poltrona") {
-    // Rasga o ingresso com som e animação
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
-
-    // Espera o ingresso cair (800ms) antes de apagar a luz
     setTimeout(() => iniciarSpotlight(faseAtual, idFase), 800);
   } else {
-    // Apaga a luz imediatamente para outras fases
     iniciarSpotlight(faseAtual, idFase);
   }
 };
 
 function iniciarSpotlight(faseAtual, idFase) {
-  // 1. Apaga a luz (Círculo fecha)
   faseAtual.classList.add("spotlight-close");
-
-  // 2. Espera a tela ficar toda preta (800ms)
   setTimeout(() => {
-    // Remove as fases do ecrã e deixa a próxima preparada "no escuro"
     document.querySelectorAll(".fase").forEach((f) => {
       f.classList.remove("active");
       f.classList.add("spotlight-close");
     });
-
     const proxFase = document.getElementById(idFase);
     if (proxFase) {
       proxFase.classList.add("active");
-
-      // 3. Acende a luz (Círculo abre revelando a nova fase)
       setTimeout(() => {
         proxFase.classList.remove("spotlight-close");
       }, 50);
     }
 
-    // INICIA A MÚSICA AO ACENDER A LUZ NA FASE DA POLTRONA
     if (idFase === "fase-poltrona") {
       if (
         dadosSessaoGlobal.musica === "custom" &&

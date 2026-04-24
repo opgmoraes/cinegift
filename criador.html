@@ -57,7 +57,7 @@
         </a>
       </div>
       <span class="step-indicator"
-        >Passo <span id="current-step">1</span> de 4</span
+        >Passo <span id="current-step">1</span> de 5</span
       >
     </header>
 
@@ -68,12 +68,107 @@
           <div class="wizard-progress-dot" data-step="2"></div>
           <div class="wizard-progress-dot" data-step="3"></div>
           <div class="wizard-progress-dot" data-step="4"></div>
+          <div class="wizard-progress-dot" data-step="5"></div>
         </div>
 
         <div id="step-1" class="wizard-step active">
-          <span class="step-number">01 / 04</span>
+          <span class="step-number">01 / 05</span>
+          <h2>Escolha o seu Plano</h2>
+          <p>Qual será o tamanho da sua homenagem?</p>
+
+          <div class="planos-grid">
+            <div
+              id="card-plano1"
+              class="plano-card selected"
+              onclick="selecionarPlano('plano1', 5, 30)"
+            >
+              <h3>Cena Curta</h3>
+              <h2>R$ 15,90</h2>
+              <ul>
+                <li>Até 5 Fotos</li>
+                <li>Vídeo de 30s</li>
+                <li>Ativo por 6 meses</li>
+                <li>Link Personalizado</li>
+              </ul>
+            </div>
+            <div
+              id="card-plano2"
+              class="plano-card"
+              onclick="selecionarPlano('plano2', 7, 30)"
+            >
+              <h3>Longa Metragem</h3>
+              <h2>R$ 27,90</h2>
+              <ul>
+                <li>Até 7 Fotos</li>
+                <li>Vídeo de 30s</li>
+                <li>Ativo por 1 ano</li>
+                <li>Link Personalizado</li>
+              </ul>
+            </div>
+            <div
+              id="card-plano3"
+              class="plano-card"
+              onclick="selecionarPlano('plano3', 7, 60)"
+            >
+              <h3>Clássico Eterno</h3>
+              <h2>R$ 37,90</h2>
+              <ul>
+                <li>Até 7 Fotos</li>
+                <li>Vídeo de até 60s</li>
+                <li>Ativo para sempre</li>
+                <li>Link Personalizado</li>
+              </ul>
+            </div>
+          </div>
+          <button class="btn-primary w-100" onclick="nextStep(2)">
+            Continuar →
+          </button>
+        </div>
+
+        <div id="step-2" class="wizard-step">
+          <span class="step-number">02 / 05</span>
           <h2>O Elenco e o Gênero</h2>
-          <p>Defina o tema e quem fará parte da história.</p>
+
+          <div class="input-group">
+            <label>Link Personalizado (URL)</label>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--vinho-medio);
+                border-radius: 12px;
+                padding: 0 1rem;
+              "
+            >
+              <span
+                style="
+                  color: rgba(255, 255, 255, 0.5);
+                  font-family: monospace;
+                  font-size: 0.8rem;
+                "
+                >cinegift.com/?ref=</span
+              >
+              <input
+                type="text"
+                id="slugLink"
+                style="
+                  border: none;
+                  background: transparent;
+                  padding: 1rem 5px;
+                  color: #fff;
+                  width: 100%;
+                  outline: none;
+                "
+                placeholder="ex: ana-e-joao"
+                oninput="
+                  this.value = this.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9-]/g, '')
+                "
+              />
+            </div>
+          </div>
 
           <div class="input-group">
             <label>Tema da Sessão</label>
@@ -115,7 +210,7 @@
           </div>
 
           <div class="input-group">
-            <label>Diretor (Seu Nome)</label>
+            <label for="nomeDiretor">Diretor (Seu Nome)</label>
             <input
               type="text"
               id="nomeDiretor"
@@ -124,7 +219,7 @@
             />
           </div>
           <div class="input-group">
-            <label>Estrela Principal</label>
+            <label for="nomeEstrela">Estrela Principal (Quem recebe)</label>
             <input
               type="text"
               id="nomeEstrela"
@@ -132,17 +227,26 @@
               placeholder="Ex: Ana"
             />
           </div>
-          <button class="btn-primary w-100" onclick="nextStep(2)">
-            Próximo Passo →
-          </button>
+
+          <div class="button-group">
+            <button class="btn-secondary" onclick="prevStep(1)">
+              ← Voltar
+            </button>
+            <button class="btn-primary" onclick="nextStep(3)">
+              Próximo Passo →
+            </button>
+          </div>
         </div>
 
-        <div id="step-2" class="wizard-step">
-          <span class="step-number">02 / 04</span>
+        <div id="step-3" class="wizard-step">
+          <span class="step-number">03 / 05</span>
           <h2>Em Cartaz</h2>
-          <p>Escolha até 5 fotos e crie títulos para os quadros.</p>
+          <p>
+            Escolha as fotos para o corredor. Máx
+            <strong id="txt-max-fotos">5</strong> fotos.
+          </p>
 
-          <div class="upload-area">
+          <div class="upload-area" id="upload-fotos">
             <input
               type="file"
               id="fotosLobby"
@@ -157,21 +261,24 @@
           <div class="thumbs-grid" id="thumbsGrid"></div>
 
           <div class="button-group">
-            <button class="btn-secondary" onclick="prevStep(1)">
+            <button class="btn-secondary" onclick="prevStep(2)">
               ← Voltar
             </button>
-            <button class="btn-primary" onclick="nextStep(3)">
+            <button class="btn-primary" onclick="nextStep(4)">
               Próximo Passo →
             </button>
           </div>
         </div>
 
-        <div id="step-3" class="wizard-step">
-          <span class="step-number">03 / 04</span>
+        <div id="step-4" class="wizard-step">
+          <span class="step-number">04 / 05</span>
           <h2>A Produção</h2>
-          <p>Suba o vídeo principal e escolha a música.</p>
+          <p>
+            Suba o vídeo principal (Máx
+            <strong id="txt-max-video">30</strong>s).
+          </p>
 
-          <div class="upload-area">
+          <div class="upload-area" id="upload-video">
             <input
               type="file"
               id="videoPrincipal"
@@ -229,31 +336,32 @@
               <label
                 for="videoTemSom"
                 style="margin: 0; font-size: 0.8rem; text-transform: none"
-                >Meu vídeo tem som (Pausar música durante o filme)</label
+                >Meu vídeo original tem som (Pausar música de fundo durante o
+                filme)</label
               >
             </div>
           </div>
 
           <div class="button-group">
-            <button class="btn-secondary" onclick="prevStep(2)">
+            <button class="btn-secondary" onclick="prevStep(3)">
               ← Voltar
             </button>
-            <button class="btn-primary" onclick="nextStep(4)">
+            <button class="btn-primary" onclick="nextStep(5)">
               Próximo Passo →
             </button>
           </div>
         </div>
 
-        <div id="step-4" class="wizard-step">
-          <span class="step-number">04 / 04</span>
+        <div id="step-5" class="wizard-step">
+          <span class="step-number">05 / 05</span>
           <h2>Créditos Finais</h2>
           <p>A mensagem que subirá na tela após o filme.</p>
 
           <div class="input-group">
-            <label>Sua Mensagem</label>
+            <label for="mensagemFinal">Sua Mensagem</label>
             <textarea
               id="mensagemFinal"
-              class="input-field"
+              class="input-field textarea"
               rows="5"
               maxlength="300"
               placeholder="Escreva algo especial..."
@@ -261,11 +369,11 @@
           </div>
 
           <div class="button-group">
-            <button class="btn-secondary" onclick="prevStep(3)">
+            <button class="btn-secondary" onclick="prevStep(4)">
               ← Voltar
             </button>
             <button class="btn-success" onclick="finalizarSessao()">
-              🎬 Gerar Sessão
+              Ir para Pagamento 💳
             </button>
           </div>
         </div>
@@ -333,7 +441,26 @@
               </div>
             </div>
 
-            <div id="prev-fase-4" class="prev-fase" data-tema="romance">
+            <div
+              id="prev-fase-4"
+              class="prev-fase"
+              style="background: #000; padding: 0"
+            >
+              <div
+                style="
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  background: radial-gradient(circle, #222, #000);
+                "
+              >
+                <span style="font-size: 4rem">🎥</span>
+              </div>
+            </div>
+
+            <div id="prev-fase-5" class="prev-fase" data-tema="romance">
               <div class="prev-credits">
                 <h1 id="prevMsgEstrela">Nome</h1>
                 <div class="msg-scroll-container">
@@ -362,7 +489,6 @@
         aniversario: { acc: "#d4407a", bg1: "#4a1040", bg2: "#12080e" },
       };
 
-      /* 1. MUDAR O PREVIEW CONFORME O PASSO */
       function nextStep(n) {
         document
           .querySelectorAll(".wizard-step")
@@ -386,7 +512,6 @@
         nextStep(n);
       }
 
-      /* 2. APLICAÇÃO DE TEMAS NO PREVIEW E WIZARD */
       function aplicarTema(tema) {
         temaAtual = tema;
         document.getElementById("tema").value = tema;
@@ -424,7 +549,6 @@
         });
       });
 
-      /* 3. PREVIEW DOS TEXTOS */
       document
         .getElementById("nomeEstrela")
         ?.addEventListener("input", function () {
@@ -449,15 +573,15 @@
             : "A sua mensagem final...";
         });
 
-      /* 4. PREVIEW DAS FOTOS E TÍTULOS (PASSO 2) */
-      const MAX_FOTOS = 5;
       window.fotosArmazenadas = [];
 
       document
         .getElementById("fotosLobby")
         .addEventListener("change", function () {
+          const disponiveis =
+            window.LIMITE_FOTOS - window.fotosArmazenadas.length;
           Array.from(this.files)
-            .slice(0, MAX_FOTOS - window.fotosArmazenadas.length)
+            .slice(0, disponiveis)
             .forEach((file) => {
               const reader = new FileReader();
               reader.onload = (e) => {
@@ -535,7 +659,7 @@
           }
         });
 
-        if (window.fotosArmazenadas.length < MAX_FOTOS) {
+        if (window.fotosArmazenadas.length < window.LIMITE_FOTOS) {
           const add = document.createElement("label");
           add.className = "thumb-add";
           add.htmlFor = "fotosLobby";
@@ -547,7 +671,6 @@
             window.fotosArmazenadas.length > 0 ? "none" : "flex";
       }
 
-      /* 5. ÁUDIO PREVIEW */
       let previewAudio = document.getElementById("audioPreview");
       let isPlaying = false;
       function mudarMusica() {
@@ -578,7 +701,6 @@
         isPlaying = !isPlaying;
       }
 
-      /* 6. DOWNLOAD E CÓPIA */
       function copiarLinkSessao() {
         const input = document.getElementById("linkGerado");
         input.select();

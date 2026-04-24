@@ -1,5 +1,5 @@
 /* ============================================================
-   CineGift — sessao.css (Pro IMAX Edition + Spotlight + VIP Glass)
+   CineGift — sessao.css
    ============================================================ */
 :root {
   --noite: #0a0407;
@@ -70,9 +70,7 @@
   --theme-glow: rgba(212, 64, 122, 0.3);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TRANSIÇÃO SPOTLIGHT (APAGAR AS LUZES)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Spotlight e Fases */
 .fase {
   display: none;
   width: 100vw;
@@ -85,14 +83,12 @@
     #1a1218 0%,
     var(--theme-bg) 100%
   );
-  /* O Spotlight começa aberto */
   clip-path: circle(150% at 50% 50%);
   transition: clip-path 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 .fase.active {
   display: flex;
 }
-/* Quando esta classe for adicionada, a luz fecha em círculo para o centro */
 .fase.spotlight-close {
   clip-path: circle(0% at 50% 50%);
   pointer-events: none;
@@ -132,7 +128,6 @@
 .interativo-box {
   background: rgba(20, 15, 18, 0.45);
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   padding: 2.5rem;
@@ -338,9 +333,7 @@
   transform: scale(1.05);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   BOTÃO GLASSMORPHISM VIP (Vidro Metálico & Shimmer)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* BOTÃO VIP GLASSMORPHISM */
 .btn-acao {
   background: linear-gradient(
     135deg,
@@ -348,7 +341,6 @@
     rgba(255, 255, 255, 0.02) 100%
   );
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow:
     0 8px 32px 0 rgba(0, 0, 0, 0.3),
@@ -366,8 +358,6 @@
   position: relative;
   overflow: hidden;
 }
-
-/* Feixe de luz que passa pelo botão */
 .btn-acao::before {
   content: "";
   position: absolute;
@@ -384,11 +374,9 @@
   transform: skewX(-25deg);
   transition: 0.6s ease;
 }
-
 .btn-acao:hover::before {
   left: 150%;
 }
-
 .btn-acao:hover {
   transform: translateY(-4px);
   background: linear-gradient(
@@ -563,9 +551,7 @@ video {
   border-radius: 4px;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CRÉDITOS FINAIS COM SCROLL SEGURO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* CRÉDITOS COM SCROLL */
 .credits-roll {
   display: none;
   position: absolute;
@@ -580,7 +566,6 @@ video {
   display: flex;
   animation: fadeIn 2s ease forwards;
 }
-
 .credits-content {
   padding: 2rem;
   width: 100%;
@@ -591,7 +576,6 @@ video {
   justify-content: center;
   animation: creditsReveal 3s ease forwards;
 }
-
 .credits-content h1 {
   font-family: var(--font-display);
   font-size: 3.5rem;
@@ -600,7 +584,6 @@ video {
   color: var(--creme);
 }
 
-/* Container seguro que impede a mensagem de rebentar o ecrã */
 .msg-scroll-container {
   width: 100%;
   max-height: 45vh;
@@ -613,8 +596,6 @@ video {
 .msg-scroll-container::-webkit-scrollbar {
   display: none;
 }
-
-/* Texto com quebra de linha forçada para evitar overflow horizontal */
 .credits-mensagem {
   font-family: var(--font-display);
   font-style: italic;
@@ -669,7 +650,6 @@ video {
     transform: translateY(0);
   }
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
