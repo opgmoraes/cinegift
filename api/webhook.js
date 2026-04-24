@@ -38,14 +38,18 @@ export default async function handler(req, res) {
       return res.json({ message: "Session ID missing" });
     }
 
-    // 1. VERIFICA SE O PAGAMENTO FOI APROVADO
+    // 1. VERIFICA SE O PAGAMENTO FOI APROVADO (⚠️ MODIFICADO PARA TESTE COM PIX GERADO)
     const isApproved =
       eventName === "purchase_approved" ||
       status === "paid" ||
-      status === "approved";
+      status === "approved" ||
+      eventName === "pix_gerado" || // <-- MODO TESTE
+      status === "waiting_payment"; // <-- MODO TESTE
 
     if (!isApproved) {
-      console.log(`⏳ Evento ignorado (Aguardando pagamento ou outro status).`);
+      console.log(
+        `⏳ Evento ignorado (Status não aprovado nem pendente de PIX).`,
+      );
       return res.json({ message: "Evento ignorado." });
     }
 
@@ -87,7 +91,7 @@ export default async function handler(req, res) {
     });
 
     console.log(
-      `🎉 SUCESSO: Sessão [${sessionId}] ativada com sucesso até ${dataExp.toLocaleDateString()}!`,
+      `🎉 SUCESSO: Sessão [${sessionId}] ativada com sucesso (VIA TESTE PIX)!`,
     );
     return res.json({ success: true });
   } catch (error) {
