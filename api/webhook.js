@@ -25,7 +25,6 @@ export default async function handler(req, res) {
     const eventName = payload.event || data.event || "";
     const status = data.status || data.state || "";
 
-    // CAKTO TRACKING: Onde a Cakto costuma esconder as variáveis de URL
     const tracking =
       data.tracking ||
       data.trackingParameters ||
@@ -33,33 +32,38 @@ export default async function handler(req, res) {
       {};
     const metadata = data.metadata || {};
 
-    // NOVO RADAR DE ID: Procura o nosso ID da sessão em todos os campos possíveis
-    const sessionId =
+    // 1. Tenta encontrar o ID nos campos normais
+    let sessionId =
       data.src ||
       tracking.src ||
       tracking.source ||
-      tracking.utm_source ||
       metadata.src ||
       payload.src ||
       data.reference;
 
-    console.log(
-      `WEBHOOK CINEGIFT | Evento: [${eventName}] | Status: [${status}] | Sessão encontrada: [${sessionId}]`,
-    );
-
-    // SE CONTINUAR UNDEFINED, VAMOS IMPRIMIR TUDO PARA DESCOBRIR ONDE ESTÁ
-    if (!sessionId) {
-      console.log(
-        "❌ Ignorado: ID da Sessão [undefined]. Imprimindo o Payload completo para investigação:",
-      );
-      console.log(JSON.stringify(payload, null, 2));
-      return res.json({
-        message: "Session ID missing",
-        payload_recebido: payload,
-      });
+    // 2. MAGIA NOVA: Extrai o ID de dentro do checkoutUrl da Cakto
+    if (!sessionId && data.checkoutUrl) {
+      try {
+        // Pega a URL (ex: https://pay.cakto.../?src=jLcKlVQrN) e extrai só o "src"
+        const urlParams = new URLSearchParams(data.checkoutUrl.split("?")[1]);
+        sessionId = urlParams.get("src");
+      } catch (e) {
+        console.log("Erro ao extrair da URL:", e);
+      }
     }
 
-    // 1. VERIFICA SE O PAGAMENTO FOI APROVADO OU PIX GERADO (MODO TESTE)
+    console.log(
+      `WEBHOOK CINEGIFT | Evento: [${eventName}] | Status: [${status}] | Sessão: [${sessionId}]`,
+    );
+
+    if (!sessionId) {
+      console.log(
+        "❌ Ignorado: ID da Sessão não encontrado nem na URL nem no payload.",
+      );
+      return res.json({ message: "Session ID missing" });
+    }
+
+    // 3. VERIFICA SE O PAGAMENTO FOI APROVADO OU PIX GERADO (MODO TESTE)
     const isApproved =
       eventName === "purchase_approved" ||
       status === "paid" ||
@@ -74,7 +78,7 @@ export default async function handler(req, res) {
       return res.json({ message: "Evento ignorado." });
     }
 
-    // 2. BUSCA A SESSÃO NO FIREBASE
+    // 4. BUSCA A SESSÃO NO FIREBASE
     const sessionRef = db.collection("sessoes").doc(sessionId);
     const sessionSnap = await sessionRef.get();
 
@@ -85,12 +89,13 @@ export default async function handler(req, res) {
 
     const dadosSessao = sessionSnap.data();
 
+    // Evita reprocessar se já estiver pago
     if (dadosSessao.status === "pago") {
       console.log(`✅ A sessão [${sessionId}] já estava ativa.`);
       return res.json({ success: true, message: "Já processado" });
     }
 
-    // 3. CALCULA A VALIDADE COM BASE NO PLANO
+    // 5. CALCULA A VALIDADE COM BASE NO PLANO
     let mesesExpiracao = 6;
     if (dadosSessao.plano === "plano2") mesesExpiracao = 12;
     else if (dadosSessao.plano === "plano3") mesesExpiracao = 1200;
@@ -98,7 +103,7 @@ export default async function handler(req, res) {
     const dataExp = new Date();
     dataExp.setMonth(dataExp.getMonth() + mesesExpiracao);
 
-    // 4. ATUALIZA A SESSÃO PARA "PAGO" E LIBERA O ACESSO
+    // 6. ATUALIZA A SESSÃO PARA "PAGO" E LIBERA O ACESSO
     await sessionRef.update({
       status: "pago",
       dataExpiracao: admin.firestore.Timestamp.fromDate(dataExp),
