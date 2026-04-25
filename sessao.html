@@ -14,16 +14,21 @@
   <body class="cinema-body" data-tema="romance">
     <audio id="audioTrilha" loop></audio>
     <audio id="audioEfeito"></audio>
+
     <div
-      id="youtubePlayer"
       style="
         position: absolute;
-        width: 0;
-        height: 0;
+        top: -9999px;
+        left: -9999px;
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
         opacity: 0;
         pointer-events: none;
       "
-    ></div>
+    >
+      <div id="youtubePlayer"></div>
+    </div>
 
     <div class="dust-overlay"></div>
 

@@ -62,28 +62,37 @@ function obterVideoIdYouTube(url) {
   return match ? match[1] : null;
 }
 
-function prepararYouTube(youtubeUrl) {
-  const videoId = obterVideoIdYouTube(youtubeUrl);
+// Inicialização Global Obrigatória para a API do YouTube
+window.onYouTubeIframeAPIReady = function () {
+  if (!dadosSessaoGlobal || !dadosSessaoGlobal.youtubeLink) return;
+  const videoId = obterVideoIdYouTube(dadosSessaoGlobal.youtubeLink);
   if (!videoId) return;
 
+  playerYT = new YT.Player("youtubePlayer", {
+    height: "10",
+    width: "10",
+    videoId: videoId,
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      playsinline: 1,
+      loop: 1,
+      playlist: videoId, // O YouTube exige a playlist idêntica ao video para o loop funcionar
+    },
+    events: {
+      onReady: (event) => {
+        event.target.setVolume(0);
+        console.log("YouTube API conectada com sucesso.");
+      },
+    },
+  });
+};
+
+function prepararYouTube() {
   const tag = document.createElement("script");
   tag.src = "https://www.youtube.com/iframe_api";
   const firstScriptTag = document.getElementsByTagName("script")[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  window.onYouTubeIframeAPIReady = function () {
-    playerYT = new YT.Player("youtubePlayer", {
-      height: "1",
-      width: "1",
-      videoId: videoId,
-      playerVars: { autoplay: 0, controls: 0, loop: 1, playsinline: 1 },
-      events: {
-        onReady: (event) => {
-          event.target.setVolume(0);
-        },
-      },
-    });
-  };
 }
 
 async function carregarSessao() {
@@ -167,11 +176,12 @@ async function carregarSessao() {
         }
       }
 
+      // Inicia a preparação do YouTube se escolhido
       if (
         dadosSessaoGlobal.musica === "custom" &&
         dadosSessaoGlobal.youtubeLink
       ) {
-        prepararYouTube(dadosSessaoGlobal.youtubeLink);
+        prepararYouTube();
       }
 
       const videoPlayer = document.getElementById("moviePlayer");
@@ -215,6 +225,33 @@ window.proximaFase = function (idFase) {
   if (idFase === "fase-poltrona") {
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
+
+    // DESBLOQUEIO IMEDIATO DE ÁUDIO NO CLIQUE DO USUÁRIO
+    if (
+      dadosSessaoGlobal.musica === "custom" &&
+      playerYT &&
+      typeof playerYT.playVideo === "function"
+    ) {
+      playerYT.unMute();
+      playerYT.setVolume(0);
+      playerYT.playVideo();
+
+      let vol = 0;
+      let tYT = setInterval(() => {
+        vol += 5;
+        playerYT.setVolume(vol);
+        if (vol >= 30) clearInterval(tYT);
+      }, 300);
+    } else if (dadosSessaoGlobal.musica !== "custom") {
+      const trackStr = dadosSessaoGlobal.musica || "1";
+      audioTrilha.src = `assets/audio/musicas/${dadosSessaoGlobal.tema}/${trackStr}.mp3`;
+      audioTrilha.volume = 0;
+      audioTrilha
+        .play()
+        .then(() => fadeAudio(audioTrilha, 0.3, 3000))
+        .catch((e) => console.log("Audio block", e));
+    }
+
     setTimeout(() => iniciarSpotlight(faseAtual, idFase), 800);
   } else {
     iniciarSpotlight(faseAtual, idFase);
@@ -234,30 +271,6 @@ function iniciarSpotlight(faseAtual, idFase) {
       setTimeout(() => {
         proxFase.classList.remove("spotlight-close");
       }, 50);
-    }
-
-    if (idFase === "fase-poltrona") {
-      if (
-        dadosSessaoGlobal.musica === "custom" &&
-        playerYT &&
-        typeof playerYT.playVideo === "function"
-      ) {
-        playerYT.playVideo();
-        let vol = 0;
-        let tYT = setInterval(() => {
-          vol += 5;
-          playerYT.setVolume(vol);
-          if (vol >= 30) clearInterval(tYT);
-        }, 200);
-      } else {
-        const trackStr = dadosSessaoGlobal.musica || "1";
-        audioTrilha.src = `assets/audio/musicas/${dadosSessaoGlobal.tema}/${trackStr}.mp3`;
-        audioTrilha.volume = 0;
-        audioTrilha
-          .play()
-          .then(() => fadeAudio(audioTrilha, 0.3, 3000))
-          .catch((e) => console.log(e));
-      }
     }
   }, 800);
 }
@@ -287,9 +300,10 @@ if (playMasterBtn) {
 
     videoPlayer.onended = () => {
       if (dadosSessaoGlobal.videoTemSom) {
-        if (dadosSessaoGlobal.musica === "custom" && playerYT)
+        if (dadosSessaoGlobal.musica === "custom" && playerYT) {
           playerYT.playVideo();
-        else {
+          playerYT.setVolume(30);
+        } else {
           audioTrilha.play();
           fadeAudio(audioTrilha, 0.3, 2000);
         }
