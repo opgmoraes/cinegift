@@ -1,0 +1,8 @@
+{
+  "name": "cinegift-saas",
+  "version": "1.0.0",
+  "description": "Plataforma CineGift SaaS",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}
