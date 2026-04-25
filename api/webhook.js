@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     const eventName = payload.event || data.event || "";
     const status = data.status || data.state || "";
 
-    // CAKTO TRACKING: A Cakto envia os parâmetros da URL em diferentes locais dependendo da versão
+    // CAKTO TRACKING: Onde a Cakto costuma esconder as variáveis de URL
     const tracking =
       data.tracking ||
       data.trackingParameters ||
@@ -33,18 +33,26 @@ export default async function handler(req, res) {
       {};
     const metadata = data.metadata || {};
 
-    // Extrai o ID da sessão que enviamos via ?src=
+    // NOVO RADAR DE ID: Procura o nosso ID da sessão em todos os campos possíveis
     const sessionId =
-      data.src || tracking.src || metadata.src || payload.src || data.reference;
+      data.src ||
+      tracking.src ||
+      tracking.source ||
+      tracking.utm_source ||
+      metadata.src ||
+      payload.src ||
+      data.reference;
 
     console.log(
-      `WEBHOOK CINEGIFT | Evento: [${eventName}] | Status: [${status}] | Sessão: [${sessionId}]`,
+      `WEBHOOK CINEGIFT | Evento: [${eventName}] | Status: [${status}] | Sessão encontrada: [${sessionId}]`,
     );
 
+    // SE CONTINUAR UNDEFINED, VAMOS IMPRIMIR TUDO PARA DESCOBRIR ONDE ESTÁ
     if (!sessionId) {
       console.log(
-        "❌ Ignorado: ID da Sessão não encontrado. (Certifique-se que o link de checkout tem ?src=ID)",
+        "❌ Ignorado: ID da Sessão [undefined]. Imprimindo o Payload completo para investigação:",
       );
+      console.log(JSON.stringify(payload, null, 2));
       return res.json({
         message: "Session ID missing",
         payload_recebido: payload,
@@ -77,7 +85,6 @@ export default async function handler(req, res) {
 
     const dadosSessao = sessionSnap.data();
 
-    // Evita reprocessar se já estiver pago
     if (dadosSessao.status === "pago") {
       console.log(`✅ A sessão [${sessionId}] já estava ativa.`);
       return res.json({ success: true, message: "Já processado" });
