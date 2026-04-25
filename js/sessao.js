@@ -77,12 +77,11 @@ window.onYouTubeIframeAPIReady = function () {
       controls: 0,
       playsinline: 1,
       loop: 1,
-      playlist: videoId, // O YouTube exige a playlist idêntica ao video para o loop funcionar
+      playlist: videoId,
     },
     events: {
       onReady: (event) => {
         event.target.setVolume(0);
-        console.log("YouTube API conectada com sucesso.");
       },
     },
   });
@@ -114,7 +113,6 @@ async function carregarSessao() {
     if (docSnap && docSnap.exists()) {
       dadosSessaoGlobal = docSnap.data();
 
-      // 1. BARREIRA DE PAGAMENTO
       if (dadosSessaoGlobal.status === "pendente") {
         document.body.innerHTML = `
           <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; padding: 20px;">
@@ -124,7 +122,6 @@ async function carregarSessao() {
         return;
       }
 
-      // 2. BARREIRA DE EXPIRAÇÃO
       if (
         dadosSessaoGlobal.dataExpiracao &&
         new Date() > dadosSessaoGlobal.dataExpiracao.toDate()
@@ -176,7 +173,6 @@ async function carregarSessao() {
         }
       }
 
-      // Inicia a preparação do YouTube se escolhido
       if (
         dadosSessaoGlobal.musica === "custom" &&
         dadosSessaoGlobal.youtubeLink
@@ -223,6 +219,17 @@ window.proximaFase = function (idFase) {
   if (!faseAtual) return;
 
   if (idFase === "fase-poltrona") {
+    // --- HACK PARA IPHONE (Desbloqueio de Mídia) ---
+    // O Safari exige que o vídeo seja iniciado no exato momento do clique
+    const videoPlayer = document.getElementById("moviePlayer");
+    if (videoPlayer) {
+      videoPlayer
+        .play()
+        .then(() => videoPlayer.pause())
+        .catch((e) => {});
+    }
+    // ----------------------------------------------
+
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
 
@@ -249,7 +256,7 @@ window.proximaFase = function (idFase) {
       audioTrilha
         .play()
         .then(() => fadeAudio(audioTrilha, 0.3, 3000))
-        .catch((e) => console.log("Audio block", e));
+        .catch((e) => console.log("Audio block no iPhone", e));
     }
 
     setTimeout(() => iniciarSpotlight(faseAtual, idFase), 800);
@@ -294,6 +301,7 @@ if (playMasterBtn) {
     }
 
     const videoPlayer = document.getElementById("moviePlayer");
+    // Agora o iOS permite o play aqui dentro do setTimeout porque nós o desbloqueamos no primeiro clique!
     setTimeout(() => {
       videoPlayer.play();
     }, 1500);
