@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sessão Criada! | CineGift</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+      .sucesso-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        background: var(--noite);
+      }
+      .sucesso-box {
+        background: linear-gradient(145deg, #1a0810, #0a0407);
+        padding: 3rem;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      }
+      .qr-wrapper {
+        background: #fff;
+        padding: 20px;
+        border-radius: 16px;
+        display: inline-block;
+        margin: 20px 0;
+        border: 4px solid var(--borgonha);
+      }
+      .copy-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .copy-group input {
+        flex: 1;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        padding: 12px;
+        font-family: monospace;
+        font-size: 0.9rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sucesso-container">
+      <div class="sucesso-box">
+        <h1
+          style="
+            font-family: var(--font-display);
+            color: var(--creme);
+            margin-bottom: 10px;
+          "
+        >
+          Pagamento Confirmado! 🎬
+        </h1>
+        <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 20px">
+          A sua sessão VIP está pronta para ser enviada. Copie o link ou baixe o
+          QR Code abaixo.
+        </p>
+
+        <div class="qr-wrapper" id="qrWrapperBorder">
+          <div id="qrcodeBox"></div>
+        </div>
+
+        <div class="copy-group">
+          <input type="text" id="linkGerado" readonly />
+        </div>
+
+        <div style="display: flex; gap: 10px">
+          <button onclick="copiarLink()" class="btn-secondary" style="flex: 1">
+            Copiar Link
+          </button>
+          <a
+            href="index.html"
+            class="btn-primary"
+            style="flex: 1; text-align: center; text-decoration: none"
+            >Nova Sessão</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const slug = localStorage.getItem("ultimoSlugCineGift");
+      const tema = localStorage.getItem("ultimoTemaCineGift") || "romance";
+
+      if (!slug) {
+        document.querySelector(".sucesso-box").innerHTML =
+          "<h2>Erro!</h2><p>Link não encontrado no navegador. Volte ao início.</p><a href='index.html' class='btn-primary'>Início</a>";
+      } else {
+        const linkFinal = `${window.location.origin}/sessao.html?ref=${slug}`;
+        document.getElementById("linkGerado").value = linkFinal;
+
+        const temaCores = {
+          romance: "#c4405a",
+          amizade: "#4a8ec4",
+          familia: "#d4782a",
+          aniversario: "#d4407a",
+        };
+        const qrCor = temaCores[tema] || "#c4405a";
+        document.getElementById("qrWrapperBorder").style.borderColor = qrCor;
+
+        new QRCode(document.getElementById("qrcodeBox"), {
+          text: linkFinal,
+          width: 200,
+          height: 200,
+          colorDark: qrCor,
+          colorLight: "#ffffff",
+        });
+      }
+
+      function copiarLink() {
+        const input = document.getElementById("linkGerado");
+        input.select();
+        document.execCommand("copy");
+        alert("Link copiado para a área de transferência!");
+      }
+    </script>
+  </body>
+</html>

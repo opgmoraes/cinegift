@@ -25,30 +25,43 @@ export default async function handler(req, res) {
     const eventName = payload.event || data.event || "";
     const status = data.status || data.state || "";
 
-    // O ID da Sessão que passamos no link de checkout da Cakto
+    // CAKTO TRACKING: A Cakto envia os parâmetros da URL em diferentes locais dependendo da versão
+    const tracking =
+      data.tracking ||
+      data.trackingParameters ||
+      data.tracking_parameters ||
+      {};
+    const metadata = data.metadata || {};
+
+    // Extrai o ID da sessão que enviamos via ?src=
     const sessionId =
-      data.src || data.metadata?.src || data.reference || data.tracking_id;
+      data.src || tracking.src || metadata.src || payload.src || data.reference;
 
     console.log(
       `WEBHOOK CINEGIFT | Evento: [${eventName}] | Status: [${status}] | Sessão: [${sessionId}]`,
     );
 
     if (!sessionId) {
-      console.log("❌ Ignorado: ID da Sessão não encontrado no payload.");
-      return res.json({ message: "Session ID missing" });
+      console.log(
+        "❌ Ignorado: ID da Sessão não encontrado. (Certifique-se que o link de checkout tem ?src=ID)",
+      );
+      return res.json({
+        message: "Session ID missing",
+        payload_recebido: payload,
+      });
     }
 
-    // 1. VERIFICA SE O PAGAMENTO FOI APROVADO (⚠️ MODIFICADO PARA TESTE COM PIX GERADO)
+    // 1. VERIFICA SE O PAGAMENTO FOI APROVADO OU PIX GERADO (MODO TESTE)
     const isApproved =
       eventName === "purchase_approved" ||
       status === "paid" ||
       status === "approved" ||
-      eventName === "pix_gerado" || // <-- MODO TESTE
-      status === "waiting_payment"; // <-- MODO TESTE
+      eventName === "pix_gerado" || // <-- MODO TESTE PIX
+      status === "waiting_payment"; // <-- MODO TESTE PIX
 
     if (!isApproved) {
       console.log(
-        `⏳ Evento ignorado (Status não aprovado nem pendente de PIX).`,
+        `⏳ Evento ignorado (Aguardando pagamento real ou cancelado).`,
       );
       return res.json({ message: "Evento ignorado." });
     }
@@ -71,13 +84,9 @@ export default async function handler(req, res) {
     }
 
     // 3. CALCULA A VALIDADE COM BASE NO PLANO
-    let mesesExpiracao = 6; // Default: Plano 1 (Cena Curta)
-
-    if (dadosSessao.plano === "plano2") {
-      mesesExpiracao = 12; // Longa Metragem (1 Ano)
-    } else if (dadosSessao.plano === "plano3") {
-      mesesExpiracao = 1200; // Clássico Eterno (100 anos = Para Sempre)
-    }
+    let mesesExpiracao = 6;
+    if (dadosSessao.plano === "plano2") mesesExpiracao = 12;
+    else if (dadosSessao.plano === "plano3") mesesExpiracao = 1200;
 
     const dataExp = new Date();
     dataExp.setMonth(dataExp.getMonth() + mesesExpiracao);
@@ -90,9 +99,7 @@ export default async function handler(req, res) {
       gatewayId: data.id || `cakto_${Date.now()}`,
     });
 
-    console.log(
-      `🎉 SUCESSO: Sessão [${sessionId}] ativada com sucesso (VIA TESTE PIX)!`,
-    );
+    console.log(`🎉 SUCESSO: Sessão [${sessionId}] ativada!`);
     return res.json({ success: true });
   } catch (error) {
     console.error("ERRO CRÍTICO NO WEBHOOK:", error);

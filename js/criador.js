@@ -90,7 +90,7 @@ window.finalizarSessao = async function () {
   }
 
   btn.disabled = true;
-  btn.innerText = "⏳ Enviando arquivos...";
+  btn.innerText = "⏳ Preparando Redirecionamento...";
 
   try {
     const q = query(
@@ -145,12 +145,17 @@ window.finalizarSessao = async function () {
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
 
+    // GUARDA NO NAVEGADOR PARA MOSTRAR NA PÁGINA DE SUCESSO DEPOIS DO PAGAMENTO
+    localStorage.setItem("ultimoSlugCineGift", slugDigitado);
+    localStorage.setItem("ultimoTemaCineGift", temaEscolhido);
+
     const linksCakto = {
       plano1: "https://pay.cakto.com.br/373amsz",
       plano2: "https://pay.cakto.com.br/ayzqg7r_859775",
       plano3: "https://pay.cakto.com.br/dvqe4ru",
     };
 
+    // VAI PARA A CAKTO PASSANDO O ID NO FINAL DA URL
     window.location.href = `${linksCakto[window.planoEscolhido]}?src=${docRef.id}`;
   } catch (error) {
     console.error(error);

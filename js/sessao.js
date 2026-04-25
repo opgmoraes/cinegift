@@ -208,9 +208,6 @@ function gerarPoltronas() {
   }
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// SPOTLIGHT
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.proximaFase = function (idFase) {
   const faseAtual = document.querySelector(".fase.active");
   if (!faseAtual) return;
