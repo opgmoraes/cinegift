@@ -38,6 +38,15 @@
       <p>A preparar a sua sessão...</p>
     </div>
 
+    <!-- Novo Botão de Música -->
+    <button
+      id="btnMusicToggle"
+      class="music-toggle-btn hidden"
+      aria-label="Mutar/Desmutar Música"
+    >
+      🔊
+    </button>
+
     <main id="jornada-container">
       <section id="fase-ticket" class="fase active">
         <div class="fase-content">
@@ -109,12 +118,14 @@
       </section>
 
       <section id="fase-corredor" class="fase">
-        <div class="fase-content">
+        <div class="fase-content" style="width: 100%">
           <h2 class="fase-titulo">Em Cartaz</h2>
           <div class="frase-dinamica" id="frase-corredor">
             "A nossa melhor história começa agora..."
           </div>
+          <!-- Galeria Atualizada -->
           <div class="lobby-gallery" id="lobbyGallery"></div>
+
           <button class="btn-acao" onclick="proximaFase('fase-filme')">
             Entrar na Sala 🚪
           </button>

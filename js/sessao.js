@@ -31,6 +31,24 @@ let dadosSessaoGlobal = null;
 let audioTrilha = document.getElementById("audioTrilha");
 let audioEfeito = document.getElementById("audioEfeito");
 let playerYT = null;
+let isMutedGlobal = false; // Controle de estado da música
+
+// Seleção do Botão Mute
+const btnMusicToggle = document.getElementById("btnMusicToggle");
+
+if (btnMusicToggle) {
+  btnMusicToggle.addEventListener("click", () => {
+    isMutedGlobal = !isMutedGlobal;
+    btnMusicToggle.innerHTML = isMutedGlobal ? "🔈" : "🔊";
+
+    if (dadosSessaoGlobal.musica === "custom" && playerYT) {
+      if (isMutedGlobal) playerYT.mute();
+      else playerYT.unMute();
+    } else {
+      audioTrilha.muted = isMutedGlobal;
+    }
+  });
+}
 
 function fadeAudio(audioElement, targetVolume, duration, callback) {
   const startVolume = audioElement.volume || 0;
@@ -50,6 +68,7 @@ function fadeAudio(audioElement, targetVolume, duration, callback) {
 }
 
 window.tocarEfeito = function (nome) {
+  if (isMutedGlobal) return;
   audioEfeito.src = `assets/audio/efeitos/${nome}.mp3`;
   audioEfeito.volume = 0.8;
   audioEfeito.play().catch((e) => console.log("Áudio efeito bloqueado"));
@@ -62,7 +81,6 @@ function obterVideoIdYouTube(url) {
   return match ? match[1] : null;
 }
 
-// Inicialização Global Obrigatória para a API do YouTube
 window.onYouTubeIframeAPIReady = function () {
   if (!dadosSessaoGlobal || !dadosSessaoGlobal.youtubeLink) return;
   const videoId = obterVideoIdYouTube(dadosSessaoGlobal.youtubeLink);
@@ -157,18 +175,51 @@ async function carregarSessao() {
       const gallery = document.getElementById("lobbyGallery");
       if (gallery) {
         gallery.innerHTML = "";
+
+        // INTERSECTION OBSERVER PARA DETECTAR FOTO NO CENTRO (RESPONSIVIDADE)
+        const observerCenter = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-centered");
+              } else {
+                entry.target.classList.remove("is-centered");
+              }
+            });
+          },
+          {
+            root: gallery,
+            rootMargin: "0px -40% 0px -40%", // Dispara apenas quando a imagem chega bem no centro
+            threshold: 0,
+          },
+        );
+
         if (dadosSessaoGlobal.fotos && dadosSessaoGlobal.fotos.length > 0) {
           dadosSessaoGlobal.fotos.forEach((fotoData) => {
             const url = typeof fotoData === "string" ? fotoData : fotoData.url;
             const caption =
               typeof fotoData === "string" ? "" : fotoData.titulo || "";
-            const div = document.createElement("div");
-            div.className = "poster-frame";
-            const legendHTML = caption
-              ? `<div class="poster-caption">${caption}</div>`
-              : "";
-            div.innerHTML = `<img src="${url}" alt="Cartaz">${legendHTML}`;
-            gallery.appendChild(div);
+
+            // Criando o Wrapper para a estrutura nova (Texto fora da imagem)
+            const wrapper = document.createElement("div");
+            wrapper.className = "poster-wrapper";
+
+            const frame = document.createElement("div");
+            frame.className = "poster-frame";
+            frame.innerHTML = `<img src="${url}" alt="Cartaz">`;
+
+            wrapper.appendChild(frame);
+
+            // Adicionando título (se houver) embaixo da imagem
+            if (caption) {
+              const capDiv = document.createElement("div");
+              capDiv.className = "poster-title-below";
+              capDiv.innerText = caption;
+              wrapper.appendChild(capDiv);
+            }
+
+            gallery.appendChild(wrapper);
+            observerCenter.observe(wrapper); // Observa a imagem rolando pro centro
           });
         }
       }
@@ -219,8 +270,6 @@ window.proximaFase = function (idFase) {
   if (!faseAtual) return;
 
   if (idFase === "fase-poltrona") {
-    // --- HACK PARA IPHONE (Desbloqueio de Mídia) ---
-    // O Safari exige que o vídeo seja iniciado no exato momento do clique
     const videoPlayer = document.getElementById("moviePlayer");
     if (videoPlayer) {
       videoPlayer
@@ -228,12 +277,10 @@ window.proximaFase = function (idFase) {
         .then(() => videoPlayer.pause())
         .catch((e) => {});
     }
-    // ----------------------------------------------
 
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
 
-    // DESBLOQUEIO IMEDIATO DE ÁUDIO NO CLIQUE DO USUÁRIO
     if (
       dadosSessaoGlobal.musica === "custom" &&
       playerYT &&
@@ -256,8 +303,11 @@ window.proximaFase = function (idFase) {
       audioTrilha
         .play()
         .then(() => fadeAudio(audioTrilha, 0.3, 3000))
-        .catch((e) => console.log("Audio block no iPhone", e));
+        .catch((e) => console.log("Audio block", e));
     }
+
+    // Exibe o botão de mute agora que a música vai começar
+    if (btnMusicToggle) btnMusicToggle.classList.remove("hidden");
 
     setTimeout(() => iniciarSpotlight(faseAtual, idFase), 800);
   } else {
@@ -294,6 +344,11 @@ if (playMasterBtn) {
     document.getElementById("curtainLeft").classList.add("open-left");
     document.getElementById("curtainRight").classList.add("open-right");
 
+    // Esconde o botão de música se o video for ter som proprio para não bugar o usuario
+    if (dadosSessaoGlobal.videoTemSom && btnMusicToggle) {
+      btnMusicToggle.classList.add("hidden");
+    }
+
     if (dadosSessaoGlobal.videoTemSom) {
       if (dadosSessaoGlobal.musica === "custom" && playerYT)
         playerYT.pauseVideo();
@@ -301,21 +356,28 @@ if (playMasterBtn) {
     }
 
     const videoPlayer = document.getElementById("moviePlayer");
-    // Agora o iOS permite o play aqui dentro do setTimeout porque nós o desbloqueamos no primeiro clique!
     setTimeout(() => {
       videoPlayer.play();
     }, 1500);
 
     videoPlayer.onended = () => {
       if (dadosSessaoGlobal.videoTemSom) {
-        if (dadosSessaoGlobal.musica === "custom" && playerYT) {
+        if (
+          dadosSessaoGlobal.musica === "custom" &&
+          playerYT &&
+          !isMutedGlobal
+        ) {
           playerYT.playVideo();
           playerYT.setVolume(30);
-        } else {
+        } else if (!isMutedGlobal) {
           audioTrilha.play();
           fadeAudio(audioTrilha, 0.3, 2000);
         }
       }
+
+      // Volta o botao de música pros creditos
+      if (btnMusicToggle) btnMusicToggle.classList.remove("hidden");
+
       document.getElementById("credits").classList.add("active");
 
       setTimeout(() => {
