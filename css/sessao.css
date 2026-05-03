@@ -755,17 +755,25 @@ video {
 }
 
 /* =========================================
-   MEDIA QUERIES (OTIMIZAÇÃO MOBILE)
+   MEDIA QUERIES (OTIMIZAÇÃO MOBILE - CORRIGIDO)
 ========================================= */
 @media (max-width: 768px) {
   .fase-titulo {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
   }
   .fase-subtitulo {
     font-size: 0.8rem;
+    margin: 1rem 0;
   }
+  .frase-dinamica {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
   .ticket-preview {
     width: 280px;
+    margin-bottom: 1.5rem;
   }
   .interativo-box {
     padding: 1.5rem;
@@ -773,6 +781,7 @@ video {
   .seat-grid {
     grid-template-columns: repeat(6, 1fr);
     gap: 6px;
+    margin-bottom: 1.5rem;
   }
   .seat {
     width: 30px;
@@ -780,6 +789,7 @@ video {
   }
   .snacks-container {
     flex-wrap: wrap;
+    margin-bottom: 1.5rem;
   }
   .btn-acao {
     padding: 14px 28px;
@@ -798,5 +808,23 @@ video {
     box-shadow:
       0 0 0 4px #050505,
       0 0 50px var(--theme-glow);
+  }
+
+  /* --- O SEGREDO DO CORREDOR NO CELULAR --- */
+  .lobby-gallery {
+    padding: 20px calc(50vw - 80px); /* Recalculado para o novo centro */
+    margin-bottom: 1rem;
+    gap: 15px;
+  }
+  .poster-wrapper {
+    flex: 0 0 160px; /* Reduz a largura do wrapper */
+    gap: 10px;
+  }
+  .poster-frame {
+    width: 160px; /* Reduz a largura da foto */
+    height: 240px; /* Reduz a altura da foto para libertar espaço para o botão! */
+  }
+  .poster-title-below {
+    font-size: 0.9rem;
   }
 }
