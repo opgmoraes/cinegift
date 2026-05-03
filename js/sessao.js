@@ -31,17 +31,20 @@ let dadosSessaoGlobal = null;
 let audioTrilha = document.getElementById("audioTrilha");
 let audioEfeito = document.getElementById("audioEfeito");
 let playerYT = null;
-let isMutedGlobal = false; // Controle de estado da música
+let isMutedGlobal = false;
 
-// Seleção do Botão Mute
+// 1. GESTÃO DO BOTÃO FLUTUANTE DE ÁUDIO
 const btnMusicToggle = document.getElementById("btnMusicToggle");
-
 if (btnMusicToggle) {
   btnMusicToggle.addEventListener("click", () => {
     isMutedGlobal = !isMutedGlobal;
-    btnMusicToggle.innerHTML = isMutedGlobal ? "🔈" : "🔊";
+    btnMusicToggle.innerHTML = isMutedGlobal ? "🔇" : "🔊";
 
-    if (dadosSessaoGlobal.musica === "custom" && playerYT) {
+    if (
+      dadosSessaoGlobal.musica === "custom" &&
+      playerYT &&
+      typeof playerYT.mute === "function"
+    ) {
       if (isMutedGlobal) playerYT.mute();
       else playerYT.unMute();
     } else {
@@ -74,6 +77,7 @@ window.tocarEfeito = function (nome) {
   audioEfeito.play().catch((e) => console.log("Áudio efeito bloqueado"));
 };
 
+// 2. CONEXÃO YOUTUBE (MODO INVISÍVEL)
 function obterVideoIdYouTube(url) {
   const regex =
     /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
@@ -112,6 +116,7 @@ function prepararYouTube() {
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
+// 3. CARREGAMENTO INICIAL
 async function carregarSessao() {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("ref");
@@ -132,23 +137,14 @@ async function carregarSessao() {
       dadosSessaoGlobal = docSnap.data();
 
       if (dadosSessaoGlobal.status === "pendente") {
-        document.body.innerHTML = `
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; padding: 20px;">
-            <h1 style="font-family:'Playfair Display'; color:#fff; margin-bottom: 10px;">A aguardar luzes, câmara e ação! 🎬</h1>
-            <p style="color: rgba(255,255,255,0.6);">O pagamento desta sessão ainda está a ser processado.</p>
-          </div>`;
+        document.body.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center; padding: 20px;"><h1 style="font-family:'Playfair Display'; color:#fff; margin-bottom: 10px;">A aguardar luzes, câmara e ação! 🎬</h1><p style="color: rgba(255,255,255,0.6);">O pagamento desta sessão ainda está a ser processado.</p></div>`;
         return;
       }
-
       if (
         dadosSessaoGlobal.dataExpiracao &&
         new Date() > dadosSessaoGlobal.dataExpiracao.toDate()
       ) {
-        document.body.innerHTML = `
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center;">
-            <h1 style="font-family:'Playfair Display'; color:#fff;">Sessão fora de Cartaz 🍿</h1>
-            <p style="color: rgba(255,255,255,0.6);">O período de exibição desta homenagem já terminou.</p>
-          </div>`;
+        document.body.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center;"><h1 style="font-family:'Playfair Display'; color:#fff;">Sessão fora de Cartaz 🍿</h1><p style="color: rgba(255,255,255,0.6);">O período de exibição desta homenagem já terminou.</p></div>`;
         return;
       }
 
@@ -172,11 +168,12 @@ async function carregarSessao() {
       document.getElementById("frase-corredor").innerText =
         `"${arrayFrases[Math.floor(Math.random() * arrayFrases.length)]}"`;
 
+      // 4. GALERIA INTELIGENTE (COM SENSOR DE CENTRO DA TELA)
       const gallery = document.getElementById("lobbyGallery");
       if (gallery) {
         gallery.innerHTML = "";
 
-        // INTERSECTION OBSERVER PARA DETECTAR FOTO NO CENTRO (RESPONSIVIDADE)
+        // Este "olheiro" avisa quando uma foto chega exatamente ao meio da tela
         const observerCenter = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -189,7 +186,7 @@ async function carregarSessao() {
           },
           {
             root: gallery,
-            rootMargin: "0px -40% 0px -40%", // Dispara apenas quando a imagem chega bem no centro
+            rootMargin: "0px -45% 0px -45%", // Só dispara a poucos pixels do centro
             threshold: 0,
           },
         );
@@ -200,17 +197,14 @@ async function carregarSessao() {
             const caption =
               typeof fotoData === "string" ? "" : fotoData.titulo || "";
 
-            // Criando o Wrapper para a estrutura nova (Texto fora da imagem)
             const wrapper = document.createElement("div");
             wrapper.className = "poster-wrapper";
 
             const frame = document.createElement("div");
             frame.className = "poster-frame";
             frame.innerHTML = `<img src="${url}" alt="Cartaz">`;
-
             wrapper.appendChild(frame);
 
-            // Adicionando título (se houver) embaixo da imagem
             if (caption) {
               const capDiv = document.createElement("div");
               capDiv.className = "poster-title-below";
@@ -219,7 +213,7 @@ async function carregarSessao() {
             }
 
             gallery.appendChild(wrapper);
-            observerCenter.observe(wrapper); // Observa a imagem rolando pro centro
+            observerCenter.observe(wrapper);
           });
         }
       }
@@ -265,6 +259,7 @@ function gerarPoltronas() {
   }
 }
 
+// 5. MÁQUINA DE ESTADOS (MUDANÇA DE TELAS)
 window.proximaFase = function (idFase) {
   const faseAtual = document.querySelector(".fase.active");
   if (!faseAtual) return;
@@ -281,6 +276,7 @@ window.proximaFase = function (idFase) {
     tocarEfeito("beep");
     document.getElementById("previewIngresso").classList.add("tearing");
 
+    // Desbloqueia o Áudio Nativo ou YouTube
     if (
       dadosSessaoGlobal.musica === "custom" &&
       playerYT &&
@@ -289,24 +285,25 @@ window.proximaFase = function (idFase) {
       playerYT.unMute();
       playerYT.setVolume(0);
       playerYT.playVideo();
-
       let vol = 0;
       let tYT = setInterval(() => {
         vol += 5;
-        playerYT.setVolume(vol);
+        if (!isMutedGlobal) playerYT.setVolume(vol);
         if (vol >= 30) clearInterval(tYT);
       }, 300);
     } else if (dadosSessaoGlobal.musica !== "custom") {
       const trackStr = dadosSessaoGlobal.musica || "1";
       audioTrilha.src = `assets/audio/musicas/${dadosSessaoGlobal.tema}/${trackStr}.mp3`;
       audioTrilha.volume = 0;
-      audioTrilha
-        .play()
-        .then(() => fadeAudio(audioTrilha, 0.3, 3000))
-        .catch((e) => console.log("Audio block", e));
+      if (!isMutedGlobal) {
+        audioTrilha
+          .play()
+          .then(() => fadeAudio(audioTrilha, 0.3, 3000))
+          .catch((e) => console.log("Audio block", e));
+      }
     }
 
-    // Exibe o botão de mute agora que a música vai começar
+    // Libera o botão flutuante de música
     if (btnMusicToggle) btnMusicToggle.classList.remove("hidden");
 
     setTimeout(() => iniciarSpotlight(faseAtual, idFase), 800);
@@ -332,6 +329,7 @@ function iniciarSpotlight(faseAtual, idFase) {
   }, 800);
 }
 
+// 6. MASTER PLAY E CORTINAS
 const playMasterBtn = document.getElementById("playMasterBtn");
 if (playMasterBtn) {
   playMasterBtn.onclick = () => {
@@ -344,7 +342,7 @@ if (playMasterBtn) {
     document.getElementById("curtainLeft").classList.add("open-left");
     document.getElementById("curtainRight").classList.add("open-right");
 
-    // Esconde o botão de música se o video for ter som proprio para não bugar o usuario
+    // Esconde botão de música temporariamente para o filme rodar limpo
     if (dadosSessaoGlobal.videoTemSom && btnMusicToggle) {
       btnMusicToggle.classList.add("hidden");
     }
@@ -361,6 +359,7 @@ if (playMasterBtn) {
     }, 1500);
 
     videoPlayer.onended = () => {
+      // Devolve o volume se necessário
       if (dadosSessaoGlobal.videoTemSom) {
         if (
           dadosSessaoGlobal.musica === "custom" &&
@@ -375,7 +374,7 @@ if (playMasterBtn) {
         }
       }
 
-      // Volta o botao de música pros creditos
+      // Devolve botão de música
       if (btnMusicToggle) btnMusicToggle.classList.remove("hidden");
 
       document.getElementById("credits").classList.add("active");

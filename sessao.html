@@ -16,6 +16,7 @@
     <audio id="audioTrilha" loop></audio>
     <audio id="audioEfeito"></audio>
 
+    <!-- Hack para o YouTube permitir o Autoplay de áudio -->
     <div
       style="
         position: absolute;
@@ -38,7 +39,7 @@
       <p>A preparar a sua sessão...</p>
     </div>
 
-    <!-- Novo Botão de Música -->
+    <!-- Botão Flutuante de Música (Inicia escondido) -->
     <button
       id="btnMusicToggle"
       class="music-toggle-btn hidden"
@@ -48,6 +49,7 @@
     </button>
 
     <main id="jornada-container">
+      <!-- FASE 1: INGRESSO -->
       <section id="fase-ticket" class="fase active">
         <div class="fase-content">
           <div class="ticket-preview" id="previewIngresso">
@@ -77,6 +79,7 @@
         </div>
       </section>
 
+      <!-- FASE 2: POLTRONAS & SNACKS -->
       <section id="fase-poltrona" class="fase">
         <div class="fase-content interativo-box">
           <h2 class="fase-titulo">Escolha o seu lugar</h2>
@@ -117,13 +120,14 @@
         </div>
       </section>
 
+      <!-- FASE 3: CORREDOR (GALERIA) -->
       <section id="fase-corredor" class="fase">
         <div class="fase-content" style="width: 100%">
           <h2 class="fase-titulo">Em Cartaz</h2>
           <div class="frase-dinamica" id="frase-corredor">
             "A nossa melhor história começa agora..."
           </div>
-          <!-- Galeria Atualizada -->
+
           <div class="lobby-gallery" id="lobbyGallery"></div>
 
           <button class="btn-acao" onclick="proximaFase('fase-filme')">
@@ -132,6 +136,7 @@
         </div>
       </section>
 
+      <!-- FASE 4: FILME & CORTINAS -->
       <section id="fase-filme" class="fase">
         <div class="curtain-container">
           <div id="playMasterBtn" class="master-play-overlay">
@@ -151,6 +156,7 @@
               <video id="moviePlayer" playsinline preload="auto"></video>
             </div>
 
+            <!-- FASE 5: CRÉDITOS FINAIS -->
             <div id="credits" class="credits-roll">
               <div class="credits-content">
                 <h1 id="msgEstrela">Nome</h1>
