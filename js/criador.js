@@ -13,7 +13,7 @@ import imageCompression from "https://esm.sh/browser-image-compression@2.0.2";
 window.planoEscolhido = "plano1";
 window.LIMITE_FOTOS = 5;
 window.LIMITE_VIDEO = 31; // +1s margem
-window.LIMITE_TAMANHO_MB = 60; // Nível 1: Limite máximo de peso do vídeo
+window.LIMITE_TAMANHO_MB = 70; // Nível 1: Limite máximo de peso do vídeo
 
 let arquivoVideo = null;
 let promessaVideoBackground = null; // Nível 3: Guarda o upload fantasma
