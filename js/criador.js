@@ -147,7 +147,7 @@ window.finalizarSessao = async function () {
     const dados = {
       plano: window.planoEscolhido,
       slug: slugDigitado,
-      status: "pendente",
+      status: "ativo",
       tema: temaEscolhido,
       diretor: nomeDiretor,
       estrela: nomeEstrela,
