@@ -41,7 +41,7 @@
           </div>
 
           <div id="step-1" class="wizard-step active">
-            <span class="step-number">01 / 05</span>
+            <span class="wizard-step-tag">Passo 01 / 05</span>
             <h2>Escolha o seu Plano</h2>
             <p>Qual será o tamanho da sua homenagem?</p>
             <div class="planos-grid">
@@ -103,18 +103,18 @@
           </div>
 
           <div id="step-2" class="wizard-step">
-            <span class="step-number">02 / 05</span>
+            <span class="wizard-step-tag">Passo 02 / 05</span>
             <h2>O Elenco e o Gênero</h2>
 
             <div class="input-group">
               <label>Link Personalizado (URL)</label>
-              <div class="slug-input-wrapper">
+              <div class="slug-input-wrapper glass-input-box">
                 <span class="slug-prefix">cinegift.com.br/?ref=</span>
                 <input
                   type="text"
                   id="slugLink"
                   class="slug-input"
-                  placeholder="ex: ana-e-joao"
+                  placeholder="ana-e-joao"
                   oninput="
                     this.value = this.value
                       .toLowerCase()
@@ -169,16 +169,16 @@
                 <input
                   type="text"
                   id="nomeDiretor"
-                  class="input-field"
+                  class="input-field glass-input-box"
                   placeholder="Ex: Pedro"
                 />
               </div>
               <div class="input-group">
-                <label for="nomeEstrela">Estrela (Quem recebe)</label>
+                <label for="nomeEstrela">Estrela (Presenteado)</label>
                 <input
                   type="text"
                   id="nomeEstrela"
-                  class="input-field"
+                  class="input-field glass-input-box"
                   placeholder="Ex: Ana"
                 />
               </div>
@@ -195,14 +195,14 @@
           </div>
 
           <div id="step-3" class="wizard-step">
-            <span class="step-number">03 / 05</span>
+            <span class="wizard-step-tag">Passo 03 / 05</span>
             <h2>Em Cartaz</h2>
             <p>
               Escolha as fotos para o lobby do cinema. Máx
               <strong id="txt-max-fotos">5</strong> fotos.
             </p>
 
-            <div class="upload-area" id="upload-fotos">
+            <div class="upload-area glass-panel" id="upload-fotos">
               <input
                 type="file"
                 id="fotosLobby"
@@ -233,14 +233,14 @@
           </div>
 
           <div id="step-4" class="wizard-step">
-            <span class="step-number">04 / 05</span>
+            <span class="wizard-step-tag">Passo 04 / 05</span>
             <h2>A Produção</h2>
             <p>
               Suba o vídeo principal da surpresa (Máx
               <strong id="txt-max-video">30</strong>s).
             </p>
 
-            <div class="upload-area" id="upload-video">
+            <div class="upload-area glass-panel" id="upload-video">
               <input
                 type="file"
                 id="videoPrincipal"
@@ -263,7 +263,7 @@
               <div class="audio-control-group">
                 <select
                   id="musicaSelecao"
-                  class="input-field"
+                  class="input-field glass-input-box"
                   onchange="mudarMusica()"
                 >
                   <option value="1">Trilha 01 - Cinematic</option>
@@ -284,7 +284,7 @@
               <input
                 type="text"
                 id="youtubeLink"
-                class="input-field mt-sm"
+                class="input-field glass-input-box mt-sm"
                 placeholder="Cole o link do YouTube"
                 style="display: none"
               />
@@ -312,7 +312,7 @@
           </div>
 
           <div id="step-5" class="wizard-step">
-            <span class="step-number">05 / 05</span>
+            <span class="wizard-step-tag">Passo 05 / 05</span>
             <h2>Créditos Finais</h2>
             <p>A mensagem que subirá na tela após o filme acabar.</p>
 
@@ -320,7 +320,7 @@
               <label for="mensagemFinal">Sua Dedicatória</label>
               <textarea
                 id="mensagemFinal"
-                class="input-field textarea"
+                class="input-field glass-input-box textarea"
                 rows="6"
                 maxlength="300"
                 placeholder="Escreva algo especial..."
@@ -339,323 +339,261 @@
         </div>
       </section>
 
-      <section class="preview-panel">
-        <div class="preview-device">
-          <div class="preview-screen">
-            <div id="prev-ticket" class="prev-fase active" data-tema="romance">
-              <div class="ticket-preview">
-                <div class="ticket-body-card">
-                  <div class="ticket-header">
-                    CineGift <span class="ticket-header-badge">VIP</span>
-                  </div>
-                  <div class="ticket-body">
-                    <span class="ticket-label">Estrela Principal</span>
-                    <h3 id="prevEstrela">—</h3>
-                    <div class="ticket-director">
-                      DIRIGIDO POR <span id="prevDiretor">—</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="ticket-tear">
-                  <div class="ticket-tear-line"></div>
-                </div>
-                <div class="ticket-footer">
-                  <div class="ticket-barcode">||| |||| || |||</div>
-                </div>
-              </div>
-            </div>
-            <div id="prev-gallery" class="prev-fase" data-tema="romance">
-              <h2
-                style="
-                  font-family: var(--font-display);
-                  color: #fff;
-                  margin-bottom: 20px;
-                "
-              >
-                Em Cartaz
-              </h2>
-              <div id="previewGallery" class="prev-galeria-container">
-                <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.8rem">
-                  Adicione fotos para ver aqui.
-                </p>
-              </div>
-            </div>
-            <div
-              id="prev-video"
-              class="prev-fase"
-              style="background: #000; padding: 0"
-            >
-              <div
-                style="
-                  width: 100%;
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  background: radial-gradient(circle, #222, #000);
-                "
-              >
-                <span style="font-size: 4rem">🎬</span>
-              </div>
-            </div>
-            <div id="prev-credits" class="prev-fase" data-tema="romance">
-              <div class="prev-credits">
-                <h1 id="prevMsgEstrela">Nome</h1>
-                <div class="msg-scroll-container">
-                  <p id="previewMsgFinal">
-                    A sua mensagem final aparecerá aqui...
-                  </p>
-                </div>
-                <span>Dirigido por</span>
-                <h3 id="prevMsgDiretor">Você</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="preview-hint">Preview em tempo real 📱</p>
-      </section>
+      ``` ### 2. Atualize o `criador.css` Ajustei o flexbox do Link
+      Personalizado para ele nunca mais "quebrar" para a linha de baixo (usando
+      `flex-wrap: nowrap`), corrigi a classe do contador de passos
+      (`.wizard-step-tag`) e deixei os botões e inputs com um brilho muito mais
+      elegante. Substitua todo o conteúdo do arquivo: ```css /*
+      ============================================================ CineGift —
+      criador.css (Dark Premium Glassmorphism)
+      ============================================================ */ :root {
+      --noite: #0a0407; --creme: #f4efe6; --veludo: #1a0810; --font-display:
+      "Playfair Display", serif; --font-body: "DM Sans", sans-serif;
+      --font-mono: "DM Mono", monospace; --borgonha: #c4405a; --vinho-medio:
+      #8b1a2e; --vinho-fundo: #3d0a1c; --fs-body: 1rem; --fs-small: 0.85rem;
+      --radius-lg: 16px; --radius-md: 12px; --radius-sm: 8px; --ease-cinema:
+      cubic-bezier(0.2, 0.8, 0.2, 1); --shadow-deep: 0 10px 40px rgba(0, 0, 0,
+      0.6); } * { box-sizing: border-box; margin: 0; padding: 0; } .creator-body
+      { display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+      background-color: var(--noite); color: var(--creme); font-family:
+      var(--font-body); } /* UTILITÁRIOS */ .w-100 { width: 100%; } .mt-sm {
+      margin-top: 10px; } .mt-md { margin-top: 15px; } .mt-xl { margin-top:
+      30px; } /* NAVBAR COMPACTA E BLUR */ .navbar-compact { padding: 1rem 5%;
+      flex-shrink: 0; display: flex; justify-content: space-between;
+      align-items: center; } .glass-header { background: rgba(10, 4, 7, 0.8);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; } .logo
+      { display: flex; align-items: center; text-decoration: none; } .logo-icon
+      { height: 32px; margin-right: 8px; } .logo-wordmark-text { font-size:
+      1.4rem; font-weight: bold; } .cine { color: var(--creme); } .gift { color:
+      var(--borgonha); } .step-indicator { font-family: var(--font-mono);
+      font-size: var(--fs-small); letter-spacing: 0.18em; text-transform:
+      uppercase; color: var(--borgonha); } .creator-container { display: flex;
+      flex: 1; height: calc(100vh - 70px); overflow: hidden; } /* ── COMPONENTE
+      BASE: VIDRO JATEADO (GLASSMORPHISM) ── */ .glass-panel { background:
+      rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255,
+      0.06); border-radius: var(--radius-md); transition: all 0.3s ease; }
+      .glass-input-box { background: rgba(0, 0, 0, 0.4); border: 1px solid
+      rgba(255, 255, 255, 0.08); color: var(--creme); transition: all 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); } .glass-input-box:focus,
+      .glass-input-box:focus-within { background: rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 0 20px rgba(255,
+      255, 255, 0.05), inset 0 2px 4px rgba(0,0,0,0.4); outline: none; } /*
+      WIZARD PANEL (Lado Esquerdo) */ .wizard-panel { width: 45%; height: 100%;
+      overflow-y: auto; background: radial-gradient(ellipse at top left,
+      rgba(61, 10, 28, 0.1) 0%, transparent 80%), var(--veludo); border-right:
+      1px solid rgba(255, 255, 255, 0.03); scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.2) transparent; } .wizard-inner {
+      max-width: 520px; margin: 0 auto; padding: 3rem 2rem; }
+      .wizard-panel::-webkit-scrollbar { width: 6px; }
+      .wizard-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255,
+      0.15); border-radius: 3px; } /* PROGRESSO */ .wizard-progress { display:
+      flex; gap: 8px; margin-bottom: 3rem; } .wizard-progress-dot { height: 4px;
+      flex: 1; background: rgba(255, 255, 255, 0.08); border-radius: 2px;
+      transition: all 0.4s var(--ease-cinema); } .wizard-progress-dot.active {
+      transform: scaleY(1.5); } /* PASSOS (NOME DA CLASSE CORRIGIDA AQUI 👇) */
+      .wizard-step { display: none; animation: stepReveal 0.5s
+      var(--ease-cinema) both; } .wizard-step.active { display: block; }
+      @keyframes stepReveal { from { opacity: 0; transform: translateX(15px); }
+      to { opacity: 1; transform: translateX(0); } } .wizard-step-tag {
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: rgba(255, 255, 255, 0.5); margin-bottom:
+      0.75rem; display: block; } .wizard-step h2 { font-family:
+      var(--font-display); font-size: 2.2rem; color: var(--creme);
+      margin-bottom: 0.5rem; letter-spacing: -0.02em; } .wizard-step > p {
+      color: rgba(244, 239, 230, 0.5); font-size: 0.95rem; margin-bottom:
+      2.5rem; line-height: 1.5; } /* PLANOS */ .planos-grid { display: flex;
+      flex-direction: column; gap: 16px; margin-bottom: 30px; } .plano-card {
+      composes: glass-panel; padding: 24px; cursor: pointer; position: relative;
+      overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05); }
+      .plano-card:hover { border-color: rgba(255, 255, 255, 0.15); transform:
+      translateY(-2px); } .plano-card.selected { border-color: rgba(255, 255,
+      255, 0.3); background: rgba(255, 255, 255, 0.05); box-shadow: 0 8px 32px
+      rgba(0, 0, 0, 0.3); } .plano-card-content { position: relative; z-index:
+      2; } .plano-label { font-family: var(--font-mono); font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.15em; color: rgba(244, 239,
+      230, 0.5); margin-bottom: 8px; display: block; } .plano-price {
+      font-family: var(--font-display); font-size: 2.2rem; color: var(--creme);
+      margin-bottom: 16px; } .plano-card ul { list-style: none; padding: 0; }
+      .plano-card ul li { font-size: 0.9rem; margin-bottom: 10px; color:
+      rgba(244, 239, 230, 0.7); display: flex; align-items: center; gap: 10px; }
+      .plano-card ul li::before { content: "✓"; color: rgba(255, 255, 255, 0.5);
+      font-weight: bold; } .plano-card.selected ul li::before { color:
+      var(--creme); } .plano-badge { position: absolute; top: 0; right: 0;
+      background: rgba(255, 255, 255, 0.1); color: var(--creme); font-family:
+      var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; padding: 5px
+      12px; text-transform: uppercase; border-radius: 0 0 0 8px; } /* INPUTS E
+      FORMS */ .input-row { display: grid; grid-template-columns: 1fr 1fr; gap:
+      15px; } .input-group { margin-bottom: 1.8rem; } .input-group label {
+      display: block; font-family: var(--font-mono); font-size: 0.75rem;
+      letter-spacing: 0.15em; text-transform: uppercase; color: rgba(244, 239,
+      230, 0.5); margin-bottom: 0.8rem; } .input-field { width: 100%; padding:
+      1rem 1.2rem; border-radius: var(--radius-sm); font-family:
+      var(--font-body); font-size: 1rem; } .textarea { resize: vertical;
+      line-height: 1.5; } /* SLUG URL WRAPPER (FLEXBOX CORRIGIDO 👇) */
+      .slug-input-wrapper { display: flex; flex-direction: row; align-items:
+      center; padding: 0 1rem; border-radius: var(--radius-sm); overflow:
+      hidden; /* Evita vazar */ flex-wrap: nowrap; /* Proíbe a quebra de linha
+      */ } .slug-prefix { color: rgba(244, 239, 230, 0.3); font-family:
+      var(--font-mono); font-size: 0.85rem; user-select: none; white-space:
+      nowrap; /* O texto do link nunca quebra */ flex-shrink: 0; /* Impede que o
+      link seja esmagado */ } .slug-input { border: none; background:
+      transparent; padding: 1rem 5px; color: var(--creme); width: 100%; outline:
+      none; font-family: var(--font-mono); font-size: 0.95rem; flex: 1; /* Ocupa
+      o restante do espaço */ min-width: 0; /* Previne bug do flexbox estourar a
+      tela */ } /* TEMA BUTTONS */ .tema-grid { display: grid;
+      grid-template-columns: 1fr 1fr; gap: 12px; } .tema-card-btn { border: 1px
+      solid rgba(255, 255, 255, 0.05); border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.02); cursor: pointer; padding: 0;
+      text-align: left; transition: all 0.3s var(--ease-cinema); overflow:
+      hidden; } .tema-card-btn:hover { transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15); } .tema-card-btn.selected {
+      border-color: rgba(255, 255, 255, 0.3); box-shadow: 0 8px 24px rgba(0, 0,
+      0, 0.4); transform: translateY(-3px); } .tcb-inner { padding: 1.2rem;
+      display: flex; flex-direction: column; gap: 8px; min-height: 100px; }
+      .tcb-emoji { font-size: 1.8rem; } .tcb-nome { font-family:
+      var(--font-display); font-size: 1.1rem; font-weight: 700; color:
+      var(--creme); } /* UPLOADS */ .upload-area { composes: glass-panel;
+      position: relative; margin-bottom: 1rem; border: 1px dashed rgba(255, 255,
+      255, 0.15); } .upload-area:hover { border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.05); } .file-input { position: absolute;
+      inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index:
+      2; } .upload-box { padding: 3rem 1.5rem; text-align: center; display:
+      flex; flex-direction: column; align-items: center; gap: 12px; color:
+      rgba(244, 239, 230, 0.6); } .upload-icon-svg { width: 32px; height: 32px;
+      opacity: 0.5; } .error-msg { color: #ff4444; font-size: 0.85rem; display:
+      block; margin-top: 8px; } /* THUMBNAILS FOTOS */ .thumbs-grid { display:
+      flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; } .thumb-item { width:
+      80px; height: 80px; border-radius: 8px; overflow: hidden; border: 1px
+      solid rgba(255, 255, 255, 0.2); position: relative; flex-shrink: 0; }
+      .thumb-item img { width: 100%; height: 100%; object-fit: cover; }
+      .thumb-remove { position: absolute; inset: 0; background: rgba(0, 0, 0,
+      0.7); display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: 0.2s; border: none; cursor: pointer; color: #fff;
+      font-size: 1.5rem; } .thumb-item:hover .thumb-remove { opacity: 1;
+      backdrop-filter: blur(2px); } .thumb-add { width: 80px; height: 80px;
+      composes: glass-panel; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 2rem; color:
+      rgba(255,255,255,0.3); border: 1px dashed rgba(255,255,255,0.15); }
+      .thumb-add:hover { color: var(--creme); border-color:
+      rgba(255,255,255,0.3); } .thumb-caption-input { width: 100%; font-size:
+      0.65rem; padding: 6px; text-align: center; background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.05); color: var(--creme);
+      border-radius: 4px; } /* AUDIO E CHECKBOX */ .audio-control-group {
+      display: flex; gap: 10px; } .btn-play-audio { background:
+      rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color:
+      var(--creme); width: 50px; border-radius: var(--radius-sm); display: flex;
+      align-items: center; justify-content: center; cursor: pointer; transition:
+      0.3s; } .btn-play-audio:hover { background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2); } .checkbox-group { display: flex;
+      align-items: center; gap: 12px; cursor: pointer; } .checkbox-wrapper {
+      position: relative; width: 22px; height: 22px; flex-shrink: 0; }
+      .checkbox-wrapper input { opacity: 0; position: absolute; inset: 0;
+      cursor: pointer; z-index: 2; } .checkbox-box { position: absolute; inset:
+      0; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px; transition: 0.2s; display: flex; align-items: center;
+      justify-content: center; } .checkbox-wrapper input:checked + .checkbox-box
+      { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255,
+      0.3); } .checkbox-wrapper input:checked + .checkbox-box::after { content:
+      "✓"; color: #fff; font-size: 0.9rem; font-weight: bold; } .checkbox-group
+      label { font-size: 0.85rem; color: rgba(244, 239, 230, 0.6);
+      text-transform: none; letter-spacing: normal; margin: 0; cursor: pointer;}
+      /* BOTOES WIZARD */ .button-group { display: flex; gap: 12px; margin-top:
+      2.5rem; } .button-group-single { margin-top: 2rem; } .btn-secondary {
+      flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,
+      255, 255, 0.08); color: var(--creme); padding: 1.1rem; border-radius:
+      var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 1rem;
+      transition: all 0.3s ease; } .btn-secondary:hover { background:
+      rgba(255,255,255,0.08); border-color: rgba(255, 255, 255, 0.2); }
+      .btn-primary, .btn-success { flex: 2; background: rgba(255, 255, 255,
+      0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: var(--creme);
+      padding: 1.1rem; border-radius: var(--radius-sm); cursor: pointer;
+      font-weight: 600; font-size: 1rem; transition: all 0.3s ease;
+      backdrop-filter: blur(10px); } .btn-primary:hover, .btn-success:hover {
+      background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255,
+      0.4); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0,
+      0.4); } /* ============================================================
+      PREVIEW PANEL (Lado Direito - INTACTO NA LÓGICA)
+      ============================================================ */
+      .preview-panel { width: 55%; height: 100%; display: flex; align-items:
+      center; justify-content: center; background: radial-gradient(ellipse at
+      center, var(--veludo) 0%, var(--noite) 100%); position: relative;
+      border-left: 1px solid rgba(255, 255, 255, 0.05); } .preview-device {
+      width: 320px; height: 640px; background: #000; border-radius: 40px;
+      border: 10px solid #1a1a1a; box-shadow: var(--shadow-deep), inset 0 0 0
+      2px #333; position: relative; overflow: hidden; display: flex;
+      flex-direction: column; } .preview-device::before { content: ""; position:
+      absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px;
+      height: 25px; background: #1a1a1a; border-radius: 0 0 15px 15px; z-index:
+      20; } .preview-hint { position: absolute; bottom: 25px; color: rgba(255,
+      255, 255, 0.3); font-family: var(--font-mono); font-size: 0.8rem;
+      letter-spacing: 0.1em; } .preview-screen { width: 100%; height: 100%;
+      position: relative; overflow: hidden; } .prev-fase { display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; height: 100%; padding: 20px; text-align: center; animation:
+      fadeIn 0.4s ease; transition: background 0.5s ease; } .prev-fase.active {
+      display: flex; } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1;
+      } } /* Estilização interna dos temas do preview */
+      .prev-fase[data-tema="romance"] { background: radial-gradient(circle at
+      50% 50%, #2a0818 0%, #0d0610 100%); } .prev-fase[data-tema="amizade"] {
+      background: radial-gradient(circle at 50% 50%, #1a3a5c 0%, #0e1a2a 100%);
+      } .prev-fase[data-tema="familia"] { background: radial-gradient(circle at
+      50% 50%, #3a1a08 0%, #160a04 100%); } .prev-fase[data-tema="aniversario"]
+      { background: radial-gradient(circle at 50% 50%, #3a0a2e 0%, #12080e
+      100%); } .ticket-preview { width: 100%; transform: rotate(-3deg);
+      margin-top: 15px; } .ticket-body-card { background:
+      linear-gradient(145deg, var(--tk-bg1, #3d0a1c), var(--tk-bg2, #1a0610));
+      border-radius: 12px 12px 0 0; padding: 20px; text-align: left; }
+      .ticket-header { font-family: var(--font-mono); font-size: 0.55rem; color:
+      rgba(255, 255, 255, 0.5); margin-bottom: 15px; display: flex;
+      justify-content: space-between; } .ticket-header-badge { color:
+      var(--borgonha, #c4405a); font-weight: bold; } .ticket-label {
+      font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.5); } .ticket-body h3 { font-family:
+      var(--font-display); font-size: 1.5rem; color: #fff; margin-top: 5px;
+      margin-bottom: 10px; } .ticket-director { font-family: var(--font-mono);
+      font-size: 0.45rem; color: rgba(255, 255, 255, 0.5); } .ticket-tear {
+      height: 15px; background: var(--tk-tear-bg, #2a0818); display: flex;
+      align-items: center; justify-content: center; position: relative; }
+      .ticket-tear-line { width: 90%; border-top: 1px dashed rgba(255, 255, 255,
+      0.2); } .ticket-footer { background: #000; border-radius: 0 0 12px 12px;
+      padding: 15px; display: flex; justify-content: space-between; align-items:
+      center; } .ticket-barcode { font-family: var(--font-mono); font-size:
+      0.7rem; color: rgba(255, 255, 255, 0.8); letter-spacing: -1px; }
+      .prev-galeria-container { display: flex; gap: 15px; overflow-x: auto;
+      width: 100%; padding-bottom: 10px; scrollbar-width: none; align-items:
+      center; } .prev-galeria-container::-webkit-scrollbar { display: none; }
+      .prev-poster { flex: 0 0 140px; height: 210px; background: #111; border:
+      3px solid #fff; border-radius: 4px; overflow: hidden; position: relative;
+      transform: rotate(-2deg); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6); }
+      .prev-poster:nth-child(even) { transform: rotate(2deg); } .prev-poster img
+      { width: 100%; height: 100%; object-fit: cover; } .prev-caption {
+      position: absolute; bottom: 0; left: 0; right: 0; background:
+      linear-gradient(transparent, #000); color: #fff; font-family:
+      var(--font-display); font-style: italic; font-size: 0.8rem; padding: 15px
+      5px 5px; text-align: center; } .prev-credits { display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; height: 100%; padding: 40px 10px 20px; } .prev-credits h1 {
+      font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 10px;
+      flex-shrink: 0; } .msg-scroll-container { width: 100%; max-height: 250px;
+      overflow-y: auto; overflow-x: hidden; scrollbar-width: none;
+      margin-bottom: 20px; padding: 0 10px; }
+      .msg-scroll-container::-webkit-scrollbar { display: none; } .prev-credits
+      p { font-family: var(--font-display); font-style: italic; font-size:
+      0.95rem; opacity: 0.8; word-wrap: break-word; overflow-wrap: break-word;
+      white-space: pre-wrap; margin: 0; } .prev-credits span { font-family:
+      var(--font-mono); font-size: 0.6rem; text-transform: uppercase; opacity:
+      0.5; display: block; margin-bottom: 5px; flex-shrink: 0; } .prev-credits
+      h3 { font-family: var(--font-display); color: #fff; flex-shrink: 0;
+      margin: 0; } /* RESPONSIVIDADE COMPLETA */ @media (max-width: 960px) {
+      .creator-container { flex-direction: column; overflow-y: auto; height:
+      auto; min-height: 100vh; } .wizard-panel { width: 100%; height: auto;
+      border-right: none; overflow-y: visible; } .wizard-inner { padding: 2rem
+      5%; } .preview-panel { width: 100%; height: auto; padding: 3rem 1rem;
+      min-height: 700px; border-left: none; border-top: 1px solid rgba(255, 255,
+      255, 0.05); } /* Mantém layout ajustado no celular */ .input-row {
+      grid-template-columns: 1fr; } }
     </main>
-
-    <script type="module" src="js/criador.js"></script>
-    <script>
-      /* JAVASCRIPT INTACTO (Sem alterações na lógica) */
-      let temaAtual = "romance";
-      const temaConfig = {
-        romance: { acc: "#c4405a", bg1: "#3d0a1c", bg2: "#1a0610" },
-        amizade: { acc: "#4a8ec4", bg1: "#1a3a5c", bg2: "#0e1a2a" },
-        familia: { acc: "#d4782a", bg1: "#5c2a10", bg2: "#160a04" },
-        aniversario: { acc: "#d4407a", bg1: "#4a1040", bg2: "#12080e" },
-      };
-
-      const stepToPreviewMap = {
-        1: "prev-ticket",
-        2: "prev-ticket",
-        3: "prev-gallery",
-        4: "prev-video",
-        5: "prev-credits",
-      };
-
-      function nextStep(n) {
-        document
-          .querySelectorAll(".wizard-step")
-          .forEach((s) => s.classList.remove("active"));
-        document.getElementById("step-" + n)?.classList.add("active");
-        document.getElementById("current-step").textContent = n;
-
-        document
-          .querySelectorAll(".prev-fase")
-          .forEach((f) => f.classList.remove("active"));
-        const prevId = stepToPreviewMap[n];
-        if (document.getElementById(prevId)) {
-          document.getElementById(prevId).classList.add("active");
-        }
-
-        const acc = temaConfig[temaAtual].acc;
-        document.querySelectorAll(".wizard-progress-dot").forEach((dot, i) => {
-          dot.classList.toggle("done", i + 1 < n);
-          dot.classList.toggle("active", i + 1 === n);
-          dot.style.background = i + 1 <= n ? acc : "rgba(255,255,255,0.1)";
-          if (i + 1 === n) {
-            dot.style.boxShadow = `0 0 12px ${acc}`;
-          } else {
-            dot.style.boxShadow = "none";
-          }
-        });
-      }
-      function prevStep(n) {
-        nextStep(n);
-      }
-
-      function aplicarTema(tema) {
-        temaAtual = tema;
-        document.getElementById("tema").value = tema;
-        document
-          .querySelectorAll(".prev-fase")
-          .forEach((f) => f.setAttribute("data-tema", tema));
-
-        const cfg = temaConfig[tema];
-        const root = document.documentElement;
-        root.style.setProperty("--tk-bg1", cfg.bg1);
-        root.style.setProperty("--tk-bg2", cfg.bg2);
-        root.style.setProperty("--tk-tear-bg", cfg.bg1);
-        root.style.setProperty("--borgonha", cfg.acc);
-
-        document
-          .querySelectorAll(".thumb-item")
-          .forEach((t) => (t.style.borderColor = cfg.acc));
-        document
-          .querySelectorAll(
-            ".wizard-progress-dot.active, .wizard-progress-dot.done",
-          )
-          .forEach((d) => {
-            d.style.background = cfg.acc;
-            if (d.classList.contains("active"))
-              d.style.boxShadow = `0 0 12px ${cfg.acc}`;
-          });
-        if (isPlaying) mudarMusica();
-      }
-
-      document.querySelectorAll(".tema-card-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document
-            .querySelectorAll(".tema-card-btn")
-            .forEach((b) => b.classList.remove("selected"));
-          btn.classList.add("selected");
-          aplicarTema(btn.dataset.tema);
-        });
-      });
-
-      document
-        .getElementById("nomeEstrela")
-        ?.addEventListener("input", function () {
-          document.getElementById("prevEstrela").textContent =
-            this.value || "—";
-          document.getElementById("prevMsgEstrela").textContent =
-            this.value || "Nome";
-        });
-      document
-        .getElementById("nomeDiretor")
-        ?.addEventListener("input", function () {
-          document.getElementById("prevDiretor").textContent =
-            this.value || "—";
-          document.getElementById("prevMsgDiretor").textContent =
-            this.value || "Você";
-        });
-      document
-        .getElementById("mensagemFinal")
-        ?.addEventListener("input", function () {
-          document.getElementById("previewMsgFinal").innerText = this.value
-            ? `"${this.value}"`
-            : "A sua mensagem final...";
-        });
-
-      window.fotosArmazenadas = [];
-      document
-        .getElementById("fotosLobby")
-        .addEventListener("change", function () {
-          const disponiveis =
-            window.LIMITE_FOTOS - window.fotosArmazenadas.length;
-          Array.from(this.files)
-            .slice(0, disponiveis)
-            .forEach((file) => {
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                window.fotosArmazenadas.push({
-                  file,
-                  url: e.target.result,
-                  titulo: "",
-                });
-                renderThumbs();
-              };
-              reader.readAsDataURL(file);
-            });
-          this.value = "";
-        });
-
-      function renderThumbs() {
-        const grid = document.getElementById("thumbsGrid");
-        const box = document.getElementById("uploadBox");
-        const previewGallery = document.getElementById("previewGallery");
-        if (!grid) return;
-        grid.innerHTML = "";
-        if (previewGallery) previewGallery.innerHTML = "";
-
-        const acc = temaConfig[temaAtual].acc;
-
-        window.fotosArmazenadas.forEach((foto, idx) => {
-          const wrapper = document.createElement("div");
-          wrapper.style.cssText =
-            "display:flex; flex-direction:column; width:80px; gap:8px;";
-          const item = document.createElement("div");
-          item.className = "thumb-item";
-          item.style.borderColor = acc;
-          const img = document.createElement("img");
-          img.src = foto.url;
-          const overlay = document.createElement("button");
-          overlay.className = "thumb-remove";
-          overlay.innerHTML = "×";
-          overlay.onclick = () => {
-            window.fotosArmazenadas.splice(idx, 1);
-            renderThumbs();
-          };
-          const captionInput = document.createElement("input");
-          captionInput.type = "text";
-          captionInput.placeholder = "Título";
-          captionInput.value = foto.titulo;
-          captionInput.className = "thumb-caption-input";
-          captionInput.oninput = (e) => {
-            foto.titulo = e.target.value;
-            const prev = document.getElementById(`pCap-${idx}`);
-            if (prev) {
-              prev.innerText = foto.titulo;
-              prev.style.display = foto.titulo ? "block" : "none";
-            }
-          };
-          item.appendChild(img);
-          item.appendChild(overlay);
-          wrapper.appendChild(item);
-          wrapper.appendChild(captionInput);
-          grid.appendChild(wrapper);
-
-          if (previewGallery) {
-            const pDiv = document.createElement("div");
-            pDiv.className = "prev-poster";
-            const pImg = document.createElement("img");
-            pImg.src = foto.url;
-            const pCap = document.createElement("div");
-            pCap.className = "prev-caption";
-            pCap.id = `pCap-${idx}`;
-            pCap.innerText = foto.titulo;
-            pCap.style.display = foto.titulo ? "block" : "none";
-            pDiv.appendChild(pImg);
-            pDiv.appendChild(pCap);
-            previewGallery.appendChild(pDiv);
-          }
-        });
-
-        if (window.fotosArmazenadas.length < window.LIMITE_FOTOS) {
-          const add = document.createElement("label");
-          add.className = "thumb-add";
-          add.htmlFor = "fotosLobby";
-          add.innerHTML = "<span>+</span>";
-          grid.appendChild(add);
-        }
-        if (box)
-          box.style.display =
-            window.fotosArmazenadas.length > 0 ? "none" : "flex";
-      }
-
-      let previewAudio = document.getElementById("audioPreview");
-      let isPlaying = false;
-      function mudarMusica() {
-        const val = document.getElementById("musicaSelecao").value;
-        const yt = document.getElementById("youtubeLink");
-        if (val === "custom") {
-          yt.style.display = "block";
-          previewAudio.pause();
-          isPlaying = false;
-          document.getElementById("btnPlayPreview").style.display = "none";
-        } else {
-          yt.style.display = "none";
-          document.getElementById("btnPlayPreview").style.display = "flex";
-          previewAudio.src = `assets/audio/musicas/${temaAtual}/${val}.mp3`;
-          if (isPlaying) previewAudio.play();
-        }
-      }
-      function toggleAudioPreview() {
-        const btn = document.getElementById("btnPlayPreview");
-        if (isPlaying) {
-          previewAudio.pause();
-          btn.innerHTML = "▶";
-        } else {
-          if (!previewAudio.src.includes(temaAtual)) mudarMusica();
-          previewAudio.play();
-          btn.innerHTML = "⏸";
-        }
-        isPlaying = !isPlaying;
-      }
-      aplicarTema("romance");
-      nextStep(1); // Inicializa com os brilhos corretos
-    </script>
   </body>
 </html>
