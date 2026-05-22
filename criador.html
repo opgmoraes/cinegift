@@ -45,55 +45,55 @@
             <h2>Escolha o seu Plano</h2>
             <p>Qual será o tamanho da sua homenagem?</p>
             <div class="planos-grid">
-              <div
+              <article
                 id="card-plano1"
-                class="plano-card glass-panel selected"
+                class="plano-card selected"
                 onclick="selecionarPlano('plano1', 5, 30)"
               >
                 <div class="plano-card-content">
-                  <h3>Cena Curta</h3>
-                  <h2>R$ 15,90</h2>
+                  <span class="plano-label">Cena Curta</span>
+                  <h3 class="plano-price">R$ 15,90</h3>
                   <ul>
-                    <li>Até 5 Fotos</li>
+                    <li>Até 5 Fotos no lobby</li>
                     <li>Vídeo de 30s</li>
                     <li>Ativo por 6 meses</li>
                     <li>Link Personalizado</li>
                   </ul>
                 </div>
-              </div>
-              <div
+              </article>
+              <article
                 id="card-plano2"
-                class="plano-card glass-panel"
+                class="plano-card plano-destaque"
                 onclick="selecionarPlano('plano2', 7, 30)"
               >
                 <div class="plano-card-content">
-                  <div class="plano-badge-popular">Popular</div>
-                  <h3>Longa Metragem</h3>
-                  <h2>R$ 27,90</h2>
+                  <div class="plano-badge">Popular</div>
+                  <span class="plano-label">Longa Metragem</span>
+                  <h3 class="plano-price">R$ 27,90</h3>
                   <ul>
-                    <li>Até 7 Fotos</li>
+                    <li>Até 7 Fotos no lobby</li>
                     <li>Vídeo de 30s</li>
                     <li>Ativo por 1 ano</li>
                     <li>Link Personalizado</li>
                   </ul>
                 </div>
-              </div>
-              <div
+              </article>
+              <article
                 id="card-plano3"
-                class="plano-card glass-panel"
+                class="plano-card"
                 onclick="selecionarPlano('plano3', 7, 60)"
               >
                 <div class="plano-card-content">
-                  <h3>Clássico Eterno</h3>
-                  <h2>R$ 37,90</h2>
+                  <span class="plano-label">Clássico Eterno</span>
+                  <h3 class="plano-price">R$ 37,90</h3>
                   <ul>
-                    <li>Até 7 Fotos</li>
+                    <li>Até 7 Fotos no lobby</li>
                     <li>Vídeo de até 60s</li>
                     <li>Ativo para sempre</li>
                     <li>Link Personalizado</li>
                   </ul>
                 </div>
-              </div>
+              </article>
             </div>
             <div class="button-group-single">
               <button class="btn-primary w-100" onclick="nextStep(2)">
@@ -108,7 +108,7 @@
 
             <div class="input-group">
               <label>Link Personalizado (URL)</label>
-              <div class="slug-input-wrapper glass-panel">
+              <div class="slug-input-wrapper">
                 <span class="slug-prefix">cinegift.com.br/?ref=</span>
                 <input
                   type="text"
@@ -133,20 +133,20 @@
                   type="button"
                 >
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">❤️</span
-                    ><span class="tcb-nome">Romance</span>
+                    <span class="tcb-emoji">❤️</span>
+                    <span class="tcb-nome">Romance</span>
                   </div>
                 </button>
                 <button class="tema-card-btn" data-tema="amizade" type="button">
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">✌️</span
-                    ><span class="tcb-nome">Amizade</span>
+                    <span class="tcb-emoji">✌️</span>
+                    <span class="tcb-nome">Amizade</span>
                   </div>
                 </button>
                 <button class="tema-card-btn" data-tema="familia" type="button">
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">👨‍👩‍👧‍👦</span
-                    ><span class="tcb-nome">Família</span>
+                    <span class="tcb-emoji">👨‍👩‍👧‍👦</span>
+                    <span class="tcb-nome">Família</span>
                   </div>
                 </button>
                 <button
@@ -155,8 +155,8 @@
                   type="button"
                 >
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">🎂</span
-                    ><span class="tcb-nome">Aniversário</span>
+                    <span class="tcb-emoji">🎂</span>
+                    <span class="tcb-nome">Aniversário</span>
                   </div>
                 </button>
               </div>
@@ -169,7 +169,7 @@
                 <input
                   type="text"
                   id="nomeDiretor"
-                  class="input-field glass-input"
+                  class="input-field"
                   placeholder="Ex: Pedro"
                 />
               </div>
@@ -178,7 +178,7 @@
                 <input
                   type="text"
                   id="nomeEstrela"
-                  class="input-field glass-input"
+                  class="input-field"
                   placeholder="Ex: Ana"
                 />
               </div>
@@ -186,7 +186,7 @@
 
             <div class="button-group">
               <button class="btn-secondary" onclick="prevStep(1)">
-                ← Voltar
+                Voltar
               </button>
               <button class="btn-primary" onclick="nextStep(3)">
                 Próximo Passo →
@@ -202,7 +202,7 @@
               <strong id="txt-max-fotos">5</strong> fotos.
             </p>
 
-            <div class="upload-area glass-panel" id="upload-fotos">
+            <div class="upload-area" id="upload-fotos">
               <input
                 type="file"
                 id="fotosLobby"
@@ -211,7 +211,11 @@
                 class="file-input"
               />
               <div class="upload-box" id="uploadBox">
-                <span class="upload-icon">📸</span>
+                <img
+                  src="assets/img/icon-upload.svg"
+                  alt=""
+                  class="upload-icon-svg"
+                />
                 <span>Clique ou arraste as fotos aqui</span>
               </div>
             </div>
@@ -220,7 +224,7 @@
 
             <div class="button-group mt-xl">
               <button class="btn-secondary" onclick="prevStep(2)">
-                ← Voltar
+                Voltar
               </button>
               <button class="btn-primary" onclick="nextStep(4)">
                 Próximo Passo →
@@ -236,7 +240,7 @@
               <strong id="txt-max-video">30</strong>s).
             </p>
 
-            <div class="upload-area glass-panel" id="upload-video">
+            <div class="upload-area" id="upload-video">
               <input
                 type="file"
                 id="videoPrincipal"
@@ -244,7 +248,11 @@
                 class="file-input"
               />
               <div class="upload-box">
-                <span class="upload-icon">🎬</span>
+                <img
+                  src="assets/img/icon-video.svg"
+                  alt=""
+                  class="upload-icon-svg"
+                />
                 <span>Selecione o vídeo principal</span>
               </div>
             </div>
@@ -255,7 +263,7 @@
               <div class="audio-control-group">
                 <select
                   id="musicaSelecao"
-                  class="input-field glass-input"
+                  class="input-field"
                   onchange="mudarMusica()"
                 >
                   <option value="1">Trilha 01 - Cinematic</option>
@@ -276,7 +284,7 @@
               <input
                 type="text"
                 id="youtubeLink"
-                class="input-field glass-input mt-sm"
+                class="input-field mt-sm"
                 placeholder="Cole o link do YouTube"
                 style="display: none"
               />
@@ -295,7 +303,7 @@
 
             <div class="button-group mt-xl">
               <button class="btn-secondary" onclick="prevStep(3)">
-                ← Voltar
+                Voltar
               </button>
               <button class="btn-primary" onclick="nextStep(5)">
                 Próximo Passo →
@@ -312,19 +320,19 @@
               <label for="mensagemFinal">Sua Dedicatória</label>
               <textarea
                 id="mensagemFinal"
-                class="input-field glass-input textarea"
+                class="input-field textarea"
                 rows="6"
                 maxlength="300"
-                placeholder="Escreva algo especial e emocionante..."
+                placeholder="Escreva algo especial..."
               ></textarea>
             </div>
 
             <div class="button-group mt-xl">
               <button class="btn-secondary" onclick="prevStep(4)">
-                ← Voltar
+                Voltar
               </button>
               <button class="btn-success" onclick="finalizarSessao()">
-                Finalizar e Pagar 💳
+                Finalizar e Pagar💳
               </button>
             </div>
           </div>
@@ -448,7 +456,7 @@
           dot.classList.toggle("active", i + 1 === n);
           dot.style.background = i + 1 <= n ? acc : "rgba(255,255,255,0.1)";
           if (i + 1 === n) {
-            dot.style.boxShadow = `0 0 12px ${acc}80`;
+            dot.style.boxShadow = `0 0 12px ${acc}`;
           } else {
             dot.style.boxShadow = "none";
           }
@@ -482,7 +490,7 @@
           .forEach((d) => {
             d.style.background = cfg.acc;
             if (d.classList.contains("active"))
-              d.style.boxShadow = `0 0 12px ${cfg.acc}80`;
+              d.style.boxShadow = `0 0 12px ${cfg.acc}`;
           });
         if (isPlaying) mudarMusica();
       }
@@ -574,7 +582,7 @@
           captionInput.type = "text";
           captionInput.placeholder = "Título";
           captionInput.value = foto.titulo;
-          captionInput.className = "thumb-caption-input glass-input";
+          captionInput.className = "thumb-caption-input";
           captionInput.oninput = (e) => {
             foto.titulo = e.target.value;
             const prev = document.getElementById(`pCap-${idx}`);
@@ -607,7 +615,7 @@
 
         if (window.fotosArmazenadas.length < window.LIMITE_FOTOS) {
           const add = document.createElement("label");
-          add.className = "thumb-add glass-panel";
+          add.className = "thumb-add";
           add.htmlFor = "fotosLobby";
           add.innerHTML = "<span>+</span>";
           grid.appendChild(add);

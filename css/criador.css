@@ -1,5 +1,5 @@
 /* ============================================================
-   CineGift — criador.css (Vibe Premium Glassmorphism)
+   CineGift — criador.css (Dark Premium Glassmorphism)
    ============================================================ */
 :root {
   --noite: #0a0407;
@@ -11,11 +11,14 @@
   --borgonha: #c4405a;
   --vinho-medio: #8b1a2e;
   --vinho-fundo: #3d0a1c;
+  --preto-puro: #000000;
   --fs-body: 1rem;
   --fs-small: 0.85rem;
   --radius-lg: 16px;
   --radius-md: 12px;
   --radius-sm: 8px;
+  --ease-cinema: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --shadow-deep: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -34,7 +37,7 @@
   font-family: var(--font-body);
 }
 
-/* UTILITÁRIOS E MARGENS */
+/* UTILITÁRIOS */
 .w-100 {
   width: 100%;
 }
@@ -94,7 +97,7 @@
 .creator-container {
   display: flex;
   flex: 1;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 70px); /* Desconta a navbar */
   overflow: hidden;
 }
 
@@ -108,20 +111,7 @@
   transition: all 0.3s ease;
 }
 
-.glass-input {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--creme);
-  transition: all 0.3s ease;
-}
-.glass-input:focus {
-  background: rgba(0, 0, 0, 0.4);
-  border-color: var(--borgonha);
-  box-shadow: 0 0 15px rgba(196, 64, 90, 0.15);
-  outline: none;
-}
-
-/* WIZARD PANEL (Lado Esquerdo) */
+/* WIZARD PANEL (Lado Esquerdo - Onde está o visual novo) */
 .wizard-panel {
   width: 45%;
   height: 100%;
@@ -129,7 +119,7 @@
   background:
     radial-gradient(
       ellipse at top left,
-      rgba(61, 10, 28, 0.15) 0%,
+      rgba(61, 10, 28, 0.2) 0%,
       transparent 70%
     ),
     var(--veludo);
@@ -161,7 +151,7 @@
   flex: 1;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
-  transition: all 0.4s ease;
+  transition: all 0.4s var(--ease-cinema);
 }
 .wizard-progress-dot.active {
   transform: scaleY(1.5);
@@ -170,7 +160,7 @@
 /* PASSOS */
 .wizard-step {
   display: none;
-  animation: stepReveal 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: stepReveal 0.5s var(--ease-cinema) both;
 }
 .wizard-step.active {
   display: block;
@@ -209,7 +199,7 @@
   line-height: 1.5;
 }
 
-/* PLANOS SAAS */
+/* PLANOS (Estilo Ticket VIP) */
 .planos-grid {
   display: flex;
   flex-direction: column;
@@ -217,9 +207,10 @@
   margin-bottom: 30px;
 }
 .plano-card {
+  composes: glass-panel; /* Herda efeito vidro */
   padding: 24px;
-  border-radius: var(--radius-lg);
   cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
 }
@@ -236,28 +227,16 @@
   position: relative;
   z-index: 2;
 }
-.plano-badge-popular {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: var(--borgonha);
-  color: var(--creme);
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  padding: 4px 12px;
-  text-transform: uppercase;
-  border-radius: 0 0 0 8px;
-}
-.plano-card h3 {
+.plano-label {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(244, 239, 230, 0.7);
   margin-bottom: 8px;
+  display: block;
 }
-.plano-card h2 {
+.plano-price {
   font-family: var(--font-display);
   font-size: 2.2rem;
   color: var(--creme);
@@ -279,7 +258,19 @@
   content: "✓";
   color: var(--borgonha);
   font-weight: bold;
-  font-size: 1.1rem;
+}
+.plano-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--borgonha);
+  color: var(--creme);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  padding: 4px 12px;
+  text-transform: uppercase;
+  border-radius: 0 0 0 8px;
 }
 
 /* INPUTS E FORMS */
@@ -304,8 +295,18 @@
   width: 100%;
   padding: 1rem 1.2rem;
   border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--creme);
   font-family: var(--font-body);
   font-size: 1rem;
+  transition: all 0.3s ease;
+}
+.input-field:focus {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: var(--borgonha);
+  box-shadow: 0 0 15px rgba(196, 64, 90, 0.15);
+  outline: none;
 }
 .textarea {
   resize: vertical;
@@ -314,6 +315,7 @@
 
 /* SLUG URL WRAPPER */
 .slug-input-wrapper {
+  composes: glass-panel;
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -353,7 +355,7 @@
   cursor: pointer;
   padding: 0;
   text-align: left;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-cinema);
   overflow: hidden;
 }
 .tema-card-btn:hover {
@@ -412,6 +414,7 @@
 
 /* UPLOADS */
 .upload-area {
+  composes: glass-panel;
   position: relative;
   margin-bottom: 1rem;
   border: 1px dashed rgba(255, 255, 255, 0.15);
@@ -438,9 +441,10 @@
   gap: 12px;
   color: rgba(244, 239, 230, 0.7);
 }
-.upload-icon {
-  font-size: 2.5rem;
-  opacity: 0.8;
+.upload-icon-svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0.6;
 }
 .error-msg {
   color: #ff4444;
@@ -464,7 +468,6 @@
   border: 2px solid var(--borgonha);
   position: relative;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 .thumb-item img {
   width: 100%;
@@ -492,6 +495,7 @@
 .thumb-add {
   width: 80px;
   height: 80px;
+  composes: glass-panel;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -509,6 +513,9 @@
   font-size: 0.65rem;
   padding: 6px;
   text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--creme);
   border-radius: 4px;
 }
 
@@ -601,7 +608,7 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.08);
@@ -619,7 +626,7 @@
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(196, 64, 90, 0.2);
 }
 .btn-primary:hover,
@@ -641,7 +648,8 @@
 }
 
 /* ============================================================
-   PREVIEW PANEL (LADO DIREITO - INTACTO NA LÓGICA)
+   PREVIEW PANEL (Lado Direito - INTACTO NA LÓGICA)
+   Estilização externa alterada apenas para isolar o preview.
    ============================================================ */
 .preview-panel {
   width: 55%;
@@ -664,7 +672,7 @@
   border-radius: 40px;
   border: 10px solid #1a1a1a;
   box-shadow:
-    0 25px 50px rgba(0, 0, 0, 0.8),
+    var(--shadow-deep),
     inset 0 0 0 2px #333;
   position: relative;
   overflow: hidden;
@@ -721,6 +729,7 @@
   }
 }
 
+/* Mantido a estilização interna dos temas do preview */
 .prev-fase[data-tema="romance"] {
   background: radial-gradient(circle at 50% 50%, #2a0818 0%, #0d0610 100%);
 }
@@ -757,6 +766,10 @@
   display: flex;
   justify-content: space-between;
 }
+.ticket-header-badge {
+  color: var(--borgonha, #c4405a);
+  font-weight: bold;
+}
 .ticket-label {
   font-family: var(--font-mono);
   font-size: 0.5rem;
@@ -781,6 +794,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .ticket-tear-line {
   width: 90%;
@@ -794,6 +808,12 @@
   justify-content: space-between;
   align-items: center;
 }
+.ticket-barcode {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: -1px;
+}
 
 .prev-galeria-container {
   display: flex;
@@ -803,6 +823,9 @@
   padding-bottom: 10px;
   scrollbar-width: none;
   align-items: center;
+}
+.prev-galeria-container::-webkit-scrollbar {
+  display: none;
 }
 .prev-poster {
   flex: 0 0 140px;
@@ -890,6 +913,7 @@
   margin: 0;
 }
 
+/* RESPONSIVIDADE COMPLETA DO CRIADOR */
 @media (max-width: 960px) {
   .creator-container {
     flex-direction: column;
