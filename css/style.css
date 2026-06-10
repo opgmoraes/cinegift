@@ -202,6 +202,23 @@ p {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(139, 26, 46, 0.4);
 }
+
+/* O Segredo do CRO: Botão Pulsante para Chamar a Atenção */
+.btn-pulse {
+  animation: pulseValentine 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+@keyframes pulseValentine {
+  0% {
+    box-shadow: 0 0 0 0 rgba(196, 64, 90, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(196, 64, 90, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(196, 64, 90, 0);
+  }
+}
+
 .btn-login {
   display: inline-flex;
   align-items: center;
@@ -335,7 +352,7 @@ p {
 }
 .hero-content {
   flex: 1;
-  max-width: 540px;
+  max-width: 560px; /* Aumentei um pouco para a copy nova não quebrar mal */
   animation: heroReveal 0.9s var(--ease-cinema) both;
 }
 @keyframes heroReveal {
@@ -378,7 +395,7 @@ p {
   line-height: 1.7;
   color: var(--pergaminho);
   margin-bottom: var(--space-lg);
-  max-width: 460px;
+  max-width: 480px;
 }
 .hero-actions {
   display: flex;
@@ -538,7 +555,7 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   DEMONSTRAÇÃO (NOVO)
+   DEMONSTRAÇÃO
 ───────────────────────────────────────────────────────────── */
 .section-demo {
   padding: var(--space-xl) 5%;
@@ -829,7 +846,7 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   PLANOS DE PREÇOS
+   PLANOS DE PREÇOS (CORRIGIDOS PARA A LÓGICA DO CRIADOR.JS)
 ───────────────────────────────────────────────────────────── */
 .section-planos {
   padding: var(--space-xl) 5%;

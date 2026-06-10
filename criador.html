@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer src="/_vercel/insights/script.js"></script>
-    <!-- Google tag (gtag.js) -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-6LPT1MFB7B"
@@ -15,7 +14,6 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-6LPT1MFB7B");
     </script>
     <title>Criar Sessão | CineGift</title>
@@ -26,6 +24,24 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      .plano-warning {
+        font-size: 0.75rem;
+        color: #ffaaaa;
+        margin-top: 15px;
+        padding: 10px;
+        background: rgba(255, 68, 68, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 68, 68, 0.2);
+        line-height: 1.4;
+        display: none;
+      }
+      .plano-disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+    </style>
   </head>
   <body class="creator-body">
     <audio id="audioPreview"></audio>
@@ -34,9 +50,9 @@
       <div class="logo">
         <a href="index.html" class="logo">
           <img src="assets/logos/logo01.png" alt="" class="logo-icon" />
-          <span class="logo-wordmark-text">
-            <span class="cine">Cine</span><span class="gift">Gift</span>
-          </span>
+          <span class="logo-wordmark-text"
+            ><span class="cine">Cine</span><span class="gift">Gift</span></span
+          >
         </a>
       </div>
       <span class="step-indicator"
@@ -57,68 +73,6 @@
 
           <div id="step-1" class="wizard-step active">
             <span class="wizard-step-tag">Passo 01 / 05</span>
-            <h2>Escolha o seu Plano</h2>
-            <p>Qual será o tamanho da sua homenagem?</p>
-            <div class="planos-grid">
-              <article
-                id="card-plano1"
-                class="plano-card selected"
-                onclick="selecionarPlano('plano1', 5, 30)"
-              >
-                <div class="plano-card-content">
-                  <span class="plano-label">Sessão Premiere</span>
-                  <h3 class="plano-price">R$ 13,90</h3>
-                  <ul>
-                    <li>Até 5 Fotos no lobby</li>
-                    <li>Vídeo de 30s</li>
-                    <li>Ativo por 6 meses</li>
-                    <li>Link Personalizado</li>
-                  </ul>
-                </div>
-              </article>
-              <article
-                id="card-plano2"
-                class="plano-card plano-destaque"
-                onclick="selecionarPlano('plano2', 7, 30)"
-              >
-                <div class="plano-card-content">
-                  <div class="plano-badge">Popular</div>
-                  <span class="plano-label">Longa Metragem</span>
-                  <h3 class="plano-price">R$ 20,90</h3>
-                  <ul>
-                    <li>Até 7 Fotos no lobby</li>
-                    <li>Vídeo de 30s</li>
-                    <li>Ativo por 1 ano</li>
-                    <li>Link Personalizado</li>
-                  </ul>
-                </div>
-              </article>
-              <article
-                id="card-plano3"
-                class="plano-card"
-                onclick="selecionarPlano('plano3', 7, 60)"
-              >
-                <div class="plano-card-content">
-                  <span class="plano-label">Clássico Eterno</span>
-                  <h3 class="plano-price">R$ 25,90</h3>
-                  <ul>
-                    <li>Até 7 Fotos no lobby</li>
-                    <li>Vídeo de até 60s</li>
-                    <li>Ativo para sempre</li>
-                    <li>Link Personalizado</li>
-                  </ul>
-                </div>
-              </article>
-            </div>
-            <div class="button-group-single">
-              <button class="btn-primary w-100" onclick="nextStep(2)">
-                Continuar →
-              </button>
-            </div>
-          </div>
-
-          <div id="step-2" class="wizard-step">
-            <span class="wizard-step-tag">Passo 02 / 05</span>
             <h2>O Elenco e o Gênero</h2>
 
             <div class="input-group">
@@ -148,20 +102,20 @@
                   type="button"
                 >
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">❤️</span>
-                    <span class="tcb-nome">Romance</span>
+                    <span class="tcb-emoji">❤️</span
+                    ><span class="tcb-nome">Romance</span>
                   </div>
                 </button>
                 <button class="tema-card-btn" data-tema="amizade" type="button">
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">✌️</span>
-                    <span class="tcb-nome">Amizade</span>
+                    <span class="tcb-emoji">✌️</span
+                    ><span class="tcb-nome">Amizade</span>
                   </div>
                 </button>
                 <button class="tema-card-btn" data-tema="familia" type="button">
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">👨‍👩‍👧‍👦</span>
-                    <span class="tcb-nome">Família</span>
+                    <span class="tcb-emoji">👨‍👩‍👧‍👦</span
+                    ><span class="tcb-nome">Família</span>
                   </div>
                 </button>
                 <button
@@ -170,8 +124,8 @@
                   type="button"
                 >
                   <div class="tcb-inner">
-                    <span class="tcb-emoji">🎂</span>
-                    <span class="tcb-nome">Aniversário</span>
+                    <span class="tcb-emoji">🎂</span
+                    ><span class="tcb-nome">Aniversário</span>
                   </div>
                 </button>
               </div>
@@ -199,22 +153,19 @@
               </div>
             </div>
 
-            <div class="button-group">
-              <button class="btn-secondary" onclick="prevStep(1)">
-                Voltar
-              </button>
-              <button class="btn-primary" onclick="nextStep(3)">
+            <div class="button-group-single">
+              <button class="btn-primary w-100" onclick="nextStep(2)">
                 Próximo Passo →
               </button>
             </div>
           </div>
 
-          <div id="step-3" class="wizard-step">
-            <span class="wizard-step-tag">Passo 03 / 05</span>
+          <div id="step-2" class="wizard-step">
+            <span class="wizard-step-tag">Passo 02 / 05</span>
             <h2>Em Cartaz</h2>
             <p>
               Escolha as fotos para o lobby do cinema. Máx
-              <strong id="txt-max-fotos">5</strong> fotos.
+              <strong>7</strong> fotos.
             </p>
 
             <div class="upload-area glass-panel" id="upload-fotos">
@@ -238,21 +189,20 @@
             <div class="thumbs-grid" id="thumbsGrid"></div>
 
             <div class="button-group mt-xl">
-              <button class="btn-secondary" onclick="prevStep(2)">
+              <button class="btn-secondary" onclick="prevStep(1)">
                 Voltar
               </button>
-              <button class="btn-primary" onclick="nextStep(4)">
+              <button class="btn-primary" onclick="nextStep(3)">
                 Próximo Passo →
               </button>
             </div>
           </div>
 
-          <div id="step-4" class="wizard-step">
-            <span class="wizard-step-tag">Passo 04 / 05</span>
+          <div id="step-3" class="wizard-step">
+            <span class="wizard-step-tag">Passo 03 / 05</span>
             <h2>A Produção</h2>
             <p>
-              Suba o vídeo principal da surpresa (Máx
-              <strong id="txt-max-video">30</strong>s).
+              Suba o vídeo principal da surpresa (Máx <strong>60</strong>s).
             </p>
 
             <div class="upload-area glass-panel" id="upload-video">
@@ -317,17 +267,17 @@
             </div>
 
             <div class="button-group mt-xl">
-              <button class="btn-secondary" onclick="prevStep(3)">
+              <button class="btn-secondary" onclick="prevStep(2)">
                 Voltar
               </button>
-              <button class="btn-primary" onclick="nextStep(5)">
+              <button class="btn-primary" onclick="nextStep(4)">
                 Próximo Passo →
               </button>
             </div>
           </div>
 
-          <div id="step-5" class="wizard-step">
-            <span class="wizard-step-tag">Passo 05 / 05</span>
+          <div id="step-4" class="wizard-step">
+            <span class="wizard-step-tag">Passo 04 / 05</span>
             <h2>Créditos Finais</h2>
             <p>A mensagem que subirá na tela após o filme acabar.</p>
 
@@ -343,8 +293,79 @@
             </div>
 
             <div class="button-group mt-xl">
-              <button class="btn-secondary" onclick="prevStep(4)">
+              <button class="btn-secondary" onclick="prevStep(3)">
                 Voltar
+              </button>
+              <button class="btn-primary" onclick="nextStep(5)">
+                Escolher Plano →
+              </button>
+            </div>
+          </div>
+
+          <div id="step-5" class="wizard-step">
+            <span class="wizard-step-tag">Passo 05 / 05</span>
+            <h2>Escolha o seu Plano</h2>
+            <p>O seu presente está pronto! Como deseja hospedá-lo?</p>
+
+            <div class="planos-grid">
+              <article
+                id="card-plano1"
+                class="plano-card"
+                onclick="selecionarPlano('plano1')"
+              >
+                <div class="plano-card-content">
+                  <span class="plano-label">Sessão Premiere</span>
+                  <h3 class="plano-price">R$ 13,90</h3>
+                  <ul>
+                    <li>Até 5 Fotos no lobby</li>
+                    <li>Vídeo de até 30s</li>
+                    <li>Ativo por 6 meses</li>
+                    <li>Link Personalizado</li>
+                  </ul>
+                  <div id="aviso-plano1" class="plano-warning"></div>
+                </div>
+              </article>
+
+              <article
+                id="card-plano2"
+                class="plano-card plano-destaque selected"
+                onclick="selecionarPlano('plano2')"
+              >
+                <div class="plano-card-content">
+                  <div class="plano-badge">Popular</div>
+                  <span class="plano-label">Longa Metragem</span>
+                  <h3 class="plano-price">R$ 20,90</h3>
+                  <ul>
+                    <li>Até 7 Fotos no lobby</li>
+                    <li>Vídeo de até 30s</li>
+                    <li>Ativo por 1 ano</li>
+                    <li>Link Personalizado</li>
+                  </ul>
+                  <div id="aviso-plano2" class="plano-warning"></div>
+                </div>
+              </article>
+
+              <article
+                id="card-plano3"
+                class="plano-card"
+                onclick="selecionarPlano('plano3')"
+              >
+                <div class="plano-card-content">
+                  <span class="plano-label">Clássico Eterno</span>
+                  <h3 class="plano-price">R$ 25,90</h3>
+                  <ul>
+                    <li>Até 7 Fotos no lobby</li>
+                    <li>Vídeo de até 60s</li>
+                    <li>Ativo para sempre</li>
+                    <li>Link Personalizado</li>
+                  </ul>
+                </div>
+              </article>
+            </div>
+
+            <div class="button-group mt-xl">
+              <button class="btn-secondary" onclick="prevStep(4)">
+                Voltar e Editar
               </button>
               <button class="btn-success" onclick="finalizarSessao()">
                 Finalizar e Pagar💳
@@ -355,99 +376,141 @@
       </section>
 
       <section class="preview-panel">
+        <div class="preview-backdrop-glow"></div>
         <div class="preview-device">
           <div class="preview-screen">
-            <div id="prev-ticket" class="prev-fase active" data-tema="romance">
-              <div class="ticket-preview">
-                <div class="ticket-body-card">
-                  <div class="ticket-header">
-                    CineGift <span class="ticket-header-badge">VIP</span>
+            <div id="prev-ticket" class="prev-fase active">
+              <div class="ticket-wrapper">
+                <div class="ticket-preview">
+                  <div class="ticket-body-card">
+                    <div class="ticket-header">
+                      CineGift <span class="ticket-header-badge">VIP</span>
+                    </div>
+                    <div class="ticket-body">
+                      <span class="ticket-label">Estrela Principal</span>
+                      <h3 id="prevEstrela">—</h3>
+                      <div class="ticket-director">
+                        DIRIGIDO POR <span id="prevDiretor">—</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="ticket-body">
-                    <span class="ticket-label">Estrela Principal</span>
-                    <h3 id="prevEstrela">—</h3>
-                    <div class="ticket-director">
-                      DIRIGIDO POR <span id="prevDiretor">—</span>
+                  <div class="ticket-tear">
+                    <div class="ticket-tear-line"></div>
+                  </div>
+                  <div class="ticket-footer">
+                    <div class="ticket-barcode">||| |||| || |||</div>
+                    <div class="ticket-seat">
+                      <span>Sessão</span><strong>01</strong>
                     </div>
                   </div>
                 </div>
-                <div class="ticket-tear">
-                  <div class="ticket-tear-line"></div>
-                </div>
-                <div class="ticket-footer">
-                  <div class="ticket-barcode">||| |||| || |||</div>
+                <div class="btn-acao-preview">🎟️ Escanear Ingresso</div>
+              </div>
+            </div>
+
+            <div id="prev-gallery" class="prev-fase">
+              <h2 class="fase-titulo">Em Cartaz</h2>
+              <div class="frase-dinamica" id="previewFrase">
+                "A nossa melhor história começa agora..."
+              </div>
+
+              <div class="lobby-gallery" id="previewGallery">
+                <div class="empty-gallery-msg">
+                  <span
+                    style="
+                      font-size: 2rem;
+                      display: block;
+                      margin-bottom: 10px;
+                      opacity: 0.5;
+                    "
+                    >📸</span
+                  >
+                  Adicione fotos para ver o lobby ganhar vida.
                 </div>
               </div>
             </div>
-            <div id="prev-gallery" class="prev-fase" data-tema="romance">
-              <h2
-                style="
-                  font-family: var(--font-display);
-                  color: #fff;
-                  margin-bottom: 20px;
-                "
-              >
-                Em Cartaz
-              </h2>
-              <div id="previewGallery" class="prev-galeria-container">
-                <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.8rem">
-                  Adicione fotos para ver aqui.
-                </p>
-              </div>
-            </div>
-            <div
-              id="prev-video"
-              class="prev-fase"
-              style="background: #000; padding: 0"
-            >
-              <div
-                style="
-                  width: 100%;
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  background: radial-gradient(circle, #222, #000);
-                "
-              >
-                <span style="font-size: 4rem">🎬</span>
-              </div>
-            </div>
-            <div id="prev-credits" class="prev-fase" data-tema="romance">
-              <div class="prev-credits">
-                <h1 id="prevMsgEstrela">Nome</h1>
-                <div class="msg-scroll-container">
-                  <p id="previewMsgFinal">
-                    A sua mensagem final aparecerá aqui...
-                  </p>
+
+            <div id="prev-video" class="prev-fase" style="padding: 0">
+              <div class="theater-screen">
+                <div class="video-wrapper">
+                  <span style="font-size: 3rem; opacity: 0.5">🎬</span>
                 </div>
-                <span>Dirigido por</span>
-                <h3 id="prevMsgDiretor">Você</h3>
+              </div>
+            </div>
+
+            <div id="prev-credits" class="prev-fase">
+              <div class="credits-roll">
+                <div class="credits-content">
+                  <h1 id="prevMsgEstrela">Nome</h1>
+                  <div class="msg-scroll-container">
+                    <p id="previewMsgFinal" class="credits-mensagem">
+                      A sua mensagem final aparecerá aqui...
+                    </p>
+                  </div>
+                  <div class="credits-divider"></div>
+                  <span class="credits-director-label">Dirigido por</span>
+                  <h3 id="prevMsgDiretor" class="credits-director-name">
+                    Você
+                  </h3>
+                  <div class="the-end">FIM</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <p class="preview-hint">Preview em tempo real 📱</p>
+        <p class="preview-hint">Preview da Sessão Original 📱</p>
       </section>
     </main>
 
     <script type="module" src="js/criador.js"></script>
     <script>
-      /* JAVASCRIPT INTACTO (Sem alterações na lógica) */
       let temaAtual = "romance";
+
       const temaConfig = {
-        romance: { acc: "#c4405a", bg1: "#3d0a1c", bg2: "#1a0610" },
-        amizade: { acc: "#4a8ec4", bg1: "#1a3a5c", bg2: "#0e1a2a" },
-        familia: { acc: "#d4782a", bg1: "#5c2a10", bg2: "#160a04" },
-        aniversario: { acc: "#d4407a", bg1: "#4a1040", bg2: "#12080e" },
+        romance: {
+          acc: "#c4405a",
+          bg1: "#3d0a1c",
+          bg2: "#1a0610",
+          tear: "#2a0818",
+          glow: "rgba(196, 64, 90, 0.3)",
+          txt: "#f4efe6",
+          label: "rgba(244, 239, 230, 0.45)",
+        },
+        amizade: {
+          acc: "#4a8ec4",
+          bg1: "#1a3a5c",
+          bg2: "#0e1a2a",
+          tear: "#1a3a5c",
+          glow: "rgba(74, 142, 196, 0.3)",
+          txt: "#f4efe6",
+          label: "rgba(168, 208, 232, 0.5)",
+        },
+        familia: {
+          acc: "#d4782a",
+          bg1: "#5c2a10",
+          bg2: "#2a0e04",
+          tear: "#3a1a08",
+          glow: "rgba(212, 120, 42, 0.3)",
+          txt: "#f4ead8",
+          label: "rgba(232, 168, 96, 0.5)",
+        },
+        aniversario: {
+          acc: "#d4407a",
+          bg1: "#4a1040",
+          bg2: "#12080e",
+          tear: "#2a0a1e",
+          glow: "rgba(212, 64, 122, 0.3)",
+          txt: "#f4efe6",
+          label: "rgba(212, 64, 122, 0.55)",
+        },
       };
 
       const stepToPreviewMap = {
         1: "prev-ticket",
-        2: "prev-ticket",
-        3: "prev-gallery",
-        4: "prev-video",
-        5: "prev-credits",
+        2: "prev-gallery",
+        3: "prev-video",
+        4: "prev-credits",
+        5: "prev-ticket",
       };
 
       function nextStep(n) {
@@ -470,29 +533,68 @@
           dot.classList.toggle("done", i + 1 < n);
           dot.classList.toggle("active", i + 1 === n);
           dot.style.background = i + 1 <= n ? acc : "rgba(255,255,255,0.1)";
-          if (i + 1 === n) {
-            dot.style.boxShadow = `0 0 12px ${acc}`;
-          } else {
-            dot.style.boxShadow = "none";
-          }
+          dot.style.boxShadow = i + 1 === n ? `0 0 12px ${acc}` : "none";
         });
+
+        if (n === 5) avaliarLimitesPlanos();
       }
       function prevStep(n) {
         nextStep(n);
       }
 
+      function avaliarLimitesPlanos() {
+        const fotosQtd = window.fotosArmazenadas
+          ? window.fotosArmazenadas.length
+          : 0;
+        const videoDur = window.duracaoVideoAtual || 0;
+
+        const card1 = document.getElementById("card-plano1");
+        const card2 = document.getElementById("card-plano2");
+        const aviso1 = document.getElementById("aviso-plano1");
+        const aviso2 = document.getElementById("aviso-plano2");
+
+        card1.classList.remove("plano-disabled");
+        card2.classList.remove("plano-disabled");
+        aviso1.style.display = "none";
+        aviso2.style.display = "none";
+
+        if (videoDur > 31) {
+          aviso1.innerHTML =
+            "⚠️ Seu vídeo tem mais de 30s. Para prosseguir, escolha o plano Clássico Eterno ou volte para colocar um vídeo menor.";
+          aviso1.style.display = "block";
+          card1.classList.add("plano-disabled");
+
+          aviso2.innerHTML =
+            "⚠️ Seu vídeo tem mais de 30s. Para prosseguir, escolha o plano Clássico Eterno ou volte para colocar um vídeo menor.";
+          aviso2.style.display = "block";
+          card2.classList.add("plano-disabled");
+
+          window.selecionarPlano("plano3");
+        } else if (fotosQtd > 5) {
+          aviso1.innerHTML =
+            "⚠️ Este plano permite apenas 5 fotos. Se o selecionar, as suas últimas 2 fotos não aparecerão. Escolha o Longa Metragem para manter todas.";
+          aviso1.style.display = "block";
+
+          if (window.planoEscolhido === "plano1") {
+            window.selecionarPlano("plano2");
+          }
+        }
+      }
+
       function aplicarTema(tema) {
         temaAtual = tema;
         document.getElementById("tema").value = tema;
-        document
-          .querySelectorAll(".prev-fase")
-          .forEach((f) => f.setAttribute("data-tema", tema));
 
         const cfg = temaConfig[tema];
         const root = document.documentElement;
+
+        root.style.setProperty("--theme-accent", cfg.acc);
+        root.style.setProperty("--theme-glow", cfg.glow);
         root.style.setProperty("--tk-bg1", cfg.bg1);
         root.style.setProperty("--tk-bg2", cfg.bg2);
-        root.style.setProperty("--tk-tear-bg", cfg.bg1);
+        root.style.setProperty("--tk-tear-bg", cfg.tear);
+        root.style.setProperty("--tk-text", cfg.txt);
+        root.style.setProperty("--tk-label", cfg.label);
         root.style.setProperty("--borgonha", cfg.acc);
 
         document
@@ -507,6 +609,17 @@
             if (d.classList.contains("active"))
               d.style.boxShadow = `0 0 12px ${cfg.acc}`;
           });
+
+        const frases = {
+          romance:
+            '"Você transformou meu mundo em uma cena que quero rever pra sempre."',
+          amizade:
+            '"A nossa amizade é o tipo de coisa que não precisa de roteiro."',
+          familia: '"Lar é onde você está. Simples assim."',
+          aniversario: '"Que esse dia seja tão especial quanto você merece."',
+        };
+        document.getElementById("previewFrase").innerText = frases[tema];
+
         if (isPlaying) mudarMusica();
       }
 
@@ -541,7 +654,7 @@
         ?.addEventListener("input", function () {
           document.getElementById("previewMsgFinal").innerText = this.value
             ? `"${this.value}"`
-            : "A sua mensagem final...";
+            : "A sua mensagem final aparecerá aqui...";
         });
 
       window.fotosArmazenadas = [];
@@ -573,7 +686,18 @@
         const previewGallery = document.getElementById("previewGallery");
         if (!grid) return;
         grid.innerHTML = "";
-        if (previewGallery) previewGallery.innerHTML = "";
+
+        if (previewGallery) {
+          previewGallery.innerHTML = "";
+          if (window.fotosArmazenadas.length === 0) {
+            previewGallery.innerHTML = `
+              <div class="empty-gallery-msg">
+                <span style="font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5;">📸</span>
+                Adicione fotos para ver o lobby ganhar vida.
+              </div>
+            `;
+          }
+        }
 
         const acc = temaConfig[temaAtual].acc;
 
@@ -593,6 +717,7 @@
             window.fotosArmazenadas.splice(idx, 1);
             renderThumbs();
           };
+
           const captionInput = document.createElement("input");
           captionInput.type = "text";
           captionInput.placeholder = "Título";
@@ -600,10 +725,10 @@
           captionInput.className = "thumb-caption-input";
           captionInput.oninput = (e) => {
             foto.titulo = e.target.value;
-            const prev = document.getElementById(`pCap-${idx}`);
-            if (prev) {
-              prev.innerText = foto.titulo;
-              prev.style.display = foto.titulo ? "block" : "none";
+            const prevCap = document.getElementById(`pCap-${idx}`);
+            if (prevCap) {
+              prevCap.innerText = foto.titulo;
+              prevCap.style.opacity = foto.titulo ? "1" : "0";
             }
           };
           item.appendChild(img);
@@ -613,18 +738,22 @@
           grid.appendChild(wrapper);
 
           if (previewGallery) {
-            const pDiv = document.createElement("div");
-            pDiv.className = "prev-poster";
-            const pImg = document.createElement("img");
-            pImg.src = foto.url;
-            const pCap = document.createElement("div");
-            pCap.className = "prev-caption";
-            pCap.id = `pCap-${idx}`;
-            pCap.innerText = foto.titulo;
-            pCap.style.display = foto.titulo ? "block" : "none";
-            pDiv.appendChild(pImg);
-            pDiv.appendChild(pCap);
-            previewGallery.appendChild(pDiv);
+            const posterWrapper = document.createElement("div");
+            posterWrapper.className = "poster-wrapper";
+
+            const frame = document.createElement("div");
+            frame.className = "poster-frame";
+            frame.innerHTML = `<img src="${foto.url}" alt="Cartaz">`;
+            posterWrapper.appendChild(frame);
+
+            const capDiv = document.createElement("div");
+            capDiv.className = "poster-title-below";
+            capDiv.innerText = foto.titulo;
+            capDiv.id = `pCap-${idx}`;
+            capDiv.style.opacity = foto.titulo ? "1" : "0";
+            posterWrapper.appendChild(capDiv);
+
+            previewGallery.appendChild(posterWrapper);
           }
         });
 
@@ -669,8 +798,9 @@
         }
         isPlaying = !isPlaying;
       }
+
       aplicarTema("romance");
-      nextStep(1); // Inicializa com os brilhos corretos
+      nextStep(1);
     </script>
   </body>
 </html>

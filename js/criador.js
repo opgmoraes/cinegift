@@ -7,33 +7,24 @@ import {
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
-// NÍVEL 2: Importando a biblioteca de compressão de imagens via CDN
 import imageCompression from "https://esm.sh/browser-image-compression@2.0.2";
 
-window.planoEscolhido = "plano1";
-window.LIMITE_FOTOS = 5;
-window.LIMITE_VIDEO = 31; // +1s margem
-window.LIMITE_TAMANHO_MB = 70; // Nível 1: Limite máximo de peso do vídeo
+window.planoEscolhido = "plano2";
+window.LIMITE_FOTOS = 7;
+window.LIMITE_VIDEO = 61;
+window.LIMITE_TAMANHO_MB = 70;
+window.duracaoVideoAtual = 0;
 
 let arquivoVideo = null;
-let promessaVideoBackground = null; // Nível 3: Guarda o upload fantasma
-let urlVideoFinal = ""; // Guarda o link do vídeo quando o upload termina
+let promessaVideoBackground = null;
+let urlVideoFinal = "";
 
-window.selecionarPlano = function (plano, maxFotos, maxVideo) {
+window.selecionarPlano = function (plano) {
   document
     .querySelectorAll(".plano-card")
     .forEach((c) => c.classList.remove("selected"));
   document.getElementById("card-" + plano).classList.add("selected");
   window.planoEscolhido = plano;
-  window.LIMITE_FOTOS = maxFotos;
-  window.LIMITE_VIDEO = maxVideo + 1;
-  document.getElementById("txt-max-fotos").innerText = maxFotos;
-  document.getElementById("txt-max-video").innerText = maxVideo;
-
-  if (window.fotosArmazenadas && window.fotosArmazenadas.length > maxFotos) {
-    window.fotosArmazenadas = window.fotosArmazenadas.slice(0, maxFotos);
-    if (typeof renderThumbs === "function") renderThumbs();
-  }
 };
 
 document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
@@ -41,7 +32,6 @@ document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   const errorEl = document.getElementById("video-error");
   if (!file) return;
 
-  // NÍVEL 1: Bloqueia vídeos absurdamente pesados (Acima de 50MB)
   const tamanhoMB = file.size / (1024 * 1024);
   if (tamanhoMB > window.LIMITE_TAMANHO_MB) {
     errorEl.innerText = `Vídeo muito pesado (${tamanhoMB.toFixed(1)}MB)! O limite é ${window.LIMITE_TAMANHO_MB}MB. Por favor, comprima o vídeo ou escolha outro.`;
@@ -56,26 +46,26 @@ document.getElementById("videoPrincipal")?.addEventListener("change", (e) => {
   videoObj.preload = "metadata";
 
   videoObj.onloadedmetadata = function () {
-    // Correção para o erro ERR_FILE_NOT_FOUND do Google Chrome
     setTimeout(() => URL.revokeObjectURL(videoObj.src), 1000);
 
     if (videoObj.duration > window.LIMITE_VIDEO) {
-      errorEl.innerText = `Vídeo muito longo! Máximo ${window.LIMITE_VIDEO - 1}s para este plano.`;
+      errorEl.innerText = `Vídeo muito longo! O máximo absoluto permitido é 60 segundos.`;
       errorEl.style.color = "#ff4444";
       e.target.value = "";
       arquivoVideo = null;
       promessaVideoBackground = null;
+      window.duracaoVideoAtual = 0;
     } else {
+      window.duracaoVideoAtual = videoObj.duration;
+
       errorEl.innerText =
         "Vídeo aprovado e a ser preparado nos bastidores! ✅🎬";
       errorEl.style.color = "#00C851";
       arquivoVideo = file;
 
-      // NÍVEL 3: Inicia o Upload em BACKGROUND imediatamente!
       promessaVideoBackground = uploadToR2(file, "video")
         .then((url) => {
           urlVideoFinal = url;
-          console.log("Upload de vídeo em background finalizado com sucesso!");
           return url;
         })
         .catch((err) => {
@@ -121,7 +111,18 @@ window.finalizarSessao = async function () {
 
   if (!slugDigitado || !nomeDiretor || !nomeEstrela) {
     alert(
-      "Por favor, preencha todos os campos obrigatórios e o Link Personalizado.",
+      "Você pulou alguma etapa! Por favor, volte e preencha os Nomes e a URL.",
+    );
+    return;
+  }
+
+  if (
+    (window.planoEscolhido === "plano1" ||
+      window.planoEscolhido === "plano2") &&
+    window.duracaoVideoAtual > 31
+  ) {
+    alert(
+      "O seu filme tem mais de 30 segundos! Para prosseguir com ele, você precisa selecionar o plano 'Clássico Eterno', ou voltar e fazer o upload de um vídeo menor.",
     );
     return;
   }
@@ -136,13 +137,22 @@ window.finalizarSessao = async function () {
     );
     const snap = await getDocs(q);
     if (!snap.empty) {
-      alert("Este link personalizado já está em uso! Tente outro nome.");
+      alert(
+        "Este link personalizado já está em uso! Volte para o Passo 1 e tente outro nome.",
+      );
       btn.disabled = false;
       btn.innerText = originalText;
       return;
     }
 
     const temaEscolhido = document.getElementById("tema")?.value || "romance";
+
+    let fotosReais = window.fotosArmazenadas || [];
+    if (window.planoEscolhido === "plano1") {
+      fotosReais = fotosReais.slice(0, 5);
+    } else {
+      fotosReais = fotosReais.slice(0, 7);
+    }
 
     const dados = {
       plano: window.planoEscolhido,
@@ -162,11 +172,9 @@ window.finalizarSessao = async function () {
 
     btn.innerText = "⏳ A otimizar fotos para garantir alta velocidade...";
 
-    // NÍVEL 2: Comprimindo as Fotos antes de subir para o servidor
-    const fotosReais = window.fotosArmazenadas || [];
     const opcoesCompressao = {
-      maxSizeMB: 0.8, // Comprime a foto para no máximo ~800KB
-      maxWidthOrHeight: 1200, // Mantém a resolução alta o suficiente para telas
+      maxSizeMB: 0.8,
+      maxWidthOrHeight: 1200,
       useWebWorker: true,
     };
 
@@ -180,28 +188,22 @@ window.finalizarSessao = async function () {
         return { url: url, titulo: fotoObj.titulo || "" };
       } catch (err) {
         console.warn("Erro ao comprimir, enviando foto original...", err);
-        // Fallback: se o compressor falhar, tenta subir a foto original
         const url = await uploadToR2(fotoObj.file, "foto");
         return { url: url, titulo: fotoObj.titulo || "" };
       }
     });
 
-    // NÍVEL 3: Recuperando o vídeo que já estava sendo enviado de fundo
     let urlVideo = urlVideoFinal;
     if (arquivoVideo && !urlVideo) {
       btn.innerText = "⏳ A finalizar envio do seu filme principal...";
       if (promessaVideoBackground) {
-        // A internet foi um pouco lenta, vamos esperar o background terminar
         urlVideo = await promessaVideoBackground;
       } else {
-        // Redundância de segurança caso o background tenha falhado
         urlVideo = await uploadToR2(arquivoVideo, "video");
       }
     }
 
-    // Espera as fotos comprimirem e subirem (agora incrivelmente rápido)
     const fotosCompletas = await Promise.all(promessasFotos);
-
     dados.fotos = fotosCompletas;
     dados.video = urlVideo;
 
@@ -209,7 +211,6 @@ window.finalizarSessao = async function () {
 
     const docRef = await addDoc(collection(db, "sessoes"), dados);
 
-    // GUARDA NO NAVEGADOR PARA MOSTRAR NA PÁGINA DE SUCESSO DEPOIS DO PAGAMENTO
     localStorage.setItem("ultimoSlugCineGift", slugDigitado);
     localStorage.setItem("ultimoTemaCineGift", temaEscolhido);
 
@@ -219,7 +220,6 @@ window.finalizarSessao = async function () {
       plano3: "https://pay.cakto.com.br/dvqe4ru",
     };
 
-    // VAI PARA A CAKTO PASSANDO O ID NO FINAL DA URL
     window.location.href = `${linksCakto[window.planoEscolhido]}?src=${docRef.id}`;
   } catch (error) {
     console.error(error);
