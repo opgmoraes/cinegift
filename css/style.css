@@ -99,111 +99,6 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   POP-UP DE URGÊNCIA (MODAL DE ENTRADA) - CRO DE VÉSPERA
-───────────────────────────────────────────────────────────── */
-.urgency-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(10, 4, 7, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-.urgency-modal-overlay.show {
-  opacity: 1;
-  pointer-events: all;
-}
-.urgency-modal-content {
-  background: radial-gradient(
-    ellipse at top,
-    rgba(196, 64, 90, 0.15) 0%,
-    rgba(26, 8, 16, 0.95) 100%
-  );
-  border: 1px solid rgba(196, 64, 90, 0.3);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    0 0 40px rgba(196, 64, 90, 0.2);
-  border-radius: var(--radius-lg);
-  max-width: 480px;
-  width: 100%;
-  padding: 40px 30px;
-  text-align: center;
-  position: relative;
-  transform: translateY(30px) scale(0.95);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.urgency-modal-overlay.show .urgency-modal-content {
-  transform: translateY(0) scale(1);
-}
-.urgency-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: transparent;
-  border: none;
-  color: rgba(244, 239, 230, 0.5);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.urgency-close:hover {
-  color: #fff;
-}
-.urgency-icon {
-  font-size: 3.5rem;
-  margin-bottom: 10px;
-  animation: pulseIcon 1.5s infinite;
-}
-@keyframes pulseIcon {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-}
-.urgency-title {
-  font-family: var(--font-display);
-  font-size: 2.2rem;
-  color: #fff;
-  margin-bottom: 15px;
-  line-height: 1.1;
-}
-.urgency-text {
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  color: rgba(244, 239, 230, 0.85);
-  margin-bottom: 30px;
-  line-height: 1.5;
-}
-.urgency-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.urgency-text-btn {
-  background: transparent;
-  border: none;
-  color: rgba(244, 239, 230, 0.4);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: 0.2s;
-}
-.urgency-text-btn:hover {
-  color: rgba(244, 239, 230, 0.8);
-}
-
-/* ─────────────────────────────────────────────────────────────
    COMPONENTES GERAIS (NAVBAR E BOTÕES)
 ───────────────────────────────────────────────────────────── */
 .navbar {
@@ -383,7 +278,7 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   HERO E SOCIAL PROOF
+   HERO E SOCIAL PROOF (MODIFICADO PARA DIA DOS NAMORADOS)
 ───────────────────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -392,9 +287,10 @@ p {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* Glow ligeiramente mais avermelhado para combinar com a urgência */
   background: radial-gradient(
     ellipse 80% 70% at 50% 40%,
-    #1a0814 0%,
+    #2a0814 0%,
     var(--noite) 70%
   );
 }
@@ -1355,13 +1251,6 @@ p {
 }
 
 @media (max-width: 768px) {
-  .urgency-modal-content {
-    padding: 30px 20px;
-  }
-  .urgency-title {
-    font-size: 1.8rem;
-  }
-
   .planos-stack {
     flex-direction: column;
     align-items: center;

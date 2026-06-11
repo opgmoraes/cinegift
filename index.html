@@ -25,30 +25,6 @@
     />
   </head>
   <body>
-    <div class="urgency-modal-overlay" id="urgencyModal">
-      <div class="urgency-modal-content glass-panel">
-        <button class="urgency-close" id="closeUrgency">✕</button>
-        <div class="urgency-icon">🚨</div>
-        <h2 class="urgency-title">Alerta de Última Hora</h2>
-        <p class="urgency-text">
-          Faltam menos de 24h para o Dia dos Namorados. Não fique de mãos a
-          abanar! Salve o seu dia criando um presente cinematográfico
-          inesquecível em 2 minutos.
-        </p>
-        <div class="urgency-actions">
-          <a
-            href="criador.html"
-            class="btn-primary btn-pulse w-100"
-            style="justify-content: center; font-size: 1.1rem; padding: 1.2rem"
-            >Testar de Graça Agora ↗</a
-          >
-          <button class="urgency-text-btn" id="skipUrgency">
-            Já tenho um presente (fechar aviso)
-          </button>
-        </div>
-      </div>
-    </div>
-
     <header class="navbar">
       <div class="logo">
         <img src="assets/logos/logo01.png" alt="" class="logo-icon" />
@@ -75,29 +51,37 @@
             <div
               class="social-proof-badge"
               style="
-                background: rgba(196, 64, 90, 0.15);
-                border-color: rgba(196, 64, 90, 0.3);
+                background: rgba(220, 53, 69, 0.15);
+                border-color: rgba(220, 53, 69, 0.4);
+                color: #fff;
+                font-weight: 600;
+                font-size: 0.8rem;
+                padding: 8px 18px;
               "
             >
-              <span class="emoji">❤️</span> Especial Dia dos Namorados!
+              🚨 O Dia dos Namorados é AMANHÃ!
             </div>
+
             <h1 class="hero-title">
               O presente perfeito,<br />
               <em class="highlight">pronto em 2 minutos</em>.
             </h1>
+
             <p class="hero-desc">
-              Sem tempo de ir ao shopping? Crie uma Sessão de Cinema digital
-              interativa para o seu amor. Adicione suas melhores fotos e um
-              vídeo surpresa.
-              <b
-                >Comece a criar de graça e pague apenas no final, se o seu
-                coração bater mais forte!</b
-              >
+              Sem tempo ou esqueceu de comprar? Salve o seu dia! Crie uma Sessão
+              de Cinema digital interativa para o seu amor agora mesmo. Adicione
+              suas fotos e um vídeo surpresa.
+              <b>Comece de graça e pague apenas no final se gostar!</b>
             </p>
+
             <div class="hero-actions">
-              <a href="criador.html" class="btn-primary btn-pulse"
-                >Criar presente (Teste grátis) ↗</a
+              <a
+                href="criador.html"
+                class="btn-primary btn-pulse"
+                style="font-size: 1.1rem; padding: 1rem 2rem"
               >
+                Salvar meu presente (Teste grátis) ↗
+              </a>
               <span class="price-hint">Pagamento único. Sem mensalidade.</span>
             </div>
           </div>
@@ -658,28 +642,6 @@
 
     <script src="js/firebase.js" type="module"></script>
     <script>
-      /* --- SCRIPT DO POP-UP DE URGÊNCIA --- */
-      window.addEventListener("DOMContentLoaded", () => {
-        // Mostra o Modal 800ms após abrir o site
-        setTimeout(() => {
-          document.getElementById("urgencyModal")?.classList.add("show");
-        }, 800);
-
-        // Função para fechar no "X"
-        document
-          .getElementById("closeUrgency")
-          ?.addEventListener("click", () => {
-            document.getElementById("urgencyModal").classList.remove("show");
-          });
-
-        // Função para fechar no link de baixo
-        document
-          .getElementById("skipUrgency")
-          ?.addEventListener("click", () => {
-            document.getElementById("urgencyModal").classList.remove("show");
-          });
-      });
-
       /* Animação do FAQ */
       document.querySelectorAll(".faq-question").forEach((button) => {
         button.addEventListener("click", () => {
