@@ -278,7 +278,7 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   HERO E SOCIAL PROOF (MODIFICADO PARA DIA DOS NAMORADOS)
+   HERO E SOCIAL PROOF
 ───────────────────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -287,7 +287,6 @@ p {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Glow ligeiramente mais avermelhado para combinar com a urgência */
   background: radial-gradient(
     ellipse 80% 70% at 50% 40%,
     #2a0814 0%,
@@ -1206,6 +1205,69 @@ p {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   CRO: BANNER CLICÁVEL & STICKY CTA (NOVIDADES)
+───────────────────────────────────────────────────────────── */
+.urgency-banner {
+  background: var(--borgonha);
+  color: var(--creme);
+  text-align: center;
+  padding: 12px 5%;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  z-index: 1000;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(139, 26, 46, 0.4);
+  text-decoration: none; /* Agora a barra inteira é um link */
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.urgency-banner:hover {
+  background: var(--borgonha-esc);
+}
+.urgency-banner p {
+  margin: 0;
+  color: #fff;
+  line-height: 1.3;
+}
+.urgency-banner strong {
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.urgency-btn-falso {
+  background: #fff;
+  color: var(--borgonha);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease;
+}
+.urgency-banner:hover .urgency-btn-falso {
+  transform: scale(1.05);
+}
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulseWhite 1.5s infinite;
+}
+
+/* Esconde o Sticky CTA no Desktop */
+.sticky-cta-mobile {
+  display: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
    RESPONSIVIDADE GERAL
 ───────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -1251,6 +1313,37 @@ p {
 }
 
 @media (max-width: 768px) {
+  /* Proteção para não esconder o rodapé atrás do botão fixo */
+  body {
+    padding-bottom: 85px;
+  }
+
+  /* Exibe o Sticky CTA no fundo do ecrã */
+  .sticky-cta-mobile {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px 5%;
+    background: rgba(14, 10, 13, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(139, 26, 46, 0.5);
+    z-index: 9999;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+  }
+  .sticky-cta-mobile .btn-primary {
+    width: 100%;
+    justify-content: center;
+    font-size: 1.1rem;
+    padding: 1.1rem;
+  }
+
+  .urgency-banner {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
   .planos-stack {
     flex-direction: column;
     align-items: center;
