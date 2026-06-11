@@ -25,6 +25,30 @@
     />
   </head>
   <body>
+    <div class="urgency-modal-overlay" id="urgencyModal">
+      <div class="urgency-modal-content glass-panel">
+        <button class="urgency-close" id="closeUrgency">✕</button>
+        <div class="urgency-icon">🚨</div>
+        <h2 class="urgency-title">Alerta de Última Hora</h2>
+        <p class="urgency-text">
+          Faltam menos de 24h para o Dia dos Namorados. Não fique de mãos a
+          abanar! Salve o seu dia criando um presente cinematográfico
+          inesquecível em 2 minutos.
+        </p>
+        <div class="urgency-actions">
+          <a
+            href="criador.html"
+            class="btn-primary btn-pulse w-100"
+            style="justify-content: center; font-size: 1.1rem; padding: 1.2rem"
+            >Testar de Graça Agora ↗</a
+          >
+          <button class="urgency-text-btn" id="skipUrgency">
+            Já tenho um presente (fechar aviso)
+          </button>
+        </div>
+      </div>
+    </div>
+
     <header class="navbar">
       <div class="logo">
         <img src="assets/logos/logo01.png" alt="" class="logo-icon" />
@@ -71,9 +95,9 @@
               >
             </p>
             <div class="hero-actions">
-              <a href="criador.html" class="btn-primary btn-pulse">
-                Criar presente (Teste grátis) ↗
-              </a>
+              <a href="criador.html" class="btn-primary btn-pulse"
+                >Criar presente (Teste grátis) ↗</a
+              >
               <span class="price-hint">Pagamento único. Sem mensalidade.</span>
             </div>
           </div>
@@ -107,7 +131,6 @@
               Acesse agora uma sessão real e sinta exatamente a mesma emoção que
               o seu presenteado vai sentir quando as cortinas se abrirem.
             </p>
-
             <a
               href="https://www.cinegift.com.br/sessao.html?ref=ana-e-joao"
               target="_blank"
@@ -635,6 +658,28 @@
 
     <script src="js/firebase.js" type="module"></script>
     <script>
+      /* --- SCRIPT DO POP-UP DE URGÊNCIA --- */
+      window.addEventListener("DOMContentLoaded", () => {
+        // Mostra o Modal 800ms após abrir o site
+        setTimeout(() => {
+          document.getElementById("urgencyModal")?.classList.add("show");
+        }, 800);
+
+        // Função para fechar no "X"
+        document
+          .getElementById("closeUrgency")
+          ?.addEventListener("click", () => {
+            document.getElementById("urgencyModal").classList.remove("show");
+          });
+
+        // Função para fechar no link de baixo
+        document
+          .getElementById("skipUrgency")
+          ?.addEventListener("click", () => {
+            document.getElementById("urgencyModal").classList.remove("show");
+          });
+      });
+
       /* Animação do FAQ */
       document.querySelectorAll(".faq-question").forEach((button) => {
         button.addEventListener("click", () => {
